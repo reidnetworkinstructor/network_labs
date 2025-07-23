@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Subnetting Basics - Mastering Class C Subnetting</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Subnetting Basics - Mastering Class C Subnetting</h1>
+    <p class="subtitle">Break down a /24 network into 4 subnets by hand, then verify with a tool.</p>
+  </header>
+  <main class="lab-content">
+    <section>
+      <h2>Objective</h2>
+      <p>Practice subnetting a Class C network by hand and verify with a tool, mastering Network+ subnetting skills.</p>
+    </section>
+
+    <section>
+      <h2>Tools Needed</h2>
+      <ul>
+        <li>Windows Calculator (Programmer mode)</li>
+        <li>Optional: <a href="https://www.subnet-calculator.com" target="_blank">Subnet Calculator</a></li>
+        <li>Paper/pen or Notepad</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 1: Understand Your Network</h2>
+      <p>Start with Class C: <strong>192.168.1.0/24</strong> (255.255.255.0). Divide it into 4 subnets.</p>
+      <p>Target: IT, Sales, HR, Guest</p>
+      <p>Note: /24 = 256 addresses → 4 subnets = 64 each</p>
+    </section>
+
+    <section>
+      <h2>Step 2: Calculate Subnets by Hand</h2>
+      <ul>
+        <li>Borrow 2 bits → /26 mask = 255.255.255.192</li>
+        <li>Addresses per subnet = 64</li>
+      </ul>
+      <p><strong>Ranges:</strong></p>
+      <ul>
+        <li>Subnet 1: 192.168.1.0 – .63 → Usable: .1 – .62</li>
+        <li>Subnet 2: 192.168.1.64 – .127 → Usable: .65 – .126</li>
+        <li>Subnet 3: 192.168.1.128 – .191 → Usable: .129 – .190</li>
+        <li>Subnet 4: 192.168.1.192 – .255 → Usable: .193 – .254</li>
+      </ul>
+      <p>Binary mask check: 11000000 = 192</p>
+    </section>
+
+    <section>
+      <h2>Step 3: Verify with a Tool</h2>
+      <p>Visit <a href="https://www.subnet-calculator.com" target="_blank">Subnet Calculator</a> or calculate manually.</p>
+      <p>Confirm the same four /26 ranges and subnet sizes.</p>
+      <ul>
+        <li>IT: 192.168.1.0/26 → Example: Server at .10</li>
+        <li>Sales: 192.168.1.64/26 → Example: Laptop at .70</li>
+        <li>HR: 192.168.1.128/26 → Example: Printer at .130</li>
+        <li>Guest: 192.168.1.192/26 → Example: Guest phone at .200</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 4: Reflect</h2>
+      <p>Write a short paragraph: What did you learn about subnetting and binary masks? How did using a tool confirm your math?</p>
+      <p><em>Hint: Borrowed 2 bits = 4 subnets = /26 mask = 62 usable hosts each</em></p>
+      <p><strong>Bonus:</strong> Screenshot your calculator output or handwritten notes for your portfolio!</p>
+    </section>
+  </main>
+</body>
+</html>

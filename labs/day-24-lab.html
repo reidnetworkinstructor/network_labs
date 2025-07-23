@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 24 Lab – Automate and Monitor with Ansible and PRTG</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6f1ff;
+      font-family: 'Fira Code', monospace;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: #00ffff;
+    }
+    code {
+      background-color: #1e1e1e;
+      color: #80cbc4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+    .log {
+      background-color: #1c1f26;
+      border-left: 4px solid #00e5ff;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .step {
+      margin-bottom: 2rem;
+    }
+    .reflect {
+      background-color: #263238;
+      border-left: 4px solid #26c6da;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .screenshot {
+      color: #b2ebf2;
+    }
+    a {
+      color: #66d9ef;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Day 24 Premium Lab:</h1>
+  <h2>Automate and Monitor with Ansible and PRTG</h2>
+
+  <div class="step">
+    <h2>Step 1: Set Up Tools</h2>
+    <ul>
+      <li><strong>Ansible:</strong>
+        <ul>
+          <li>Install Windows Subsystem for Linux (WSL):</li>
+          <code>wsl --install</code>
+          <li>Launch WSL and install Ansible:</li>
+          <code>sudo apt update && sudo apt install ansible</code>
+        </ul>
+      </li>
+      <li><strong>PRTG:</strong>
+        <ul>
+          <li>Download PRTG from <a href="https://www.paessler.com/prtg" target="_blank">paessler.com</a> (100 sensors free).</li>
+          <li>Install and access via <code>localhost:8080</code> on your browser.</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="log">Log: “Ansible and PRTG ready—automation and monitoring set!”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 2: Simulate Automation with Ansible</h2>
+    <ul>
+      <li>In WSL, create a playbook file:</li>
+      <code>nano playbook.yml</code>
+      <pre><code>- hosts: localhost
+  tasks:
+    - name: Simulate VLAN config
+      debug:
+        msg: "Configured VLAN 10 on switch"
+
+    - name: Simulate SNMP trap setup
+      debug:
+        msg: "SNMP trap host set to 192.168.1.50"</code></pre>
+      <li>Run the playbook:</li>
+      <code>ansible-playbook playbook.yml</code>
+      <li>Review output — should show both tasks completed with debug messages.</li>
+    </ul>
+    <div class="log">Log: “Ansible playbook ran—VLAN 10, SNMP traps configured (IaC)!”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 3: Monitor with PRTG</h2>
+    <ul>
+      <li>In PRTG, add your local PC as a device.</li>
+      <li>Auto-discover sensors or manually add a new <strong>SNMP Traffic Sensor</strong> to monitor your network adapter.</li>
+      <li>Simulate a network issue:
+        <ul>
+          <li>Disable and re-enable your Ethernet or Wi-Fi adapter.</li>
+          <li>Watch PRTG register link down and traffic spikes.</li>
+        </ul>
+      </li>
+      <li>View traffic charts, latency, and alerts in the PRTG dashboard.</li>
+    </ul>
+    <div class="log">Log: “PRTG monitored link-down, traffic—SNMP in action!”</div>
+  </div>
+
+  <div class="step reflect">
+    <h2>Step 4: Reflect</h2>
+    <p><strong>Question:</strong> How do Ansible and PRTG enhance network efficiency?</p>
+    <p><em>Hint:</em> Ansible automated device configs (IaC), and PRTG provided SNMP-based monitoring of traffic, latency, and uptime.</p>
+    <p class="screenshot">📷 Portfolio Bonus: Screenshot Ansible playbook output and PRTG dashboard graphs.</p>
+  </div>
+
+</body>
+</html>

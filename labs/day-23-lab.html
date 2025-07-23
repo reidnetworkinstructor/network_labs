@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 23 Lab – Simulate Routing and Infrastructure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6f1ff;
+      font-family: 'Fira Code', monospace;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: #00ffff;
+    }
+    code {
+      background-color: #1e1e1e;
+      color: #80cbc4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+    .log {
+      background-color: #1c1f26;
+      border-left: 4px solid #00e5ff;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .step {
+      margin-bottom: 2rem;
+    }
+    .reflect {
+      background-color: #263238;
+      border-left: 4px solid #26c6da;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .screenshot {
+      color: #b2ebf2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Day 23 Premium Lab:</h1>
+  <h2>Simulate Routing and Infrastructure with GNS3 and Windows Tools</h2>
+
+  <div class="step">
+    <h2>Step 1: Set Up GNS3</h2>
+    <ul>
+      <li>Download and install <a href="https://gns3.com" target="_blank">GNS3</a> (free version). Use the basic local setup (no license required).</li>
+      <li>Install the GNS3 VM via VirtualBox or VMware as prompted.</li>
+      <li>Create a new project in GNS3: <code>HoodieRoutingLab</code>.</li>
+      <li>Drag the following into the topology:
+        <ul>
+          <li>2 Routers (e.g., use vIOS images)</li>
+          <li>1 Switch</li>
+          <li>1 PC (VPCS)</li>
+        </ul>
+      </li>
+      <li>Connect:
+        <ul>
+          <li>Router1 ↔ Router2: Serial link <code>10.0.0.0/30</code></li>
+          <li>Router1 ↔ Switch: Ethernet <code>192.168.1.0/24</code></li>
+          <li>Switch ↔ PC: Ethernet</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="log">Log: “GNS3 topology set—Router1, Router2, Switch, PC for routing and PoE simulation.”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 2: Configure OSPF Routing</h2>
+    <ul>
+      <li>Start all nodes (green play button).</li>
+      <li>On Router1 Console:</li>
+      <pre><code>enable
+configure terminal
+interface s0/0
+ip address 10.0.0.1 255.255.255.252
+no shutdown
+exit
+router ospf 1
+network 10.0.0.0 0.0.0.3 area 0
+exit</code></pre>
+
+      <li>On Router2 Console:</li>
+      <pre><code>enable
+configure terminal
+interface s0/0
+ip address 10.0.0.2 255.255.255.252
+no shutdown
+exit
+router ospf 1
+network 10.0.0.0 0.0.0.3 area 0
+exit</code></pre>
+
+      <li>On VPCS PC:</li>
+      <pre><code>ip 192.168.1.10/24 192.168.1.1</code></pre>
+      <li>Test: From PC run <code>ping 10.0.0.2</code> — should work!</li>
+    </ul>
+    <div class="log">Log: “OSPF configured—dynamic routing between 192.168.1.0/24 and 10.0.0.0/30.”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 3: Simulate Cable and PoE Issues</h2>
+    <ul>
+      <li><strong>Cabling Fault:</strong> In GNS3, suspend the link between Switch and PC.</li>
+      <li>On Windows Command Prompt:</li>
+      <pre><code>ping 192.168.1.1</code></pre>
+      <li>Result: Ping should fail (mimics Layer 1 cable fault).</li>
+      <li>Open Resource Monitor > Network tab — view dropped packets or low throughput.</li>
+      <li>Resume link in GNS3 → Ping should work again.</li>
+      <li class="log">Log: “Suspended link mimicked crosstalk—reconnected, Layer 1 fixed.”</li>
+
+      <li><strong>PoE Issue:</strong> Assume switch is powering WAP via PoE (802.3at).</li>
+      <li>In Notepad, simulate PoE failure: “WAP at 192.168.1.20 unresponsive—PoE failure suspected.”</li>
+      <li>On Windows:</li>
+      <pre><code>ping 192.168.1.20
+netstat -an</code></pre>
+      <li>Assume PoE restored: “WAP online after enabling PoE on port.”</li>
+      <li class="log">Log: “PoE restored—WAP at 192.168.1.20 up, Layer 2 powered.”</li>
+    </ul>
+  </div>
+
+  <div class="step reflect">
+    <h2>Step 4: Reflect</h2>
+    <p><strong>Question:</strong> How did this lab demonstrate routing and infrastructure?</p>
+    <p><em>Hint:</em> You configured dynamic routing with OSPF, simulated physical and Layer 2 issues (crosstalk, PoE), and restored them.</p>
+    <p class="screenshot">📷 Portfolio Bonus: Screenshot your GNS3 topology and Windows ping results or Resource Monitor graphs.</p>
+  </div>
+
+</body>
+</html>

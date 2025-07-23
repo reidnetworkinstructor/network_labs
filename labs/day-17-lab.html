@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 17 Lab - Wireless Diagnostics with WiFi Analyzer</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 17 Lab</h1>
+    <h2>Simulate and Diagnose Wireless Issues with WiFi Analyzer</h2>
+
+    <p><strong>Objective:</strong> Use a wireless diagnostic tool to identify and resolve interference issues in a home Wi-Fi network.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li><a href="https://apps.microsoft.com/detail/9nblggh33n0n" target="_blank">WiFi Analyzer (Windows)</a> or from Google Play (Android)</li>
+      <li>Windows PC or Android device</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Download and Launch WiFi Analyzer</h3>
+    <ul>
+      <li>Install the free version of WiFi Analyzer on your PC or Android device.</li>
+      <li>Open the app and allow it to scan nearby Wi-Fi networks.</li>
+      <li>You’ll see channel usage across 2.4 GHz and 5 GHz bands.</li>
+    </ul>
+
+    <h3>Step 2: Simulate a Wireless Problem</h3>
+    <ul>
+      <li>Connect your device to a crowded 2.4 GHz channel (e.g., Channel 6).</li>
+      <li>Confirm that the selected channel has multiple overlapping networks.</li>
+      <li>Start a video stream or run a speed test.</li>
+      <li><strong>Log:</strong> “Connected to 2.4 GHz, Channel 6—buffering and speed drop observed.”</li>
+    </ul>
+
+    <h3>Step 3: Diagnose the Interference</h3>
+    <ol>
+      <li><strong>Identify:</strong> "Internet is slow, video buffers."</li>
+      <li><strong>Theory:</strong> "Channel congestion is degrading performance."</li>
+      <li><strong>Test:</strong> Use WiFi Analyzer to inspect the 2.4 GHz band. Is Channel 6 overcrowded?</li>
+      <li><strong>Plan:</strong> Switch to a less-used channel (e.g., 1 or 11) or use 5 GHz if supported.</li>
+      <li><strong>Act:</strong> If possible, switch channels via device settings or router admin page. If not, simply observe ideal channels and plan future optimization.</li>
+      <li><strong>Verify:</strong> Re-run speed test. Streaming smoother? Speed increase?</li>
+    </ol>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: What caused the slowdown? What did WiFi Analyzer reveal? What adjustments made a difference?</p>
+    <p>Hint: Channel congestion is a Layer 2 issue—solved by observing and optimizing wireless frequency usage.</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You just identified a common cause of wireless frustration—overlapping channels. Using a free analyzer tool, you diagnosed and resolved the problem like a wireless pro.</p>
+  </div>
+</body>
+</html>

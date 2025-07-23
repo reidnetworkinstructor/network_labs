@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 11 Lab - Crimp and Test an Ethernet Cable</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #c9d1d9;
+      font-family: Arial, sans-serif;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    h1 {
+      color: #58a6ff;
+    }
+    h2 {
+      color: #f0f6fc;
+      margin-top: 2rem;
+    }
+    code {
+      background-color: #161b22;
+      padding: 2px 4px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .note {
+      background-color: #1c2128;
+      border-left: 4px solid #58a6ff;
+      padding: 0.75rem;
+      margin: 1rem 0;
+    }
+    .step {
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Day 11 Lab: Crimp and Test an Ethernet Cable</h1>
+
+  <h2>Objective</h2>
+  <p>Build a straight-through Ethernet cable and test it in both the real world and simulation, so you understand how physical Layer 1 connections come together.</p>
+
+  <h2>Tools Needed</h2>
+  <ul>
+    <li>UTP cable (Cat 5e or Cat 6)</li>
+    <li>2x RJ45 connectors</li>
+    <li>Crimping tool</li>
+    <li>Wire stripper</li>
+    <li>Optional: Network tester</li>
+    <li>Optional: Cisco Packet Tracer</li>
+  </ul>
+
+  <h2 class="step">Step 1: Prep the Cable</h2>
+  <p>Cut 1–2 meters of UTP cable. Use your wire stripper to remove about 2 inches of the outer jacket. You should see four twisted color pairs inside.</p>
+  <p>Untwist and arrange the wires into the T568B standard:</p>
+  <div class="note">
+    Orange-White, Orange, Green-White, Blue, Blue-White, Green, Brown-White, Brown
+  </div>
+  <p>Line the wires up flat and trim them evenly to about half an inch long. Slide them into an RJ45 connector with the clip side down. Orange-white should be on the left (Pin 1).</p>
+
+  <h2 class="step">Step 2: Crimp It</h2>
+  <p>Push the cable fully into the RJ45 connector until each wire touches the end. Double-check that the wires stayed in order.</p>
+  <p>Place the connector into the crimping tool and give it a firm squeeze.</p>
+  <p>Repeat this process for the other end of the cable—use the same T568B pinout to make a straight-through cable.</p>
+  <div class="note">Check that the jacket is secured under the locking tab, and all the copper pins are flush and visible through the connector.</div>
+
+  <h2 class="step">Step 3: Physical Test</h2>
+  <p>Plug one end of the cable into a computer and the other into a switch or router. Do you see link lights blinking? Try accessing the internet or pinging your router.</p>
+  <p>If you have a cable tester, plug both ends into the tester. You should see all lights activate in sequence if it's wired correctly.</p>
+  <div class="note">Example result: “Crimped Cat 6 cable — link established with router successfully.”</div>
+
+  <h2 class="step">Step 4: Simulate It (Optional)</h2>
+  <p>In Cisco Packet Tracer:</p>
+  <ul>
+    <li>Add two PCs and a switch.</li>
+    <li>Use the “copper straight-through” cable tool to connect both PCs to the switch.</li>
+    <li>Assign IPs: PC0 = 192.168.1.10, PC1 = 192.168.1.11</li>
+    <li>Ping from PC0 to PC1.</li>
+  </ul>
+  <div class="note">Result: “Simulated RJ45 cable working — ping reply received.”</div>
+
+  <h2 class="step">Step 5: Reflect</h2>
+  <p>Write a short reflection on what you just did. Answer these questions:</p>
+  <ul>
+    <li>How does a properly crimped cable support Layer 1 communication?</li>
+    <li>Why is it important to use the T568B standard on both ends?</li>
+  </ul>
+  <p>Hint: Standardized wiring ensures that signals flow correctly between devices. Without it, the physical layer connection won’t work at all.</p>
+
+</body>
+</html>

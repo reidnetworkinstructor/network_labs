@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Explore IP Configuration with Command Prompt</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Explore IP Configuration with Command Prompt</h1>
+    <p class="subtitle">Investigate IP details, ping public and local devices, and explore ARP cache with Windows CMD.</p>
+  </header>
+  <main class="lab-content">
+    <section>
+      <h2>Objective</h2>
+      <p>Use Command Prompt to explore your computer’s IP configuration, test connectivity, and examine the ARP cache, connecting IP addressing to protocols like DHCP and ARP.</p>
+    </section>
+
+    <section>
+      <h2>Tool Needed</h2>
+      <p>Command Prompt (built-in on Windows—search for “cmd” in the Start menu).</p>
+    </section>
+
+    <section>
+      <h2>Step 1: Check Your IP Configuration</h2>
+      <ul>
+        <li>Open CMD: Press <strong>Win + R</strong>, type <code>cmd</code>, press Enter.</li>
+        <li>Type <code>ipconfig /all</code> and press Enter.</li>
+        <li>Note these values:
+          <ul>
+            <li>IPv4 Address (e.g., <code>192.168.1.100</code>)</li>
+            <li>Subnet Mask (e.g., <code>255.255.255.0</code>)</li>
+            <li>Default Gateway (e.g., <code>192.168.1.1</code>)</li>
+            <li>DHCP Server (usually your router)</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 2: Test Connectivity with Ping</h2>
+      <ul>
+        <li>Ping Google DNS: <code>ping 8.8.8.8</code></li>
+        <li>Did it reply? What was the average round-trip time?</li>
+        <li>Now ping your Default Gateway: <code>ping 192.168.1.1</code></li>
+        <li>Why is the local ping likely faster? (Hint: LAN vs. WAN)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 3: Examine the ARP Cache</h2>
+      <ul>
+        <li>Type <code>arp -a</code> and press Enter.</li>
+        <li>Note at least two entries:
+          <ul>
+            <li>e.g., <code>192.168.1.1 → 00-14-22-01-23-45</code></li>
+            <li>What other devices show up?</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Reflect</h2>
+      <p>Write a paragraph: How does ARP help with LAN communication? Why is the gateway’s MAC in the cache?</p>
+      <p><em>Hint:</em> ARP translates IPs to MACs. Your computer needs the MAC of your gateway to send outbound traffic.</p>
+    </section>
+  </main>
+</body>
+</html>

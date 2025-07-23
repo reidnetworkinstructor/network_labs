@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OSI Packet Journey Lab</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Map a Packet’s Journey Through the OSI Model</h1>
+    <p class="subtitle">Visualize how data flows from your browser to a server across all 7 OSI layers</p>
+  </header>
+  <main class="lab-content">
+    <section>
+      <h2>Objective</h2>
+      <p>Trace the path of a packet as it moves through the 7 layers of the OSI model when accessing a website like google.com.</p>
+    </section>
+
+    <section>
+      <h2>Step 1: Scenario Setup</h2>
+      <p>Imagine this situation: You open your browser and type in <code>google.com</code>. What happens behind the scenes as that request moves through the network?</p>
+    </section>
+
+    <section>
+      <h2>Step 2: Trace the Packet Through the OSI Layers</h2>
+      <ul>
+        <li><strong>Layer 7 (Application):</strong> Your browser (e.g., Chrome) creates an HTTP request to access <code>google.com</code>.</li>
+        <li><strong>Layer 6 (Presentation):</strong> The request is formatted and encrypted using HTTPS for secure transmission.</li>
+        <li><strong>Layer 5 (Session):</strong> A session is established between your browser and Google’s server to manage communication.</li>
+        <li><strong>Layer 4 (Transport):</strong> TCP breaks the request into packets and ensures reliable delivery.</li>
+        <li><strong>Layer 3 (Network):</strong> Your router assigns a source IP address and routes the packets toward Google’s server IP.</li>
+        <li><strong>Layer 2 (Data Link):</strong> Each packet is framed and sent over your local network (Wi-Fi or Ethernet).</li>
+        <li><strong>Layer 1 (Physical):</strong> Data travels as electrical signals, light, or radio waves across the physical medium.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 3: Visualize the Journey</h2>
+      <p>Create a diagram that shows:</p>
+      <ul>
+        <li>Your Computer → Router → Internet → Google’s Server</li>
+        <li>Label the function of each OSI layer along the journey.</li>
+        <li>Use arrows or boxes to represent each step.</li>
+      </ul>
+      <p><strong>Portfolio Tip:</strong> Export your diagram as an image or PDF and include it as proof of your understanding of the OSI model.</p>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 16 Lab - Simulate and Diagnose with Netcut</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 16 Lab</h1>
+    <h2>Simulate and Diagnose with Netcut</h2>
+
+    <p><strong>Objective:</strong> Use Netcut to simulate a network issue, then troubleshoot it using Network+ methodology.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li><a href="https://arcai.com/netcut/" target="_blank">Netcut (free)</a></li>
+      <li>Windows PC</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Download and Launch Netcut</h3>
+    <ul>
+      <li>Go to <a href="https://arcai.com/netcut/" target="_blank">arcai.com/netcut</a> and download the free version.</li>
+      <li>Install and open Netcut. No admin rights required for basic functions.</li>
+      <li>Let it scan your network—you’ll see a list of connected devices.</li>
+    </ul>
+
+    <h3>Step 2: Simulate a Network Issue</h3>
+    <ul>
+      <li>Find your own device in the list (e.g., IP: <code>192.168.1.100</code>).</li>
+      <li>Click “Cut Off” to disable your device’s connection temporarily (about 10 seconds).</li>
+      <li>Try to ping your router from Command Prompt: <code>ping 192.168.1.1</code>.</li>
+      <li>It should fail while disconnected.</li>
+      <li><strong>Log:</strong> “Ping failed—device isolated from network.”</li>
+    </ul>
+
+    <h3>Step 3: Troubleshoot Using the Network+ Method</h3>
+    <ol>
+      <li><strong>Identify:</strong> "No internet connection, ping fails."</li>
+      <li><strong>Theory:</strong> "Could be a cable issue or a network block."</li>
+      <li><strong>Test:</strong> Run <code>ipconfig</code>—do you still have an IP? Check Wi-Fi or Ethernet status.</li>
+      <li><strong>Plan:</strong> Restore connection in Netcut, verify cable and adapter.</li>
+      <li><strong>Act:</strong> In Netcut, click “Resume” for your device.</li>
+      <li><strong>Verify:</strong> Ping router again—does it work? Try <code>ping 8.8.8.8</code> to confirm external access.</li>
+    </ol>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: What caused the simulated failure? How did you diagnose and resolve it? What layer of the OSI model were you troubleshooting?</p>
+    <p>Hint: Cutting off access interfered with Layer 3 (network), and troubleshooting included Layer 1 (cabling) and Layer 2 (NIC status).</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> This lab walked you through a simulated outage using Netcut and showed how to troubleshoot with a structured, CompTIA-approved approach. It’s not just about fixing issues—it’s about diagnosing them like a pro.</p>
+  </div>
+</body>
+</html>

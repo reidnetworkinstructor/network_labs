@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Investigate DNS and DHCP with Command Prompt</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Investigate DNS and DHCP with Command Prompt</h1>
+    <p class="subtitle">Explore how your computer automatically gets an IP and resolves domain names.</p>
+  </header>
+  <main class="lab-content">
+    <section>
+      <h2>Objective</h2>
+      <p>Use Command Prompt to explore how DNS resolves domain names and how DHCP assigns your IP address, connecting these protocols to your daily internet use.</p>
+    </section>
+
+    <section>
+      <h2>Tool Needed</h2>
+      <p>Command Prompt (built-in on Windows—search for “cmd” in the Start menu).</p>
+    </section>
+
+    <section>
+      <h2>Step 1: Check Your DHCP Configuration</h2>
+      <ol>
+        <li>Open Command Prompt: Press <strong>Win + R</strong>, type <code>cmd</code>, and press Enter.</li>
+        <li>Type <code>ipconfig /all</code> and press Enter to view your network configuration.</li>
+        <li>Look for:
+          <ul>
+            <li>Your IPv4 address (e.g., <code>192.168.1.100</code>).</li>
+            <li>DHCP Server (likely your router, e.g., <code>192.168.1.1</code>).</li>
+            <li>DHCP Enabled (should say “Yes” if your IP is assigned automatically).</li>
+          </ul>
+        </li>
+        <li>Note these details in a text file or notebook.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Step 2: Test DNS Resolution</h2>
+      <ol>
+        <li>Type <code>nslookup google.com</code> and press Enter to see how DNS resolves the domain name to an IP address.</li>
+        <li>Look for the “Address” field in the response (e.g., <code>142.250.190.78</code>).</li>
+        <li>Try another domain, like <code>nslookup facebook.com</code>, and note the IP address.</li>
+        <li>Note these results alongside your DHCP findings.</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Step 3: Reflect</h2>
+      <p>Write a short paragraph: How does DHCP simplify your network setup? What did you notice about the DNS resolution process?</p>
+      <p><em>Hint: DHCP automates IP assignment, saving manual effort; DNS quickly translates names to IPs, enabling web browsing.</em></p>
+    </section>
+  </main>
+</body>
+</html>

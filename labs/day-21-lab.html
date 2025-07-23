@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 21 Lab – Azure Virtual Network (VNet) Setup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0e0e10;
+      color: #e0f2f1;
+      font-family: 'Fira Code', monospace;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.7;
+    }
+    h1, h2 {
+      color: #00e5ff;
+    }
+    code {
+      background: #1e1e20;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      color: #80cbc4;
+    }
+    .log {
+      background: #1b1f23;
+      padding: 1rem;
+      border-left: 4px solid #00e5ff;
+      margin: 1rem 0;
+      font-style: italic;
+    }
+    .step {
+      margin-bottom: 2rem;
+    }
+    .reflect {
+      background: #263238;
+      padding: 1rem;
+      border-left: 4px solid #4dd0e1;
+      margin: 2rem 0;
+    }
+    .screenshot {
+      color: #b2ebf2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Day 21 Premium Lab:</h1>
+  <h2>Set Up Your First Azure Virtual Network (VNet)</h2>
+
+  <div class="step">
+    <h2>Step 1: Set Up Your Free Azure Account</h2>
+    <p>Visit <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a> and sign up. You'll need an email and credit card (no charges for free tier).</p>
+    <p>Log in to the <a href="https://portal.azure.com" target="_blank">Azure Portal</a>.</p>
+    <div class="log">Log: “Azure account created—ready to build a cloud network!”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 2: Create a Virtual Network (VNet)</h2>
+    <p>In the Azure Portal:</p>
+    <ol>
+      <li>Click <strong>Create a Resource</strong> > search for <code>Virtual Network</code> > select and click <strong>Create</strong>.</li>
+      <li>Configure:
+        <ul>
+          <li><strong>Subscription:</strong> Free Trial</li>
+          <li><strong>Resource Group:</strong> Create new → <code>HoodieCloud</code></li>
+          <li><strong>Name:</strong> <code>HoodieVNet</code></li>
+          <li><strong>Region:</strong> Closest region (e.g., East US)</li>
+          <li><strong>Address Space:</strong> <code>10.0.0.0/16</code></li>
+          <li><strong>Subnet:</strong> Name: <code>PublicSubnet</code>, Address Range: <code>10.0.1.0/24</code></li>
+        </ul>
+      </li>
+      <li>Click <strong>Review + Create</strong> → <strong>Create</strong> (takes ~1 min).</li>
+      <li>Check <strong>All Resources</strong> to confirm <code>HoodieVNet</code> is listed.</li>
+    </ol>
+    <div class="log">Log: “Created VNet 10.0.0.0/16 with PublicSubnet 10.0.1.0/24—IaaS in action!”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 3: Explore and Simulate</h2>
+    <ul>
+      <li>View the VNet’s <strong>Subnets</strong> tab.</li>
+      <li>Note that the subnet range is <code>10.0.1.0 - 10.0.1.255</code>.</li>
+      <li>Imagine a web server at <code>10.0.1.10</code>.</li>
+      <li>Simulate a security group by writing in Notepad: 
+        <code>Permit TCP 443 (HTTPS) to 10.0.1.0/24, deny 23 (Telnet)</code>.
+      </li>
+    </ul>
+    <p class="screenshot">📷 Take a screenshot of the VNet details page (address space + subnet shown).</p>
+    <div class="log">Note: “VNet set, HTTPS allowed—cloud network secure and functional.”</div>
+  </div>
+
+  <div class="step reflect">
+    <h2>Step 4: Reflect</h2>
+    <p>Write a short paragraph:</p>
+    <p><em>How does this VNet reflect cloud networking?</em></p>
+    <p>Hint: You created a 10.0.0.0/16 VNet with a /24 subnet, mimicking real IaaS cloud networks—just like you'd see in Network+ objectives.</p>
+    <p class="screenshot">📷 Portfolio Bonus: Screenshot your VNet + write-up = cloud networking credibility!</p>
+  </div>
+
+</body>
+</html>

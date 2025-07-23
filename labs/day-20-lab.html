@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 20: Access Control and Segmentation Lab</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #0a0f0d;
+      color: #e2e8f0;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      color: #00ffcc;
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    h2 {
+      color: #38bdf8;
+      margin-top: 2rem;
+    }
+
+    p, li {
+      line-height: 1.6;
+    }
+
+    code {
+      background-color: #1e293b;
+      color: #facc15;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .note {
+      background-color: #1e1b4b;
+      border-left: 4px solid #7c3aed;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 6px;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Day 20: Access Control and Segmentation in Action</h1>
+  <p><strong>Lab Focus:</strong> Simulate ACLs with Windows Firewall</p>
+
+  <h2>Objective</h2>
+  <p>Create firewall rules to simulate access control lists (ACLs), test them, and understand how segmentation and rule enforcement work in real networks.</p>
+
+  <h2>Tools Needed</h2>
+  <ul>
+    <li>Windows PC</li>
+    <li>Windows Defender Firewall</li>
+    <li>Command Prompt</li>
+    <li>Internet access</li>
+  </ul>
+
+  <h2>Step 1: Create a Firewall Rule</h2>
+  <ol>
+    <li>Open <strong>Windows Defender Firewall with Advanced Security</strong>:
+      <ul>
+        <li>Go to <em>Settings → Update & Security → Windows Security → Firewall & Network Protection</em>.</li>
+        <li>Click <em>Advanced Settings</em>.</li>
+      </ul>
+    </li>
+    <li>In the left pane, click <strong>Outbound Rules</strong>.</li>
+    <li>On the right pane, click <strong>New Rule…</strong>.</li>
+    <li>Select <strong>Port</strong> → click <strong>Next</strong>.</li>
+    <li>Choose <strong>TCP</strong> and enter <code>23</code> as the specific port (Telnet).</li>
+    <li>Select <strong>Block the connection</strong>.</li>
+    <li>Apply to all profiles (Domain, Private, Public).</li>
+    <li>Name it something like: <code>Block Telnet</code>.</li>
+  </ol>
+
+  <div class="note">
+    ✅ <strong>Note:</strong> This simulates an ACL blocking Telnet (port 23).
+  </div>
+
+  <h2>Step 2: Test the Rule</h2>
+  <ol>
+    <li>Open <strong>Command Prompt</strong> (Win + R, type <code>cmd</code>).</li>
+    <li>Try a Telnet connection:
+      <ul>
+        <li><code>telnet towel.blinkenlights.nl 23</code></li>
+        <li>It should fail (connection refused or timeout).</li>
+      </ul>
+    </li>
+    <li>Now test something that should still work:
+      <ul>
+        <li><code>ping 8.8.8.8</code> → you should get replies.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="note">
+    🔍 <strong>Observation:</strong> You’ve successfully blocked Telnet but allowed other traffic—just like an ACL would!
+  </div>
+
+  <h2>Step 3: Reflect</h2>
+  <p>Write a few sentences on the following:</p>
+  <ul>
+    <li>How did this firewall rule simulate an ACL?</li>
+    <li>Why block specific ports instead of turning everything off?</li>
+    <li>How does segmentation reduce attack surface?</li>
+  </ul>
+
+  <p>Example answer: “By creating a rule for port 23, I simulated denying Telnet traffic while allowing others like ping. This kind of selective filtering is how ACLs work to control access.”</p>
+</body>
+</html>

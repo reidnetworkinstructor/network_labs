@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 18 Lab - Network Performance Testing with iPerf</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 18 Lab</h1>
+    <h2>Measure Performance with iPerf</h2>
+
+    <p><strong>Objective:</strong> Use iPerf to test throughput and jitter across your network, gaining insight into real-time performance.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li><a href="https://iperf.fr" target="_blank">iPerf3</a> (free, open-source)</li>
+      <li>Two devices on the same network (e.g., PC + laptop or phone)</li>
+      <li>Wi-Fi connection (2.4 GHz or 5 GHz)</li>
+    </ul>
+
+    <h3>Step 1: Install and Set Up iPerf3</h3>
+    <ul>
+      <li>Download iPerf3 on both devices (PC as server, laptop/phone as client).</li>
+      <li>No admin rights needed—just extract and run via terminal or Command Prompt.</li>
+      <li>Ensure both devices are connected to the same Wi-Fi network.</li>
+    </ul>
+
+    <h3>Step 2: Run Initial Test</h3>
+    <ul>
+      <li>On the server (e.g., PC), open terminal and run: <code>iperf3 -s</code></li>
+      <li>On the client (e.g., laptop), run: <code>iperf3 -c [server IP]</code> (e.g., <code>iperf3 -c 192.168.1.100</code>)</li>
+      <li>Review output for throughput and jitter (e.g., “40 Mbps, 2 ms jitter”).</li>
+      <li><strong>Log:</strong> “Baseline test: 40 Mbps, 2 ms jitter on 2.4 GHz.”</li>
+    </ul>
+
+    <h3>Step 3: Simulate Load</h3>
+    <ul>
+      <li>While running the test again, stream a video or download a large file on the client device.</li>
+      <li>Rerun the iPerf test. Are speeds down? Jitter up?</li>
+      <li>Switch to 5 GHz if available—most modern routers and devices support this.</li>
+      <li>Run test again on 5 GHz. Look for improvement (e.g., “45 Mbps, 1 ms jitter”).</li>
+      <li><strong>Note:</strong> “Video load reduced performance. 5 GHz improved speed and reduced jitter.”</li>
+    </ul>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a brief reflection: What affected your performance? What conditions helped throughput improve? What did iPerf reveal about your network?</p>
+    <p>Hint: Throughput is affected by both bandwidth and congestion. Jitter reflects consistency—key for streaming and VoIP.</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> By measuring performance with iPerf, you now understand how to benchmark and improve wireless throughput. You also saw how interference and frequency band choice impact network speed and stability.</p>
+  </div>
+</body>
+</html>

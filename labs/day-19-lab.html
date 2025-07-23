@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 19 Lab - Test VPN and Security with OpenVPN Connect</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 19 Lab</h1>
+    <h2>Test VPN and Security with OpenVPN Connect</h2>
+
+    <p><strong>Objective:</strong> Use a third-party VPN client to create an encrypted connection and test the security benefits of VPN tunneling.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li><a href="https://openvpn.net/client-connect-vpn-for-windows/" target="_blank">OpenVPN Connect</a> (free)</li>
+      <li>Windows/Mac PC or smartphone</li>
+      <li>Internet access</li>
+      <li>Free VPN service (e.g., <a href="https://protonvpn.com" target="_blank">ProtonVPN</a>)</li>
+    </ul>
+
+    <h3>Step 1: Install OpenVPN and Set Up VPN</h3>
+    <ul>
+      <li>Download and install OpenVPN Connect on your device.</li>
+      <li>Register for a free ProtonVPN account and download their <code>.ovpn</code> configuration file.</li>
+      <li>In OpenVPN Connect, click “Import Profile” and upload the config file.</li>
+      <li>Connect to a server (e.g., “US-Free#1”).</li>
+      <li><strong>Check:</strong> Visit <a href="https://whatismyipaddress.com" target="_blank">whatismyipaddress.com</a>—your IP should now reflect the VPN location.</li>
+      <li><strong>Log:</strong> “Connected via VPN, IP changed—encrypted tunnel active.”</li>
+    </ul>
+
+    <h3>Step 2: Check Tunnel and Encryption</h3>
+    <ul>
+      <li>On Windows, open Command Prompt and type <code>netstat -an</code> to check for open ports.</li>
+      <li>Look for UDP 1194 or TCP 443—these are common OpenVPN ports.</li>
+      <li>Browse a secure website (e.g., your bank or Gmail). Confirm HTTPS is active in the browser bar.</li>
+      <li><strong>Log:</strong> “Tunnel via TCP 443, HTTPS verified—double encryption in effect.”</li>
+    </ul>
+
+    <h3>Step 3: Simulate Secure Hardening</h3>
+    <ul>
+      <li>Close apps that don’t need internet access (e.g., file-sharing clients).</li>
+      <li>This reduces your attack surface while on the VPN.</li>
+      <li><strong>Note:</strong> “Non-essential services disabled—system hardened during VPN session.”</li>
+    </ul>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: What does a VPN protect you from? How does this lab demonstrate the CIA triad (Confidentiality, Integrity, Availability)?</p>
+    <p>Hint: VPNs prevent sniffing and spoofing by encrypting traffic—especially useful on public Wi-Fi.</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You connected to a VPN, verified encryption, and hardened your device’s security. VPNs are essential tools for protecting confidentiality, especially on untrusted networks.</p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 22 Lab – IPv6 Virtual Network in Azure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6f1ff;
+      font-family: 'Fira Code', monospace;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: #00ffff;
+    }
+    code {
+      background-color: #1e1e1e;
+      color: #80cbc4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+    }
+    .log {
+      background-color: #1c1f26;
+      border-left: 4px solid #00e5ff;
+      padding: 1rem;
+      margin: 1.5rem 0;
+      font-style: italic;
+    }
+    .step {
+      margin-bottom: 2rem;
+    }
+    .reflect {
+      background-color: #263238;
+      border-left: 4px solid #26c6da;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .screenshot {
+      color: #b2ebf2;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Day 22 Premium Lab:</h1>
+  <h2>Set Up an IPv6 Virtual Network in Azure</h2>
+
+  <div class="step">
+    <h2>Step 1: Access Azure</h2>
+    <p>Log into the <a href="https://portal.azure.com" target="_blank">Azure Portal</a> using the free account you created on Day 21. If you haven’t yet, visit <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a> to set one up.</p>
+    <div class="log">Log: “Azure ready for IPv6 VNet.”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 2: Create IPv6-Enabled VNet</h2>
+    <ol>
+      <li>Click <strong>Create a Resource</strong> > Search “Virtual Network” > Create.</li>
+      <li>Configuration:
+        <ul>
+          <li><strong>Subscription:</strong> Free Trial</li>
+          <li><strong>Resource Group:</strong> Use <code>HoodieCloud</code> (or create a new one)</li>
+          <li><strong>Name:</strong> <code>HoodieIPv6VNet</code></li>
+          <li><strong>Region:</strong> Choose closest (e.g., East US)</li>
+          <li><strong>IPv6 Address Space:</strong> Enable IPv6, use <code>2001:db8:5678::/48</code></li>
+        </ul>
+      </li>
+      <li>Create one subnet:
+        <ul>
+          <li><strong>Name:</strong> <code>IPv6Subnet</code></li>
+          <li><strong>Range:</strong> <code>2001:db8:5678:0001::/64</code></li>
+        </ul>
+      </li>
+      <li>Click <strong>Review + Create</strong> > <strong>Create</strong>.</li>
+    </ol>
+    <div class="log">Log: “IPv6 VNet 2001:db8:5678::/48 with /64 subnet created!”</div>
+  </div>
+
+  <div class="step">
+    <h2>Step 3: Simulate and Reflect</h2>
+    <ul>
+      <li>Imagine a server at <code>2001:db8:5678:0001::10</code>.</li>
+      <li>Write in Notepad: <code>AAAA record: server.example.com to ::10</code>.</li>
+      <li class="screenshot">📷 Screenshot the VNet details showing IPv6 address space and subnet.</li>
+    </ul>
+  </div>
+
+  <div class="step reflect">
+    <h2>Step 4: Reflect</h2>
+    <p><strong>Question:</strong> How does this VNet reflect IPv6 networking?</p>
+    <p><em>Hint:</em> You built a /48 IPv6 address space and created a /64 subnet. This mirrors real cloud networks using IPv6 IaaS infrastructure.</p>
+    <p class="screenshot">📷 Portfolio Bonus: Screenshot your Azure VNet page + your AAAA record note to show IPv6 networking mastery!</p>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 13 Lab - Track Network Health with PRTG</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 13 Premium Lab</h1>
+    <h2>Track Network Health with PRTG Network Monitor</h2>
+
+    <p><strong>Objective:</strong> Use a free third-party tool to monitor network performance and identify potential issues in real time.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li>Windows PC</li>
+      <li><a href="https://www.paessler.com/prtg" target="_blank">PRTG Network Monitor</a> (Free tier)</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Download and Install PRTG</h3>
+    <ul>
+      <li>Go to the official site and download the free version (allows up to 100 sensors).</li>
+      <li>Install it on your Windows machine.</li>
+      <li>Launch the app—it will auto-discover devices on your network like your router and PC.</li>
+    </ul>
+
+    <h3>Step 2: Add Monitoring Sensors</h3>
+    <ul>
+      <li>Add a <strong>Ping</strong> sensor to your router (e.g., 192.168.1.1).</li>
+      <li>Add a <strong>Bandwidth</strong> sensor to your PC’s Wi-Fi or Ethernet adapter.</li>
+      <li>Let the sensors run for 10–15 minutes and monitor live stats.</li>
+      <li><strong>Example:</strong> “Ping: 5 ms, Bandwidth: 20 Mbps”</li>
+    </ul>
+
+    <h3>Step 3: Analyze and Report</h3>
+    <ul>
+      <li>Check PRTG’s dashboard for spikes in latency or bandwidth dips.</li>
+      <li>Export a quick report (PDF works great).</li>
+      <li>Record any observations. Did you spot a lag spike? Any downtime?</li>
+      <li><strong>Example:</strong> “Stable 20 Mbps, one ping spike to 150 ms”</li>
+    </ul>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph on your findings:</p>
+    <blockquote>
+      How can tools like PRTG help you spot problems early and keep a network healthy?
+    </blockquote>
+    <p>Hint: Monitoring tools show you what users feel—slow speeds, lag, or dropped connections—before they even report it.</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> In this lab, you practiced proactive network monitoring using PRTG. You observed real-time data from sensors and identified whether your network was stable or experiencing hiccups. This is how IT pros keep networks smooth and users happy.</p>
+  </div>
+</body>
+</html>

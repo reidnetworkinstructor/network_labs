@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 15 Lab - Scan for Vulnerabilities with Nmap</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 15 Lab</h1>
+    <h2>Scan for Vulnerabilities with Nmap</h2>
+
+    <p><strong>Objective:</strong> Use Nmap to scan your system for open ports and identify active services—an essential step in understanding network security risks.</p>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li><a href="https://nmap.org" target="_blank">Nmap (free)</a></li>
+      <li>Windows, Linux, or Mac PC</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Install Nmap</h3>
+    <ul>
+      <li>Download and install Nmap from <a href="https://nmap.org" target="_blank">nmap.org</a>.</li>
+      <li>Windows users: Zenmap GUI is included (optional).</li>
+      <li>Mac/Linux users: Use the terminal for CLI scans.</li>
+    </ul>
+
+    <h3>Step 2: Scan Your Own Device</h3>
+    <ul>
+      <li>Find your IP address using <code>ipconfig</code> (Windows) or <code>ifconfig</code> (Linux/macOS).</li>
+      <li>In Zenmap, set Target to your IP address (e.g., <code>192.168.1.100</code>).</li>
+      <li>Select the “Quick Scan” profile and start the scan.</li>
+      <li><strong>Example Output:</strong> Port 80 (HTTP), Port 443 (HTTPS), Port 53 (DNS) open.</li>
+      <li>Note: “Found open ports: 80, 443, 53—web and DNS services running.”</li>
+    </ul>
+
+    <h3>Step 3: Analyze the Results</h3>
+    <ul>
+      <li>Review each open port and what service it represents.</li>
+      <li>Is HTTP (port 80) open but HTTPS (443) missing? That could be a security concern.</li>
+      <li>Unexpected services like Telnet (port 23) or FTP (port 21)? Those should be disabled unless needed.</li>
+      <li><strong>Tip:</strong> Compare your results to the expected ports from <strong>Day 14</strong> (DHCP, NTP, DNS).</li>
+      <li>Record something like: “Port 443 and 53 expected, port 23 open—potential Telnet risk.”</li>
+    </ul>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: What risks did Nmap reveal? How do open ports translate to real-world vulnerabilities?</p>
+    <p>Hint: Open ports = open doors. Even common services like HTTP are insecure if unencrypted.</p>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> Today’s lab gave you a hands-on look at how attackers—and IT professionals—inspect networks. Nmap shows you what’s running, what’s exposed, and what needs to be tightened up. You now have your first taste of vulnerability scanning.</p>
+  </div>
+</body>
+</html>

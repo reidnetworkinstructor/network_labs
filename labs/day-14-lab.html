@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 14 Lab - Network Services and Applications</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 14 Lab</h1>
+    <h2>Network Services and Applications in Action</h2>
+
+    <p><strong>Objective:</strong> Explore common network services like DHCP, DNS, and NTP using built-in tools, and build familiarity with how your computer communicates on the network.</p>
+
+    <h3>🔓 Explore Services with Command Prompt</h3>
+
+    <h3>🛠 Tools Needed:</h3>
+    <ul>
+      <li>Windows PC</li>
+      <li>Command Prompt</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Check DHCP</h3>
+    <ul>
+      <li>Open Command Prompt (press Win + R, type <code>cmd</code> and hit Enter).</li>
+      <li>Type <code>ipconfig /all</code></li>
+      <li>Look for “DHCP Server” (usually your router) and your assigned IP.</li>
+      <li><strong>Example:</strong> “DHCP from router 192.168.1.1, IP assigned—DORA process successful.”</li>
+    </ul>
+
+    <h3>Step 2: Test DNS</h3>
+    <ul>
+      <li>Type <code>nslookup google.com</code> — it should return an IP and show your DNS server.</li>
+      <li>Try <code>nslookup facebook.com</code> for comparison.</li>
+      <li><strong>Example:</strong> “DNS resolves fast—using 8.8.8.8 on port 53.”</li>
+    </ul>
+
+    <h3>Step 3: Check NTP</h3>
+    <ul>
+      <li>Type <code>w32tm /query /status</code></li>
+      <li>Check the “Source” (e.g., time.windows.com) and last sync time.</li>
+      <li><strong>Example:</strong> “NTP synced at 10:05 AM—clock accuracy via port 123.”</li>
+    </ul>
+
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: How do DHCP, DNS, and NTP each keep your network running smoothly?</p>
+    <p>Hint: One gives you an address, one translates names to IPs, and one keeps your time in sync.</p>
+
+    <hr />
+
+    <h3>🔐 Premium Lab (Optional Extension): Map Services Visually with NetScanTools Basic</h3>
+    <p>If you're on Windows and want to go deeper, download <a href="https://www.netscantools.com/netscantools-basic.html" target="_blank">NetScanTools Basic</a> (free).</p>
+
+    <ul>
+      <li>Use its tools to look up DNS records, check NTP servers, or trace routes to services like Google or your DNS provider.</li>
+      <li>This helps visualize the service endpoints you explored in Command Prompt.</li>
+      <li>Bonus: Try a DNS brute force or TTL check to simulate advanced diagnostics.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> Today, you used built-in commands to inspect key network services—getting hands-on with how your computer gets an IP address, translates website names, and stays on time. These services are invisible but critical to daily internet usage.</p>
+  </div>
+</body>
+</html>

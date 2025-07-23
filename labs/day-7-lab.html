@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trace and Analyze Device Traffic</title>
+  <link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Trace and Analyze Device Traffic</h1>
+    <p class="subtitle">Combine tracert and Wireshark to reveal how your devices route packets to the web</p>
+  </header>
+  <main class="lab-content">
+    <section>
+      <h2>Objective</h2>
+      <p>Use <code>tracert</code>/<code>traceroute</code> and Wireshark to visualize packet flow through routers and boost your Network+ troubleshooting skills.</p>
+    </section>
+
+    <section>
+      <h2>Step 1: Trace Your Router’s Path</h2>
+      <ul>
+        <li><strong>Windows:</strong> Open Command Prompt, type <code>tracert google.com</code> and press Enter.</li>
+        <li><strong>Linux:</strong> Open Terminal, type <code>traceroute google.com</code>. If not installed: <code>sudo apt install traceroute</code>.</li>
+      </ul>
+      <p>Note:</p>
+      <ul>
+        <li>The first hop (e.g., <code>192.168.1.1</code>) is likely your router.</li>
+        <li>Total hops to Google may vary (e.g., 10–15).</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 2: Capture Router Traffic</h2>
+      <ol>
+        <li>Open Wireshark and select your active network interface (e.g., Wi-Fi or Ethernet).</li>
+        <li>Click the green shark fin icon to start capturing.</li>
+        <li>In Command Prompt or Terminal, type <code>ping google.com</code>.</li>
+        <li>Let it ping 10 times, then stop the Wireshark capture (red square icon).</li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>Step 3: Analyze with Wireshark</h2>
+      <ul>
+        <li>In the filter bar, type <code>icmp</code> and press Enter to isolate ping traffic.</li>
+        <li>Look for echo requests and replies.</li>
+        <li>Note IP addresses: your router (e.g., <code>192.168.1.1</code>) and Google (e.g., <code>142.250.190.78</code>).</li>
+        <li>Optional: Cross-check with <code>arp -a</code> (Windows) or <code>ip neigh</code> (Linux) to find MAC addresses.</li>
+        <li>Write down your observations: <em>“Router at 192.168.1.1 forwarded ICMP echo requests to Google.”</em></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Step 4: Reflect</h2>
+      <p>Write a short paragraph answering:</p>
+      <ul>
+        <li>How did <code>tracert</code>/<code>traceroute</code> reveal the router’s role?</li>
+        <li>What insights did Wireshark provide?</li>
+      </ul>
+      <p><strong>Hint:</strong> <code>tracert</code> shows each hop in the route to a destination. Wireshark reveals how traffic is handled by local and remote devices at the packet level.</p>
+    </section>
+  </main>
+</body>
+</html>
