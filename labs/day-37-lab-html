@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 37 Lab - Network Defense Designer</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 37 Lab</h1>
+    <h2 class="lab-card">Network Defense Designer: Segment and Secure</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Build a secure network architecture using draw.io. You'll include VLANs, a DMZ, internal and external firewalls, and secure remote access zones like jump boxes or VPNs.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://app.diagrams.net/" target="_blank">Draw.io (free online diagramming tool)</a></li>
+        <li>Basic understanding of network zones, segmentation, and firewall placement</li>
+      </ul>
+
+      <h3>Step 1: Open Draw.io Template</h3>
+      <ul>
+        <li>Go to <a href="https://app.diagrams.net/" target="_blank">draw.io</a> and select “Create New Diagram”</li>
+        <li>Title it: <code>Secure_Network_Design</code></li>
+        <li>Choose a blank canvas</li>
+      </ul>
+
+      <h3>Step 2: Build Network Zones</h3>
+      <ul>
+        <li>Add three main rectangular sections:
+          <ul>
+            <li><strong>External Zone:</strong> Internet + External Users</li>
+            <li><strong>DMZ:</strong> Web Server, Mail Server, DNS Server</li>
+            <li><strong>Internal Zone:</strong> Workstations, File Server, Internal DB</li>
+          </ul>
+        </li>
+        <li>Place a firewall between each zone</li>
+        <li>Label arrows as “Allowed Traffic Only” (e.g., HTTP, SMTP, SSH)</li>
+      </ul>
+
+      <h3>Step 3: Add VLANs and Jump Box</h3>
+      <ul>
+        <li>Create logical VLAN groupings inside the internal zone:
+          <ul>
+            <li><strong>VLAN 10:</strong> IT Admins</li>
+            <li><strong>VLAN 20:</strong> Employees</li>
+            <li><strong>VLAN 30:</strong> Guests</li>
+          </ul>
+        </li>
+        <li>Add a <strong>Jump Box</strong> inside VLAN 10 that connects to DMZ servers securely via SSH/RDP</li>
+      </ul>
+
+      <h3>Step 4: Secure Remote Access</h3>
+      <ul>
+        <li>Place a <strong>VPN Gateway</strong> in the External Zone</li>
+        <li>Ensure VPN only connects to Jump Box (not direct internal access)</li>
+        <li>Label rules: “Only VPN clients allowed from whitelisted IPs”</li>
+      </ul>
+
+      <h3>Step 5: Export and Reflect</h3>
+      <ul>
+        <li>Click File → Export As → PNG (or PDF)</li>
+        <li>Name it: <code>secure_architecture_day37</code></li>
+        <li>Write a quick reflection:</li>
+        <ul>
+          <li>How does segmentation reduce risk?</li>
+          <li>Where could attackers exploit weak configurations?</li>
+        </ul>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You created a professional-grade network diagram showing segmentation and layered defense. This architecture lab reinforces real-world principles used by network engineers and security architects alike.</p>
+    </div>
+  </main>
+</body>
+</html>
