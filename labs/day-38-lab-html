@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 38 Lab - AppSec Investigator</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 38 Lab</h1>
+    <h2 class="lab-card">AppSec Investigator – OWASP Threat Mapping + CodeQL Scan</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Understand the OWASP Top 10 threats and scan real application code with GitHub’s CodeQL security scanner. This lab teaches you how modern developers discover and remediate vulnerabilities.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10 Website</a></li>
+        <li>GitHub account (free)</li>
+        <li>A forked vulnerable app repository</li>
+        <li><a href="https://codeql.github.com/docs/codeql-overview/" target="_blank">GitHub CodeQL</a></li>
+      </ul>
+
+      <h3>Step 1: Review the OWASP Top 10</h3>
+      <ul>
+        <li>Visit <a href="https://owasp.org/www-project-top-ten/" target="_blank">OWASP Top 10</a></li>
+        <li>Pick 3 threats to focus on:
+          <ul>
+            <li>A01 – Broken Access Control</li>
+            <li>A05 – Security Misconfiguration</li>
+            <li>A07 – Identification and Authentication Failures</li>
+          </ul>
+        </li>
+        <li>Write 1–2 sentences on how each threat shows up in insecure apps.</li>
+      </ul>
+
+      <h3>Step 2: Fork a Vulnerable App</h3>
+      <ul>
+        <li>Go to <a href="https://github.com/google/tsunami-security-scanner" target="_blank">Tsunami Vulnerable Scanner Repo</a> or search GitHub for “vulnerable web app” repos</li>
+        <li>Click <strong>Fork</strong> to copy it to your GitHub account</li>
+        <li>Enable GitHub Actions on your repo if prompted</li>
+      </ul>
+
+      <h3>Step 3: Set Up CodeQL Analysis</h3>
+      <ul>
+        <li>In your forked repo, go to the <code>Security</code> tab → <code>Code scanning</code></li>
+        <li>Click <strong>Set up code scanning</strong></li>
+        <li>Choose <strong>CodeQL Analysis</strong> → <strong>Configure</strong></li>
+        <li>Keep default settings → Click <strong>Start Commit</strong></li>
+        <li>GitHub will now run a CodeQL scan on your repo</li>
+      </ul>
+
+      <h3>Step 4: Review Results</h3>
+      <ul>
+        <li>After 1–2 minutes, refresh the <code>Security → Code scanning alerts</code> page</li>
+        <li>Click on the findings. Look for:
+          <ul>
+            <li>Hardcoded credentials</li>
+            <li>Insecure HTTP usage</li>
+            <li>Improper input validation</li>
+          </ul>
+        </li>
+        <li>For each vulnerability, answer:
+          <ul>
+            <li>Which OWASP threat does this relate to?</li>
+            <li>How could a real attacker exploit it?</li>
+            <li>How would a developer fix it?</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Step 5: Reflect and Capture</h3>
+      <ul>
+        <li>Take a screenshot of one CodeQL finding</li>
+        <li>Write a 3–4 sentence summary of what you learned</li>
+        <li>Optional: Open a Pull Request with a suggested fix (e.g., remove hardcoded password)</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> This lab bridges secure coding theory with GitHub automation. By mapping OWASP threats and using CodeQL, you now understand how software developers catch critical security issues before attackers do.</p>
+    </div>
+  </main>
+</body>
+</html>
