@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 41 Lab - IoT & Cloud Security Audit</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 41 Lab</h1>
+    <h2 class="lab-card">IoT & Cloud Security Audit</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Simulate a security audit of a cloud-based storage bucket and a vulnerable IoT device. Identify exposures and document mitigation strategies.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://www.hackthebox.com/" target="_blank">HackTheBox or TryHackMe IoT lab (optional)</a></li>
+        <li><a href="https://pentest-tools.com/cloud-security/s3-bucket-scanner-online" target="_blank">S3 Bucket Scanner</a></li>
+        <li>Browser & public IoT camera demo (below)</li>
+        <li>Text editor</li>
+      </ul>
+
+      <h3>Scenario:</h3>
+      <p>You are hired to audit a small company that uses smart security cameras and stores footage in cloud buckets. Two major risks have been flagged:</p>
+      <ul>
+        <li>Unsecured S3 bucket storing camera footage</li>
+        <li>Unprotected IoT camera feed accessible online</li>
+      </ul>
+
+      <h3>Step 1: Simulate Cloud Bucket Exposure</h3>
+      <ul>
+        <li>Go to the <a href="https://pentest-tools.com/cloud-security/s3-bucket-scanner-online" target="_blank">S3 Bucket Scanner</a></li>
+        <li>Search for public buckets using company-style keywords (e.g., <code>companyname-backups</code>, <code>cctv-footage</code>)</li>
+        <li>Document if files are publicly listed, downloadable, or misconfigured</li>
+      </ul>
+
+      <h3>Step 2: Simulate IoT Camera Exploitation</h3>
+      <ul>
+        <li>Visit <a href="https://www.insecam.org/en/bycountry/US/" target="_blank">Insecam – US feed</a></li>
+        <li>Find a live public camera feed that shouldn't be exposed</li>
+        <li>Note the IP, location, and whether the admin interface is reachable</li>
+        <li>Try appending <code>:80</code> or <code>:8080</code> to the IP in your browser</li>
+        <li>Does a login prompt appear? Any default credentials exposed?</li>
+      </ul>
+
+      <h3>Step 3: Risk Documentation</h3>
+      <ul>
+        <li>For both systems, write down:
+          <ul>
+            <li>What is exposed?</li>
+            <li>Why is it a risk?</li>
+            <li>What should be done to fix it?</li>
+          </ul>
+        </li>
+        <li>Save your notes as <code>iot-cloud-audit.txt</code></li>
+      </ul>
+
+      <h3>Step 4: Mitigation Planning</h3>
+      <ul>
+        <li>List at least 3 security controls for each of the following:
+          <ul>
+            <li><strong>Cloud Buckets:</strong> (e.g., enable bucket policies, disable public access)</li>
+            <li><strong>IoT Devices:</strong> (e.g., change default credentials, VLAN segmentation, firmware updates)</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Optional Bonus:</h3>
+      <ul>
+        <li>Use <code>nmap -sV [IP]</code> to scan the IoT device from Insecam if reachable</li>
+        <li>Create a short audit presentation slide deck for your security team</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> This lab combined real-world exposure hunting with risk documentation — two critical skills in IoT and cloud auditing. You now understand the consequences of poor security on embedded and hosted systems.</p>
+    </div>
+  </main>
+</body>
+</html>
