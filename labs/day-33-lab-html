@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 33 Lab - Authentication & Federation</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 33 Lab</h1>
+    <h2 class="lab-card">Explore Authentication: Local Login vs OAuth</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Experience different authentication models, understand federated login (OAuth), and evaluate how MFA works in practice.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Web browser (Chrome recommended)</li>
+        <li>Temporary email address (e.g., <a href="https://temp-mail.org" target="_blank">temp-mail.org</a>)</li>
+        <li>Notebook or doc for reflections</li>
+      </ul>
+
+      <h3>Step 1: Try Local Login</h3>
+      <ul>
+        <li>Go to <a href="https://todoist.com" target="_blank">https://todoist.com</a></li>
+        <li>Create a new account using email + password</li>
+        <li>After signup, log out and try logging back in</li>
+        <li><strong>Reflection:</strong> Was this email-password stored locally? Did they confirm your email first?</li>
+      </ul>
+
+      <h3>Step 2: Try Federated Login (OAuth)</h3>
+      <ul>
+        <li>Return to the Todoist login screen</li>
+        <li>Click “Log in with Google”</li>
+        <li>Complete login using your Google account (can be temp)</li>
+        <li><strong>Note:</strong> This is OAuth in action — Todoist doesn’t know your password, just gets a token!</li>
+        <li><strong>Reflection:</strong> What are the pros/cons of this method vs local login?</li>
+      </ul>
+
+      <h3>Step 3: Find MFA in the Wild</h3>
+      <ul>
+        <li>Go to <a href="https://github.com" target="_blank">GitHub</a> and create an account</li>
+        <li>Try enabling 2FA under Settings → Password and Authentication</li>
+        <li>You can choose SMS, app-based (like Authy), or skip it</li>
+        <li><strong>Reflection:</strong> How easy or annoying was it to enable MFA? Would users actually do this?</li>
+      </ul>
+
+      <h3>Step 4: Compare</h3>
+      <ul>
+        <li>Summarize the 3 methods in your notes:</li>
+        <ul>
+          <li>Email + Password</li>
+          <li>OAuth Login (Google/Facebook)</li>
+          <li>Multi-Factor Authentication</li>
+        </ul>
+        <li>What are the risks of each if compromised?</li>
+        <li>Which would you recommend for a company protecting medical data?</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> In this lab, you explored identity and authentication firsthand — from basic email login to secure OAuth federation and MFA protection. You now know what each method looks like from a user’s perspective, and how they impact security posture.</p>
+    </div>
+  </main>
+</body>
+</html>
