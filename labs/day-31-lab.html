@@ -3,53 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 31 Lab - Threat Actor Profile Report</title>
+  <title>Day 31 Lab - Threat Actor Analysis</title>
   <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-  <div class="lab-container">
+  <header>
     <h1>Day 31 Lab</h1>
-    <h2>Threat Actor Profile Report</h2>
+    <h2 class="lab-card">Threat Actor Analysis with MITRE ATT&CK</h2>
+  </header>
 
-    <p><strong>Objective:</strong> Research and document a threat actor group to understand their motivations, tactics, and attack techniques.</p>
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Research a known threat actor and map their behavior using the <a href="https://attack.mitre.org/groups/" target="_blank">MITRE ATT&CK</a> framework.</p>
 
-    <h3>🛠 Tools & Resources:</h3>
-    <ul>
-      <li><a href="https://attack.mitre.org/" target="_blank">MITRE ATT&CK</a></li>
-      <li><a href="https://www.cisa.gov/news-events/alerts" target="_blank">CISA Alerts</a></li>
-      <li>Security blogs (e.g., FireEye, CrowdStrike, Palo Alto Networks)</li>
-    </ul>
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Web browser</li>
+        <li>Access to <a href="https://attack.mitre.org" target="_blank">attack.mitre.org</a></li>
+        <li>Optional: Note-taking tool (Google Docs, Notion, Markdown)</li>
+      </ul>
 
-    <h3>Step 1: Pick a Threat Group</h3>
-    <ul>
-      <li>Select from: APT29, Lazarus Group, FIN7, LAPSUS$, Wizard Spider</li>
-      <li>Or choose any well-documented group</li>
-    </ul>
+      <h3>Step 1: Pick Your Threat Actor</h3>
+      <ul>
+        <li>Go to <a href="https://attack.mitre.org/groups/" target="_blank">MITRE Groups Page</a></li>
+        <li>Choose one threat actor group (e.g., APT29, FIN7, Lazarus Group)</li>
+        <li>Open their group profile</li>
+      </ul>
 
-    <h3>Step 2: Investigate and Document</h3>
-    <ul>
-      <li><strong>Name & Origin:</strong> Where is the group believed to operate from?</li>
-      <li><strong>Primary Targets:</strong> Industries or regions most affected</li>
-      <li><strong>Motivations:</strong> Financial, political, espionage, etc.</li>
-      <li><strong>Attack Methods:</strong> Phishing, ransomware, zero-days</li>
-      <li><strong>MITRE ATT&CK Techniques:</strong> Example: T1059 - Command and Scripting Interpreter</li>
-      <li><strong>Recent Campaign:</strong> Summarize one high-profile attack</li>
-      <li><strong>Sources:</strong> List URLs or articles used</li>
-    </ul>
+      <h3>Step 2: Analyze Their Tactics & Techniques</h3>
+      <ul>
+        <li>Document the initial access methods (e.g., spearphishing, supply chain)</li>
+        <li>Review and list key techniques (e.g., T1059.001 – PowerShell, T1003 – Credential Dumping)</li>
+        <li>Observe if they target specific industries or countries</li>
+      </ul>
 
-    <h3>Step 3: Create a One-Page PDF</h3>
-    <ul>
-      <li>Use Google Docs, Canva, or any tool you like</li>
-      <li>Include visuals such as threat actor logos or MITRE matrices</li>
-      <li>Organize clearly and save as a PDF</li>
-    </ul>
+      <h3>Step 3: Visualize It</h3>
+      <ul>
+        <li>Screenshot the technique matrix for your actor</li>
+        <li>Create a brief summary of their known behavior and methods</li>
+        <li>Optional: Use <a href="https://mitre-attack.github.io/attack-navigator/" target="_blank">ATT&CK Navigator</a> to build a visual map</li>
+      </ul>
 
-    <h3>Step 4: Reflect</h3>
-    <p>Write 2–3 sentences on why understanding threat actors is essential for security professionals.</p>
-    <p>How does their behavior influence your defensive strategy?</p>
+      <h3>Step 4: Write Your Report</h3>
+      <p>Answer these:</p>
+      <ul>
+        <li>What is the group's primary objective?</li>
+        <li>What techniques do they favor?</li>
+        <li>What defenses could stop them?</li>
+      </ul>
 
-    <hr />
-    <p><strong>Lab Summary:</strong> This exercise strengthens your research skills, introduces real-world attacker profiles, and reinforces how threat intel shapes cyber defense strategies.</p>
-  </div>
+      <hr />
+
+      <p><strong>Lab Summary:</strong> You’ve dissected a real threat actor’s behavior using a professional framework. This helps develop real-world threat modeling and research skills.</p>
+    </div>
+  </main>
 </body>
 </html>
