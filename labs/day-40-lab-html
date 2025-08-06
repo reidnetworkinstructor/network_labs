@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 40 Lab - Incident Response Drill</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 40 Lab</h1>
+    <h2 class="lab-card">Incident Response Drill – Triage & Digital Evidence Handling</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Practice basic triage steps and evidence handling after a suspected compromise on a Windows machine. Document findings, hash captured evidence, and create a mock chain of custody.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Windows system (VM or host)</li>
+        <li><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/procmon" target="_blank">Process Monitor</a></li>
+        <li><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/tcpview" target="_blank">TCPView</a></li>
+        <li>Built-in Command Prompt tools (<code>tasklist</code>, <code>netstat</code>, <code>wmic</code>)</li>
+        <li><a href="https://md5file.com/calculator" target="_blank">Online MD5 Hash Tool</a></li>
+        <li>Text editor (e.g. Notepad)</li>
+      </ul>
+
+      <h3>Scenario:</h3>
+      <p>You've received a report of suspicious behavior on a user’s workstation. Your job is to:</p>
+      <ul>
+        <li>Perform triage to identify malicious activity</li>
+        <li>Capture volatile evidence</li>
+        <li>Hash the evidence</li>
+        <li>Create a basic chain of custody record</li>
+      </ul>
+
+      <h3>Step 1: Quick Triage</h3>
+      <ul>
+        <li>Open <strong>Command Prompt</strong> as Administrator</li>
+        <li>Run:
+          <ul>
+            <li><code>tasklist</code> – look for suspicious or unknown processes</li>
+            <li><code>netstat -ano</code> – look for unusual network connections</li>
+            <li><code>wmic startup get caption,command</code> – check for malicious startup scripts</li>
+          </ul>
+        </li>
+        <li><strong>Log anything that stands out</strong> (e.g., a reverse shell, high port communication, unknown binaries)</li>
+      </ul>
+
+      <h3>Step 2: Capture Evidence</h3>
+      <ul>
+        <li>Use <strong>TCPView</strong> to identify ongoing network sessions</li>
+        <li>Use <strong>Process Monitor</strong> to capture running processes with file activity</li>
+        <li>Export any suspicious EXE files or log entries to a ZIP file</li>
+      </ul>
+
+      <h3>Step 3: Generate Hash</h3>
+      <ul>
+        <li>Zip the evidence files</li>
+        <li>Use an online MD5 hash tool to calculate the hash of the ZIP</li>
+        <li>Record this hash as part of the integrity check</li>
+      </ul>
+
+      <h3>Step 4: Chain of Custody</h3>
+      <p>Create a simple Chain of Custody log:</p>
+      <ul>
+        <li>Who collected the data</li>
+        <li>When and where it was collected</li>
+        <li>What tool was used</li>
+        <li>Evidence name and hash</li>
+        <li>Current storage location (e.g., USB, cloud folder)</li>
+      </ul>
+      <p>Save this report as a <code>.txt</code> file.</p>
+
+      <h3>Optional Bonus:</h3>
+      <ul>
+        <li>Try uploading the suspicious file to <a href="https://www.virustotal.com" target="_blank">VirusTotal</a> and analyze the results</li>
+        <li>Create a mini incident report with your findings</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You just completed a full triage cycle — from detection to documentation. You used forensic tools to preserve evidence, validate integrity, and create accountability. These are essential skills for Security+ and real-world IR.</p>
+    </div>
+  </main>
+</body>
+</html>
