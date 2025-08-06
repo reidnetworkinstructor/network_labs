@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 36 Lab - Wi-Fi Sleuth</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 36 Lab</h1>
+    <h2 class="lab-card">Wi-Fi Sleuth: Wireless Recon and Rogue Device Scanning</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Use free tools to scan Wi-Fi environments, identify encryption methods, detect weak networks, and simulate rogue AP awareness.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://wigle.net" target="_blank">Wigle.net</a> account (free)</li>
+        <li><a href="https://play.google.com/store/apps/details?id=net.wigle.wigleandroid" target="_blank">Wigle WiFi App (Android only)</a> OR laptop with built-in Wi-Fi scanner</li>
+        <li>Optional (Mac/Linux): <code>iwlist</code>, <code>airport</code>, or <code>nmcli</code></li>
+      </ul>
+
+      <h3>Step 1: Local Wi-Fi Scan</h3>
+      <ul>
+        <li>If you're on Windows: download <a href="https://www.nirsoft.net/utils/wifi_information_view.html" target="_blank">WiFiInfoView</a></li>
+        <li>Scan all available SSIDs in your area</li>
+        <li>Document at least 5 networks: SSID, signal strength, channel, encryption type</li>
+        <li><strong>Bonus:</strong> Can you spot any <em>open</em> or <em>WEP</em> networks?</li>
+      </ul>
+
+      <h3>Step 2: Mobile Recon with Wigle</h3>
+      <ul>
+        <li>Install the Wigle WiFi app (Android) and walk around your block</li>
+        <li>Record SSIDs with:
+          <ul>
+            <li>Weak encryption (e.g., WEP, None)</li>
+            <li>High signal strength (possible rogue APs nearby)</li>
+            <li>Strange or suspicious names (e.g., "Free_Public_WiFi", "xfinity_wifi")</li>
+          </ul>
+        </li>
+        <li>Log your data in a small table</li>
+      </ul>
+
+      <h3>Step 3: Spot the Rogue</h3>
+      <ul>
+        <li>Review all SSIDs. Look for:
+          <ul>
+            <li>Identical SSID to your home/work network but on a different channel</li>
+            <li>Open networks mimicking legit names</li>
+            <li>Duplicate MAC addresses</li>
+          </ul>
+        </li>
+        <li><strong>Reflection:</strong> Would you trust any of these? How would an attacker trick you?</li>
+      </ul>
+
+      <h3>Step 4: Research AP Hardening</h3>
+      <ul>
+        <li>Look up best practices for securing home Wi-Fi networks:</li>
+        <li>Examples:
+          <ul>
+            <li>Disable WPS</li>
+            <li>Use WPA3 (or at least WPA2-AES)</li>
+            <li>Hide SSID broadcast (controversial)</li>
+            <li>Limit DHCP pool / use MAC filtering</li>
+          </ul>
+        </li>
+        <li>Write a brief list: 3 things you could change today to harden your own Wi-Fi</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You conducted a real-world wireless recon sweep, spotted weak networks, and learned how attackers might set traps. Use these insights to secure your future environments — as an ethical hacker or IT pro.</p>
+    </div>
+  </main>
+</body>
+</html>
