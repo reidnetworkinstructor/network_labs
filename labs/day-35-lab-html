@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 35 Lab - Encrypt It Yourself</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 35 Lab</h1>
+    <h2 class="lab-card">Encrypt It Yourself: Mastering Hashing and Encryption with CyberChef</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Use CyberChef to hash, encrypt, and decrypt messages — seeing how core cryptographic operations work in real time.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://gchq.github.io/CyberChef/" target="_blank">CyberChef (browser-based)</a></li>
+        <li>A simple text string (e.g., “HoodieSec2025!”)</li>
+      </ul>
+
+      <h3>Step 1: Create a Hash (SHA-256)</h3>
+      <ul>
+        <li>Go to CyberChef and enter: <code>HoodieSec2025!</code></li>
+        <li>From the left menu, drag <strong>“To Hex”</strong > and then <strong>“SHA-256”</strong> to the recipe bar</li>
+        <li>Observe the output — a 256-bit hash value</li>
+        <li>Copy the result and paste it in your notes</li>
+        <li><strong>Bonus:</strong> Try MD5 and SHA-1 — how do the outputs compare?</li>
+      </ul>
+
+      <h3>Step 2: Symmetric Encryption (AES)</h3>
+      <ul>
+        <li>Clear the recipe and use input: <code>MySecurityLabIsAwesome</code></li>
+        <li>Drag <strong>“Encrypt”</strong> → AES → Set key: <code>launchpad123</code></li>
+        <li>Choose “CBC” mode and enter IV: <code>1234567890123456</code></li>
+        <li>Copy your encrypted output</li>
+        <li>Now decrypt it by reversing the process</li>
+        <li><strong>Reflection:</strong> What happens if the key or IV changes?</li>
+      </ul>
+
+      <h3>Step 3: Base64 Encoding</h3>
+      <ul>
+        <li>Drag <strong>“To Base64”</strong> to the recipe bar</li>
+        <li>See how the encrypted output changes format</li>
+        <li>This is a common method to store or transmit encrypted data</li>
+      </ul>
+
+      <h3>Step 4: Simulate Digital Signature (Hash + Public Key Idea)</h3>
+      <ul>
+        <li>Input a message: <code>“Top Secret Mission: Hoodie Ops Alpha”</code></li>
+        <li>Hash it with SHA-256</li>
+        <li>Explain to a friend: Why is this unique? What if the message changes by 1 character?</li>
+        <li><strong>Bonus Thought:</strong> This is the idea behind digital signatures — hash + encryption with a private key</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You just hashed data, encrypted it with AES, and experimented with encoding. These are the core building blocks of secure communication. CyberChef gives you a window into the math that protects your passwords, emails, and secrets every day.</p>
+    </div>
+  </main>
+</body>
+</html>
