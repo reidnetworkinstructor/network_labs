@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 34 Lab - Access Control Models & Zero Trust</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 34 Lab</h1>
+    <h2 class="lab-card">Simulate Access Control: Roles, Permissions & Zero Trust</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Use a real cloud file-sharing tool to simulate RBAC, DAC, and apply Zero Trust principles in a mini org setup.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Browser</li>
+        <li><a href="https://www.dropbox.com" target="_blank">Dropbox</a> or <a href="https://drive.google.com" target="_blank">Google Drive</a> account (free)</li>
+        <li>3 email addresses (use <a href="https://temp-mail.org" target="_blank">temp-mail.org</a> if needed)</li>
+      </ul>
+
+      <h3>Step 1: Create a Folder Structure</h3>
+      <ul>
+        <li>Create folders for: <strong>HR, Finance, Engineering</strong></li>
+        <li>Upload a sample text file into each (e.g., "payroll.txt", "budget.xlsx")</li>
+      </ul>
+
+      <h3>Step 2: Simulate RBAC (Role-Based Access Control)</h3>
+      <ul>
+        <li>Invite your 3 email addresses to simulate user roles:</li>
+        <ul>
+          <li>Alice – HR</li>
+          <li>Bob – Finance</li>
+          <li>Charlie – Engineering</li>
+        </ul>
+        <li>Use Dropbox/Drive to give each user access ONLY to their team folder</li>
+        <li><strong>Reflection:</strong> Which permissions did you assign (Viewer? Editor?)</li>
+      </ul>
+
+      <h3>Step 3: Simulate DAC (Discretionary Access Control)</h3>
+      <ul>
+        <li>Let Charlie (Engineering) “share” their folder with Bob (Finance)</li>
+        <li>This simulates DAC — where users can control access to their resources</li>
+        <li><strong>Reflection:</strong> Is this good or dangerous? What if Charlie shares sensitive R&D files?</li>
+      </ul>
+
+      <h3>Step 4: Apply Zero Trust Thinking</h3>
+      <ul>
+        <li>Remove all existing permissions and re-invite users one-by-one</li>
+        <li>This time, assign ONLY the bare minimum needed</li>
+        <li>Enable any available features like link expiration or MFA (if supported)</li>
+        <li><strong>Reflection:</strong> What would Zero Trust look like in this environment?</li>
+      </ul>
+
+      <h3>Step 5: Reflect</h3>
+      <ul>
+        <li>What access control model best fits:</li>
+        <ul>
+          <li>A military nuclear launch database?</li>
+          <li>A startup with rapid team growth?</li>
+        </ul>
+        <li>What are the **pros and cons** of each method?</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> In this lab, you simulated real access control models using shared cloud folders. You saw how RBAC and DAC differ in enforcement — and how Zero Trust forces you to rethink default access. The best security often comes from denying first and granting only what's essential.</p>
+    </div>
+  </main>
+</body>
+</html>
