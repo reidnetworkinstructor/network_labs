@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 39 Lab - SIEM Hunt Mission</title>
+  <link rel="stylesheet" href="../styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 39 Lab</h1>
+    <h2 class="lab-card">SIEM Hunt Mission – Blue Team vs Suspicious Events in Splunk</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Use Splunk to investigate suspicious activity in event logs and simulate blue team incident detection and analysis. Get hands-on with real SIEM queries and threat detection logic.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://www.splunk.com/en_us/download/splunk-cloud.html" target="_blank">Free Splunk Cloud Trial</a> (or Splunk Fundamentals Sandbox)</li>
+        <li>Dataset: <a href="https://github.com/splunk/security_content" target="_blank">Splunk Security Content (Test Data)</a></li>
+        <li>Basic Splunk Search Queries</li>
+      </ul>
+
+      <h3>Step 1: Set Up Splunk Cloud</h3>
+      <ul>
+        <li>Go to <a href="https://www.splunk.com/en_us/download/splunk-cloud.html" target="_blank">Splunk Cloud Free Trial</a></li>
+        <li>Create an account and deploy a test instance</li>
+        <li>Optional: Use their “Security Essentials” app to preload some test data</li>
+      </ul>
+
+      <h3>Step 2: Load Sample Security Data</h3>
+      <ul>
+        <li>Go to <a href="https://github.com/splunk/security_content" target="_blank">Splunk Security Content GitHub</a></li>
+        <li>Download or clone a sample dataset (CSV or JSON)</li>
+        <li>In Splunk Cloud, go to Settings → Add Data → Upload File</li>
+        <li>Upload your dataset and index it under “threat_logs”</li>
+      </ul>
+
+      <h3>Step 3: Begin Your Hunt</h3>
+      <ul>
+        <li>Go to the Search & Reporting App in Splunk</li>
+        <li>Try these example queries:
+          <ul>
+            <li><code>index=threat_logs sourcetype=* | stats count by src_ip, dest_ip, signature</code></li>
+            <li><code>index=threat_logs action="blocked" OR action="denied"</code></li>
+            <li><code>index=threat_logs signature="*powershell*"</code></li>
+          </ul>
+        </li>
+        <li>Tag any of the following Indicators of Compromise (IOCs):
+          <ul>
+            <li>Suspicious IPs</li>
+            <li>Unusual ports or protocols</li>
+            <li>Command and control activity</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Step 4: Document Findings</h3>
+      <ul>
+        <li>Write a short “Incident Report” with:
+          <ul>
+            <li>What you detected</li>
+            <li>What query helped you find it</li>
+            <li>Why it might be malicious</li>
+          </ul>
+        </li>
+        <li>Take a screenshot of your query and result set</li>
+      </ul>
+
+      <h3>Step 5: Bonus Challenge</h3>
+      <ul>
+        <li>Try building a dashboard in Splunk showing:
+          <ul>
+            <li>Top 5 source IPs</li>
+            <li>Most common alert types</li>
+            <li>Time chart of activity</li>
+          </ul>
+        </li>
+        <li>Use <code>timechart</code>, <code>top</code>, and <code>table</code> commands</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> This lab puts you in the SOC analyst’s seat. You used Splunk to detect, investigate, and document malicious behavior in security logs. Blue teaming in real time!</p>
+    </div>
+  </main>
+</body>
+</html>
