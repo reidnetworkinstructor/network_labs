@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 46 Lab - Azure Fundamentals</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 46 Lab</h1>
+    <h2 class="lab-card">Azure Fundamentals: Portal Exploration and Core Services Deployment</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Get hands-on with the Azure Portal by creating a resource group and deploying your first service (a Storage Account). Understand how resources are organized and billed.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li><a href="https://azure.microsoft.com/free" target="_blank">Free Azure account</a></li>
+        <li>Web browser (Chrome or Edge recommended)</li>
+      </ul>
+
+      <h3>Step 1: Create Your Azure Free Account</h3>
+      <ul>
+        <li>Go to <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a></li>
+        <li>Sign up for a free account with a personal email address</li>
+        <li>Verify your identity with a phone number and credit card (no charges)</li>
+      </ul>
+
+      <h3>Step 2: Explore the Azure Portal</h3>
+      <ul>
+        <li>Login to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a></li>
+        <li>Navigate through the dashboard and sidebar</li>
+        <li>Click “All Services” and browse the categories</li>
+        <li>Identify the following:
+          <ul>
+            <li>Resource Groups</li>
+            <li>Storage Accounts</li>
+            <li>Virtual Machines</li>
+            <li>Cost Management + Billing</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Step 3: Create a Resource Group</h3>
+      <ul>
+        <li>Search for “Resource groups” in the top search bar</li>
+        <li>Click “Create” and use the following:
+          <ul>
+            <li><strong>Subscription:</strong> Free Trial</li>
+            <li><strong>Resource group name:</strong> <code>RG-AzureBasics</code></li>
+            <li><strong>Region:</strong> Choose the one closest to you</li>
+          </ul>
+        </li>
+        <li>Click “Review + Create” → then “Create”</li>
+      </ul>
+
+      <h3>Step 4: Deploy a Storage Account</h3>
+      <ul>
+        <li>Search for “Storage accounts” and click “Create”</li>
+        <li>Fill in the form:
+          <ul>
+            <li><strong>Resource group:</strong> RG-AzureBasics</li>
+            <li><strong>Storage account name:</strong> any unique name (e.g., <code>labstorereid</code>)</li>
+            <li><strong>Region:</strong> Same as resource group</li>
+            <li><strong>Performance:</strong> Standard</li>
+            <li><strong>Redundancy:</strong> LRS (Locally-redundant storage)</li>
+          </ul>
+        </li>
+        <li>Click “Review + Create” → then “Create”</li>
+      </ul>
+
+      <h3>Step 5: Explore Your Resources</h3>
+      <ul>
+        <li>Go back to your resource group and click the Storage Account</li>
+        <li>Explore the blade:
+          <ul>
+            <li>Overview</li>
+            <li>Access keys</li>
+            <li>Containers</li>
+            <li>Activity log</li>
+          </ul>
+        </li>
+        <li>Try uploading a simple file (optional)</li>
+      </ul>
+
+      <h3>Step 6: Bonus Exploration</h3>
+      <ul>
+        <li>Search for “Virtual machines” and click “Create” (you don’t need to finish — just view the options)</li>
+        <li>Search for “App Services” and note how web apps are created</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You explored the Azure Portal, created a resource group, deployed a storage account, and navigated essential Azure concepts like resources, regions, and service categories. This foundational experience sets you up for deeper cloud deployments ahead.</p>
+    </div>
+  </main>
+</body>
+</html>
