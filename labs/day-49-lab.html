@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 49 Lab - Azure Pricing & SLA</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 49 Lab</h1>
+    <h2 class="lab-card">Azure Pricing, SLAs & Lifecycle: Mastering the Business Side of Cloud</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Explore how to estimate Azure costs, evaluate service SLAs, and understand product lifecycle management.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Browser access to:
+          <ul>
+            <li><a href="https://azure.microsoft.com/en-us/pricing/calculator/" target="_blank">Azure Pricing Calculator</a></li>
+            <li><a href="https://azure.microsoft.com/en-us/support/legal/sla/" target="_blank">Azure SLA Documentation</a></li>
+            <li><a href="https://azure.microsoft.com/en-us/updates/" target="_blank">Azure Updates & Lifecycle</a></li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Step 1: Use the Azure Pricing Calculator</h3>
+      <ul>
+        <li>Visit the Azure Pricing Calculator</li>
+        <li>Add the following services:
+          <ul>
+            <li>1x Azure Virtual Machine (Windows, B2s, East US)</li>
+            <li>1x Azure Storage Account</li>
+            <li>1x Azure SQL Database (General Purpose)</li>
+          </ul>
+        </li>
+        <li>Review the monthly cost estimation</li>
+        <li>Take a screenshot or note the breakdown of costs</li>
+        <li><strong>Bonus:</strong> Change regions and observe cost differences</li>
+      </ul>
+
+      <h3>Step 2: Review Azure Cost Management + Billing</h3>
+      <ul>
+        <li>Log in to the <a href="https://portal.azure.com/" target="_blank">Azure Portal</a></li>
+        <li>Search for <strong>Cost Management + Billing</strong></li>
+        <li>Explore:
+          <ul>
+            <li>Cost analysis dashboard</li>
+            <li>Budgets (set one if possible)</li>
+            <li>Forecast tab</li>
+          </ul>
+        </li>
+        <li>Understand how this helps monitor real-world Azure spending</li>
+      </ul>
+
+      <h3>Step 3: Analyze SLAs</h3>
+      <ul>
+        <li>Go to the <a href="https://azure.microsoft.com/en-us/support/legal/sla/" target="_blank">Azure SLA page</a></li>
+        <li>Pick 3 services and record their SLA percentages (e.g., Azure VM, SQL DB, Blob Storage)</li>
+        <li>Use this chart:
+          <table border="1" cellpadding="6" style="margin-top: 10px;">
+            <thead>
+              <tr><th>Service</th><th>SLA %</th><th>Approx. Monthly Downtime</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Example: VM</td><td>99.9%</td><td>~43 minutes</td></tr>
+              <!-- Fill in others -->
+            </tbody>
+          </table>
+        </li>
+        <li>Reflect: Is 99.9% “good enough” for business-critical services?</li>
+      </ul>
+
+      <h3>Step 4: Explore Azure Lifecycle & Updates</h3>
+      <ul>
+        <li>Visit <a href="https://azure.microsoft.com/en-us/updates/" target="_blank">Azure Updates</a></li>
+        <li>Search for products marked "Retired" or "Deprecated"</li>
+        <li>Pick one example and answer:
+          <ul>
+            <li>When is support ending?</li>
+            <li>What are users advised to do?</li>
+            <li>Is there a replacement service?</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3>Reflection Questions:</h3>
+      <ul>
+        <li>What are some cost optimization strategies for Azure?</li>
+        <li>Why do SLAs matter when selecting cloud services?</li>
+        <li>How does Azure’s lifecycle management affect long-term planning?</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You learned how to estimate Azure costs, track budgets, compare SLAs, and stay aware of product retirement timelines. This business and governance knowledge is just as critical as technical skills in a cloud role.</p>
+    </div>
+  </main>
+</body>
+</html>
