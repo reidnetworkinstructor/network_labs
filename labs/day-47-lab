@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 47 Lab - Azure Core Services</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <header>
+    <h1>Day 47 Lab</h1>
+    <h2 class="lab-card">Azure Core Services: Deploying Compute, Networking, and Storage</h2>
+  </header>
+
+  <main>
+    <div class="lab-card">
+      <p><strong>Objective:</strong> Gain hands-on experience with Azure’s core services by deploying a virtual machine, creating a virtual network, and attaching a storage account.</p>
+
+      <h3>🛠 Tools Needed:</h3>
+      <ul>
+        <li>Azure free account: <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a></li>
+        <li>Web browser (Chrome or Edge)</li>
+      </ul>
+
+      <h3>Step 1: Set Up a Virtual Network (VNet)</h3>
+      <ul>
+        <li>In the Azure Portal, search for <strong>Virtual networks</strong> and click <strong>Create</strong></li>
+        <li>Use these settings:
+          <ul>
+            <li><strong>Resource group:</strong> RG-AzureBasics</li>
+            <li><strong>Name:</strong> <code>VNet-Lab</code></li>
+            <li><strong>Region:</strong> Same as previous lab</li>
+          </ul>
+        </li>
+        <li>Leave address space and subnets as default</li>
+        <li>Click <strong>Review + Create</strong> → <strong>Create</strong></li>
+      </ul>
+
+      <h3>Step 2: Deploy a Virtual Machine</h3>
+      <ul>
+        <li>Search for <strong>Virtual Machines</strong> and click <strong>Create</strong></li>
+        <li>Configure the basics:
+          <ul>
+            <li><strong>Resource group:</strong> RG-AzureBasics</li>
+            <li><strong>VM name:</strong> <code>MyLabVM</code></li>
+            <li><strong>Region:</strong> Same as VNet</li>
+            <li><strong>Image:</strong> Ubuntu 20.04 LTS</li>
+            <li><strong>Size:</strong> Use the smallest free-tier-eligible VM</li>
+            <li><strong>Username:</strong> anything (e.g., <code>azuser</code>)</li>
+            <li><strong>Authentication:</strong> Password</li>
+          </ul>
+        </li>
+        <li>Under <strong>Networking</strong>, select <code>VNet-Lab</code> and default subnet</li>
+        <li>Click through to <strong>Review + Create</strong> → then <strong>Create</strong></li>
+      </ul>
+
+      <h3>Step 3: Access the VM</h3>
+      <ul>
+        <li>Once the VM is created, go to its overview page</li>
+        <li>Copy the public IP address</li>
+        <li>Open a terminal and connect using SSH:
+          <pre><code>ssh azuser@&lt;your-ip&gt;</code></pre>
+        </li>
+        <li>Accept the fingerprint and log in with your password</li>
+        <li>Run: <code>uname -a</code> to verify it’s a Linux machine</li>
+      </ul>
+
+      <h3>Step 4: Create a Storage Account</h3>
+      <ul>
+        <li>Search for <strong>Storage accounts</strong> and click <strong>Create</strong></li>
+        <li>Fill in:
+          <ul>
+            <li><strong>Resource group:</strong> RG-AzureBasics</li>
+            <li><strong>Storage account name:</strong> something unique like <code>labstorage47</code></li>
+            <li><strong>Region:</strong> Same as VM</li>
+          </ul>
+        </li>
+        <li>Click <strong>Review + Create</strong> → <strong>Create</strong></li>
+        <li>After deployment, explore the storage account → Containers → Create a container named <code>labfiles</code></li>
+        <li>Upload a small text file or screenshot</li>
+      </ul>
+
+      <h3>Step 5: Clean Up (Optional)</h3>
+      <ul>
+        <li>Go to <strong>Resource Groups</strong> → <code>RG-AzureBasics</code></li>
+        <li>Click <strong>Delete resource group</strong> if you want to avoid charges</li>
+      </ul>
+
+      <hr />
+      <p><strong>Lab Summary:</strong> You deployed core cloud infrastructure: a virtual network, a Linux VM, and a storage account. This is the foundation of most real-world Azure environments. In future labs, you'll build on these with identity, security, and monitoring tools.</p>
+    </div>
+  </main>
+</body>
+</html>
