@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 78 Answer Key - Functions & Modules</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 78 – Answer Key</h1>
+    <h2>Functions & Modules</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+
+        <h3>Reference Code – <code>utils.py</code></h3>
+<pre><code>from datetime import datetime
+from typing import List
+
+def uptime_hours(start: str, end: str) -> float:
+    """Return hours between ISO-like timestamps 'YYYY-mm-dd HH:MM'."""
+    fmt = "%Y-%m-%d %H:%M"
+    s = datetime.strptime(start, fmt)
+    e = datetime.strptime(end, fmt)
+    delta = e - s
+    return round(delta.total_seconds() / 3600, 2)
+
+def password_score(pw: str) -> int:
+    """Score 0-4 based on length, digit, upper, special char."""
+    score = 0
+    if len(pw) >= 8: score += 1
+    if any(ch.isdigit() for ch in pw): score += 1
+    if any(ch.isupper() for ch in pw): score += 1
+    if any(not ch.isalnum() for ch in pw): score += 1
+    return score
+
+def top_n(items: dict[str, int], n: int = 3) -> list[tuple[str, int]]:
+    """Return top N (key,count) pairs by count descending."""
+    return sorted(items.items(), key=lambda kv: kv[1], reverse=True)[:n]
+
+def normalize_name(s: str) -> str:
+    """Trim spaces and title-case the string."""
+    return s.strip().title()
+
+def safe_div(a: float, b: float, default: float = 0.0) -> float:
+    """Return a/b or default if b == 0."""
+    return a / b if b != 0 else default
+
+def summary(title: str, lines: List[str]) -> str:
+    """Return a multi-line summary with a header and bullet list."""
+    result = f"=== {title} ===\n"
+    for line in lines:
+        result += f"• {line}\n"
+    return result.strip()
+</code></pre>
+
+        <h3>Reference Code – <code>main.py</code></h3>
+<pre><code>from utils import uptime_hours, password_score, top_n
+from utils import normalize_name, safe_div, summary
+
+def demo():
+    hours = uptime_hours("2025-08-10 08:00", "2025-08-10 17:30")
+    print(f"Uptime: {hours} hours")
+
+    score = password_score("Hoodie!234")
+    print(f"Password score: {score}/4")
+
+    counts = {"INFO": 11, "ERROR": 4, "WARN": 7, "DEBUG": 2}
+    print("Top levels:", top_n(counts, n=2))
+
+    # Toolkit demo
+    first = normalize_name(input("First name: "))
+    last = normalize_name(input("Last name: "))
+    closed = int(input("Tickets closed: "))
+    total = int(input("Total tickets: "))
+    rate = safe_div(closed, total) * 100
+    lines = [
+        f"User: {first} {last}",
+        f"Close rate: {rate:.2f}%",
+        "Notes: Shift A healthy; logs rotated"
+    ]
+    print(summary("Daily Ops", lines))
+
+if __name__ == "__main__":
+    demo()
+</code></pre>
+
+        <h3>Reference Code – <code>log_analyzer.py</code></h3>
+<pre><code>from typing import List, Tuple
+
+def count_levels(levels: List[str]) -> dict[str,int]:
+    counts = {}
+    for lvl in levels:
+        counts[lvl] = counts.get(lvl, 0) + 1
+    return counts
+
+def filter_level(events: List[Tuple[str,str]], level: str) -> List[Tuple[str,str]]:
+    return [e for e in events if e[0] == level]
+
+def report(counts: dict[str,int]) -> str:
+    lines = []
+    for lvl, cnt in sorted(counts.items(), key=lambda kv: kv[1], reverse=True):
+        lines.append(f"{lvl}: {cnt}")
+    return "\n".join(lines)
+
+if __name__ == "__main__":
+    sample_events = [
+        ("INFO", "System started"),
+        ("ERROR", "Disk full"),
+        ("WARN", "High CPU"),
+        ("INFO", "Service restarted"),
+        ("ERROR", "Permission denied"),
+    ]
+    lvls = [lvl for lvl, _ in sample_events]
+    counts = count_levels(lvls)
+    print(report(counts))
+    print("ERROR events:", filter_level(sample_events, "ERROR"))
+</code></pre>
+
+        <h3>Sample Output – <code>main.py</code></h3>
+<pre><code>Uptime: 9.5 hours
+Password score: 4/4
+Top levels: [('INFO', 11), ('WARN', 7)]
+First name: Jordan
+Last name: Kim
+Tickets closed: 4
+Total tickets: 6
+=== Daily Ops ===
+• User: Jordan Kim
+• Close rate: 66.67%
+• Notes: Shift A healthy; logs rotated
+</code></pre>
+
+        <h3>Sample Output – <code>log_analyzer.py</code></h3>
+<pre><code>INFO: 2
+ERROR: 2
+WARN: 1
+ERROR events: [('ERROR', 'Disk full'), ('ERROR', 'Permission denied')]
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li>Separating pure functions (no side effects) makes them reusable and easy to test.</li>
+          <li>Type hints improve readability and help tools catch errors early.</li>
+          <li>Splitting reusable logic into <code>utils.py</code> keeps <code>main.py</code> clean.</li>
+          <li>Guarding with <code>if __name__ == "__main__"</code> allows modules to be imported without running demo code.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li>Forgetting to return a value from a function → always include <code>return</code> for results.</li>
+          <li>Mixing user input logic into <code>utils.py</code> → keep reusable code free from I/O when possible.</li>
+          <li>Not handling <code>b == 0</code> in division → use <code>safe_div</code> pattern to avoid ZeroDivisionError.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li><code>utils.py</code> contains the required functions with docstrings and type hints.</li>
+          <li><code>main.py</code> successfully imports and uses functions from <code>utils.py</code>.</li>
+          <li><code>log_analyzer.py</code> implements counting, filtering, and reporting as specified.</li>
+          <li>All scripts run without errors and outputs match expected structure.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># In utils.py
+from pathlib import Path
+
+def script_dir() -> Path:
+    """Return current script's directory."""
+    return Path(__file__).parent
+</code></pre>
+
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
