@@ -3,70 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Subnetting Basics - Mastering Class C Subnetting</title>
-  <link rel="stylesheet" href="../assets/lab.css" />
+  <title>Day 4 Lab - Subnetting Basics: Mastering Class C /24 → /26</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <header>
-    <h1>Subnetting Basics - Mastering Class C Subnetting</h1>
-    <p class="subtitle">Break down a /24 network into 4 subnets by hand, then verify with a tool.</p>
-  </header>
-  <main class="lab-content">
-    <section>
-      <h2>Objective</h2>
-      <p>Practice subnetting a Class C network by hand and verify with a tool, mastering Network+ subnetting skills.</p>
-    </section>
+  <div class="lab-container">
+    <h1>Day 4 Lab</h1>
+    <h2>Subnetting Basics — Mastering Class C Subnetting</h2>
 
-    <section>
-      <h2>Tools Needed</h2>
-      <ul>
-        <li>Windows Calculator (Programmer mode)</li>
-        <li>Optional: <a href="https://www.subnet-calculator.com" target="_blank">Subnet Calculator</a></li>
-        <li>Paper/pen or Notepad</li>
-      </ul>
-    </section>
+    <p><strong>Objective:</strong> Break down a <code>/24</code> network into four <code>/26</code> subnets by hand, then verify with a subnet calculator.</p>
+    <p><strong>Tools Needed:</strong> Windows Calculator (Programmer mode), optional <a href="https://www.subnet-calculator.com" target="_blank" rel="noopener">Subnet Calculator</a>, paper/pen or Notepad.</p>
 
-    <section>
-      <h2>Step 1: Understand Your Network</h2>
-      <p>Start with Class C: <strong>192.168.1.0/24</strong> (255.255.255.0). Divide it into 4 subnets.</p>
-      <p>Target: IT, Sales, HR, Guest</p>
-      <p>Note: /24 = 256 addresses → 4 subnets = 64 each</p>
-    </section>
+    <h3>Step 1: Understand Your Network</h3>
+    <p>Start with Class C: <strong>192.168.1.0/24</strong> (mask <code>255.255.255.0</code>). Your goal is to create <strong>4 equal subnets</strong> (for IT, Sales, HR, Guest).</p>
+    <ul>
+      <li><code>/24</code> has 256 total addresses (0–255).</li>
+      <li>To make 4 subnets, borrow <strong>2 bits</strong> from the host portion → <strong>/26</strong>.</li>
+      <li>/26 mask = <code>255.255.255.192</code> (binary: <code>11000000</code> → 192).</li>
+      <li>Addresses per subnet = <strong>64</strong> (62 usable hosts each).</li>
+    </ul>
 
-    <section>
-      <h2>Step 2: Calculate Subnets by Hand</h2>
-      <ul>
-        <li>Borrow 2 bits → /26 mask = 255.255.255.192</li>
-        <li>Addresses per subnet = 64</li>
-      </ul>
-      <p><strong>Ranges:</strong></p>
-      <ul>
-        <li>Subnet 1: 192.168.1.0 – .63 → Usable: .1 – .62</li>
-        <li>Subnet 2: 192.168.1.64 – .127 → Usable: .65 – .126</li>
-        <li>Subnet 3: 192.168.1.128 – .191 → Usable: .129 – .190</li>
-        <li>Subnet 4: 192.168.1.192 – .255 → Usable: .193 – .254</li>
-      </ul>
-      <p>Binary mask check: 11000000 = 192</p>
-    </section>
+    <h3>Step 2: Calculate Subnets by Hand</h3>
+    <p>Increment the 4th octet by 64 to get each network ID and range:</p>
+    <ul>
+      <li><strong>Subnet 1</strong>: Network <code>192.168.1.0</code> — Broadcast <code>192.168.1.63</code> → Usable <code>192.168.1.1 – 192.168.1.62</code></li>
+      <li><strong>Subnet 2</strong>: Network <code>192.168.1.64</code> — Broadcast <code>192.168.1.127</code> → Usable <code>192.168.1.65 – 192.168.1.126</code></li>
+      <li><strong>Subnet 3</strong>: Network <code>192.168.1.128</code> — Broadcast <code>192.168.1.191</code> → Usable <code>192.168.1.129 – 192.168.1.190</code></li>
+      <li><strong>Subnet 4</strong>: Network <code>192.168.1.192</code> — Broadcast <code>192.168.1.255</code> → Usable <code>192.168.1.193 – 192.168.1.254</code></li>
+    </ul>
 
-    <section>
-      <h2>Step 3: Verify with a Tool</h2>
-      <p>Visit <a href="https://www.subnet-calculator.com" target="_blank">Subnet Calculator</a> or calculate manually.</p>
-      <p>Confirm the same four /26 ranges and subnet sizes.</p>
-      <ul>
-        <li>IT: 192.168.1.0/26 → Example: Server at .10</li>
-        <li>Sales: 192.168.1.64/26 → Example: Laptop at .70</li>
-        <li>HR: 192.168.1.128/26 → Example: Printer at .130</li>
-        <li>Guest: 192.168.1.192/26 → Example: Guest phone at .200</li>
-      </ul>
-    </section>
+    <h3>Step 3: Verify with a Tool</h3>
+    <p>Open <a href="https://www.subnet-calculator.com" target="_blank" rel="noopener">Subnet Calculator</a> (or any equivalent), enter <code>192.168.1.0/26</code>, and confirm the ranges above. Assign example hosts:</p>
+    <ul>
+      <li><strong>IT</strong>: <code>192.168.1.0/26</code> → e.g., Server <code>192.168.1.10</code></li>
+      <li><strong>Sales</strong>: <code>192.168.1.64/26</code> → e.g., Laptop <code>192.168.1.70</code></li>
+      <li><strong>HR</strong>: <code>192.168.1.128/26</code> → e.g., Printer <code>192.168.1.130</code></li>
+      <li><strong>Guest</strong>: <code>192.168.1.192/26</code> → e.g., Phone <code>192.168.1.200</code></li>
+    </ul>
 
-    <section>
-      <h2>Step 4: Reflect</h2>
-      <p>Write a short paragraph: What did you learn about subnetting and binary masks? How did using a tool confirm your math?</p>
-      <p><em>Hint: Borrowed 2 bits = 4 subnets = /26 mask = 62 usable hosts each</em></p>
-      <p><strong>Bonus:</strong> Screenshot your calculator output or handwritten notes for your portfolio!</p>
-    </section>
-  </main>
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: What does “borrowing bits” mean? How do the network and broadcast addresses define the usable range? How did the tool confirm your math?</p>
+    <p><em>Hint:</em> Borrowing 2 bits from a /24 creates a <strong>/26</strong> (4 subnets, 62 usable hosts each). The first address is the network ID; the last is the broadcast.</p>
+    <p><strong>Bonus:</strong> Screenshot your calculator output or handwritten work for your portfolio.</p>
+
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 4</p>
+  </div>
 </body>
 </html>
