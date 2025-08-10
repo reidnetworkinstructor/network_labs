@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 61 Lab - Basic Linux Navigation & Help Commands</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 61 Lab</h1>
+    <h2>Basic Linux Navigation & Help Commands</h2>
+
+    <p><strong>Objective:</strong> Use the Linux terminal to navigate the file system, list files (including hidden ones), and look up command documentation with <code>man</code>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+    </ul>
+
+    <h3>Step 1: Check Your Current Location</h3>
+    <p>Display the full path to your current directory:</p>
+<pre><code>pwd
+</code></pre>
+
+    <h3>Step 2: List Files in the Current Directory</h3>
+    <p>List basic file names:</p>
+<pre><code>ls
+</code></pre>
+    <p>List with detailed info:</p>
+<pre><code>ls -l
+</code></pre>
+    <p>List all files including hidden ones:</p>
+<pre><code>ls -la
+</code></pre>
+
+    <h3>Step 3: Navigate Between Directories</h3>
+    <ul>
+      <li>Move to the system log directory:</li>
+<pre><code>cd /var/log
+</code></pre>
+      <li>Go back to your home directory:</li>
+<pre><code>cd ~
+</code></pre>
+      <li>Go up one directory from the current location:</li>
+<pre><code>cd ..
+</code></pre>
+    </ul>
+
+    <h3>Step 4: Use <code>man</code> to Read Documentation</h3>
+    <p>Read the manual page for the <code>ls</code> command:</p>
+<pre><code>man ls
+</code></pre>
+    <p>Press <code>q</code> to exit the manual.</p>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>pwd</code> output</li>
+      <li>Screenshot of <code>ls -la</code> output showing hidden files</li>
+      <li>Screenshot of <code>cd /var/log</code> and an <code>ls</code> listing from that directory</li>
+      <li>Screenshot of the <code>man ls</code> manual open in your terminal</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Try <code>ls -lh</code> to view file sizes in human-readable format</li>
+      <li>Use <code>man pwd</code> and identify one useful flag</li>
+      <li>Navigate to <code>/etc</code> and list only files that start with "net" (<code>ls net*</code>)</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Which <code>ls</code> option do you think you’ll use most often and why?</li>
+      <li>Why is knowing <code>pwd</code> useful when working in the terminal?</li>
+      <li>How can the <code>man</code> command help you troubleshoot on your own?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced navigating the Linux file system, listing files in different formats, and using the manual pages for help — all essential skills for working efficiently on Linux systems.</p>
+  </div>
+</body>
+</html>
