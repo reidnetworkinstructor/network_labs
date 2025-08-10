@@ -3,134 +3,153 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 23 Lab – Simulate Routing and Infrastructure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #e6f1ff;
-      font-family: 'Fira Code', monospace;
-      padding: 2rem;
-    }
-    h1, h2 {
-      color: #00ffff;
-    }
-    code {
-      background-color: #1e1e1e;
-      color: #80cbc4;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-    }
-    .log {
-      background-color: #1c1f26;
-      border-left: 4px solid #00e5ff;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-    }
-    .step {
-      margin-bottom: 2rem;
-    }
-    .reflect {
-      background-color: #263238;
-      border-left: 4px solid #26c6da;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    .screenshot {
-      color: #b2ebf2;
-    }
-  </style>
+  <title>Day 23 Lab - Simulate Routing & Infrastructure (GNS3)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 23 Lab</h1>
+    <h2>Simulate Routing & Infrastructure with GNS3</h2>
 
-  <h1>Day 23 Premium Lab:</h1>
-  <h2>Simulate Routing and Infrastructure with GNS3 and Windows Tools</h2>
+    <p><strong>Objective:</strong> Build a tiny routed network in GNS3 with two routers and two PCs, enable dynamic routing (OSPF), verify end-to-end connectivity, and practice basic failure testing.</p>
 
-  <div class="step">
-    <h2>Step 1: Set Up GNS3</h2>
+    <h3>🛠 What You Need</h3>
     <ul>
-      <li>Download and install <a href="https://gns3.com" target="_blank">GNS3</a> (free version). Use the basic local setup (no license required).</li>
-      <li>Install the GNS3 VM via VirtualBox or VMware as prompted.</li>
-      <li>Create a new project in GNS3: <code>HoodieRoutingLab</code>.</li>
-      <li>Drag the following into the topology:
+      <li>GNS3 installed (local is fine)</li>
+      <li>Routers: <em>Choose one</em>
         <ul>
-          <li>2 Routers (e.g., use vIOS images)</li>
-          <li>1 Switch</li>
-          <li>1 PC (VPCS)</li>
+          <li><strong>VyOS</strong> (recommended, free/open-source), or</li>
+          <li><strong>Cisco IOS/vIOS</strong> (licensed & provided by you)</li>
         </ul>
       </li>
-      <li>Connect:
+      <li>Two VPCS nodes (built into GNS3)</li>
+    </ul>
+
+    <h3>Step 1 — Topology & IP Plan</h3>
+    <p>Drag into the workspace: <strong>R1</strong>, <strong>R2</strong>, <strong>PC1 (VPCS)</strong>, <strong>PC2 (VPCS)</strong>. Cable like this:</p>
+<pre><code>PC1 ── R1 ── R2 ── PC2
+
+R1 LAN  (to PC1): 192.168.1.0/24   R1 LAN IP: 192.168.1.1
+R2 LAN  (to PC2): 192.168.2.0/24   R2 LAN IP: 192.168.2.1
+R1↔R2 link        : 10.0.0.0/30     R1: 10.0.0.1, R2: 10.0.0.2
+
+PC1 IP: 192.168.1.10/24  GW 192.168.1.1
+PC2 IP: 192.168.2.10/24  GW 192.168.2.1
+</code></pre>
+
+    <h3>Step 2 — Configure the PCs (VPCS)</h3>
+<pre><code># On PC1 console
+ip 192.168.1.10/24 192.168.1.1
+
+# On PC2 console
+ip 192.168.2.10/24 192.168.2.1
+</code></pre>
+
+    <h3>Step 3 — Configure the Routers</h3>
+    <p>Pick the set that matches your router image.</p>
+
+    <h4>A) Cisco IOS / vIOS</h4>
+<pre><code>! R1 (interfaces may be Gi0/0, Gi0/1, etc. Adjust to your device)
+enable
+conf t
+interface g0/0
+ ip address 192.168.1.1 255.255.255.0
+ no shutdown
+interface g0/1
+ ip address 10.0.0.1 255.255.255.252
+ no shutdown
+router ospf 1
+ network 192.168.1.0 0.0.0.255 area 0
+ network 10.0.0.0 0.0.0.3 area 0
+end
+wr
+
+! R2
+enable
+conf t
+interface g0/0
+ ip address 10.0.0.2 255.255.255.252
+ no shutdown
+interface g0/1
+ ip address 192.168.2.1 255.255.255.0
+ no shutdown
+router ospf 1
+ network 10.0.0.0 0.0.0.3 area 0
+ network 192.168.2.0 0.0.0.255 area 0
+end
+wr
+</code></pre>
+
+    <h4>B) VyOS (free)</h4>
+<pre><code># R1
+configure
+set interfaces ethernet eth0 address 192.168.1.1/24
+set interfaces ethernet eth1 address 10.0.0.1/30
+set protocols ospf area 0 network 192.168.1.0/24
+set protocols ospf area 0 network 10.0.0.0/30
+commit; save; exit
+
+# R2
+configure
+set interfaces ethernet eth0 address 10.0.0.2/30
+set interfaces ethernet eth1 address 192.168.2.1/24
+set protocols ospf area 0 network 10.0.0.0/30
+set protocols ospf area 0 network 192.168.2.0/24
+commit; save; exit
+</code></pre>
+
+    <h3>Step 4 — Verify OSPF & Connectivity</h3>
+    <ul>
+      <li><strong>OSPF neighbors come up</strong>
         <ul>
-          <li>Router1 ↔ Router2: Serial link <code>10.0.0.0/30</code></li>
-          <li>Router1 ↔ Switch: Ethernet <code>192.168.1.0/24</code></li>
-          <li>Switch ↔ PC: Ethernet</li>
+          <li><em>IOS:</em> <code>show ip ospf neighbor</code></li>
+          <li><em>VyOS:</em> <code>show ip ospf neighbor</code></li>
+        </ul>
+      </li>
+      <li><strong>Routes are learned</strong>
+        <ul>
+          <li><em>IOS:</em> <code>show ip route ospf</code></li>
+          <li><em>VyOS:</em> <code>show ip route</code> (look for OSPF routes)</li>
+        </ul>
+      </li>
+      <li><strong>End-to-end ping</strong>
+        <ul>
+          <li>From <em>PC1</em>: <code>ping 192.168.2.10</code> (should succeed)</li>
+          <li>From <em>PC2</em>: <code>ping 192.168.1.10</code></li>
         </ul>
       </li>
     </ul>
-    <div class="log">Log: “GNS3 topology set—Router1, Router2, Switch, PC for routing and PoE simulation.”</div>
-  </div>
 
-  <div class="step">
-    <h2>Step 2: Configure OSPF Routing</h2>
+    <h3>Step 5 — Quick Failure Test</h3>
     <ul>
-      <li>Start all nodes (green play button).</li>
-      <li>On Router1 Console:</li>
-      <pre><code>enable
-configure terminal
-interface s0/0
-ip address 10.0.0.1 255.255.255.252
-no shutdown
-exit
-router ospf 1
-network 10.0.0.0 0.0.0.3 area 0
-exit</code></pre>
-
-      <li>On Router2 Console:</li>
-      <pre><code>enable
-configure terminal
-interface s0/0
-ip address 10.0.0.2 255.255.255.252
-no shutdown
-exit
-router ospf 1
-network 10.0.0.0 0.0.0.3 area 0
-exit</code></pre>
-
-      <li>On VPCS PC:</li>
-      <pre><code>ip 192.168.1.10/24 192.168.1.1</code></pre>
-      <li>Test: From PC run <code>ping 10.0.0.2</code> — should work!</li>
+      <li>In GNS3, <strong>shut down the R1↔R2 link</strong> (right-click interface → Disable) or bring one router down.</li>
+      <li>Try the ping again from PC1 to PC2 (it should fail).</li>
+      <li>Re-enable the link; pings should recover once OSPF adjacencies reconverge.</li>
     </ul>
-    <div class="log">Log: “OSPF configured—dynamic routing between 192.168.1.0/24 and 10.0.0.0/30.”</div>
-  </div>
 
-  <div class="step">
-    <h2>Step 3: Simulate Cable and PoE Issues</h2>
+    <h3>✅ Deliverables</h3>
     <ul>
-      <li><strong>Cabling Fault:</strong> In GNS3, suspend the link between Switch and PC.</li>
-      <li>On Windows Command Prompt:</li>
-      <pre><code>ping 192.168.1.1</code></pre>
-      <li>Result: Ping should fail (mimics Layer 1 cable fault).</li>
-      <li>Open Resource Monitor > Network tab — view dropped packets or low throughput.</li>
-      <li>Resume link in GNS3 → Ping should work again.</li>
-      <li class="log">Log: “Suspended link mimicked crosstalk—reconnected, Layer 1 fixed.”</li>
-
-      <li><strong>PoE Issue:</strong> Assume switch is powering WAP via PoE (802.3at).</li>
-      <li>In Notepad, simulate PoE failure: “WAP at 192.168.1.20 unresponsive—PoE failure suspected.”</li>
-      <li>On Windows:</li>
-      <pre><code>ping 192.168.1.20
-netstat -an</code></pre>
-      <li>Assume PoE restored: “WAP online after enabling PoE on port.”</li>
-      <li class="log">Log: “PoE restored—WAP at 192.168.1.20 up, Layer 2 powered.”</li>
+      <li>Screenshot of topology with node labels and interface links.</li>
+      <li>Screenshot of <code>show ip ospf neighbor</code> (or VyOS equivalent) showing FULL adjacency.</li>
+      <li>Screenshot of a successful <code>ping</code> from PC1 to PC2.</li>
     </ul>
-  </div>
 
-  <div class="step reflect">
-    <h2>Step 4: Reflect</h2>
-    <p><strong>Question:</strong> How did this lab demonstrate routing and infrastructure?</p>
-    <p><em>Hint:</em> You configured dynamic routing with OSPF, simulated physical and Layer 2 issues (crosstalk, PoE), and restored them.</p>
-    <p class="screenshot">📷 Portfolio Bonus: Screenshot your GNS3 topology and Windows ping results or Resource Monitor graphs.</p>
-  </div>
+    <h3>🎯 Stretch (Optional)</h3>
+    <ul>
+      <li>Add an <strong>ACL</strong>/<strong>firewall rule</strong> on R2 to block ICMP from 192.168.1.0/24 and observe how it affects pings.</li>
+      <li>Change OSPF <strong>hello/dead timers</strong> on the R1↔R2 link and measure convergence.</li>
+      <li>Add a second link between R1 & R2 and enable <strong>OSPF cost</strong> changes to prefer one path.</li>
+    </ul>
 
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why do we advertise both the LAN and the inter-router link into OSPF?</li>
+      <li>What did the failure test tell you about dynamic routing vs static routing?</li>
+      <li>Where would segmentation or ACLs live in this tiny design, and why?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You created a two-router lab with OSPF in GNS3, proved end-to-end connectivity across subnets, and observed how routing reacts to link failures. This mirrors real branch↔core routing in a tiny, safe sandbox.</p>
+  </div>
 </body>
 </html>
