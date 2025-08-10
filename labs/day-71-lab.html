@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 71 Lab - Hello, Python! Your First Script</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 71 Lab</h1>
+    <h2>Hello, Python! Your First Script</h2>
+
+    <p><strong>Objective:</strong> Install Python 3 and VS Code, understand REPL vs. script execution, and write/run your first Python program.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Computer with internet access</li>
+      <li>Latest version of <a href="https://www.python.org/downloads/" target="_blank">Python 3</a></li>
+      <li><a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a> with the Python extension</li>
+    </ul>
+
+    <h3>Step 1 – Install Python 3</h3>
+<pre><code># Download from python.org/downloads
+# Be sure to check "Add Python to PATH" during install
+
+# Verify installation (Windows/Mac/Linux)
+python --version
+# or
+python3 --version
+</code></pre>
+
+    <h3>Step 2 – Install VS Code</h3>
+    <p>Download from <a href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a> and install the official Python extension.</p>
+    <p>Create a folder for your Python projects.</p>
+
+    <h3>Step 3 – Understand the REPL vs. Scripts</h3>
+    <p>The Python REPL (Read-Eval-Print Loop) lets you run commands one at a time:</p>
+<pre><code>>> print("Hello from REPL")
+Hello from REPL
+>>> 2 + 2
+4
+</code></pre>
+    <p>Scripts are saved files that can be run as a whole program.</p>
+
+    <h3>Step 4 – Your First Python Script</h3>
+    <ol>
+      <li>In VS Code, create a new file named <code>hello.py</code>.</li>
+      <li>Type the following:</li>
+    </ol>
+<pre><code>print("Hello, Python world!")
+</code></pre>
+    <ol start="3">
+      <li>Save the file in your project folder.</li>
+      <li>Open a terminal in that folder and run:</li>
+    </ol>
+<pre><code>python hello.py
+# or
+python3 hello.py
+</code></pre>
+    <p>If you see your message printed, you’ve successfully run your first Python program!</p>
+
+    <h3>Step 5 – Mini Lab: Customize It</h3>
+    <p>Modify <code>hello.py</code> so it prints:</p>
+    <ul>
+      <li>Your name</li>
+      <li>Your favorite Hoodie skill so far</li>
+      <li>Today’s date</li>
+    </ul>
+    <p>Example:</p>
+<pre><code>Name: Jordan Kim
+Favorite Hoodie Skill: Cloud Security
+Date: 2025-08-10
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot showing <code>python --version</code> or <code>python3 --version</code> in your terminal</li>
+      <li>Screenshot of the <code>hello.py</code> code in VS Code</li>
+      <li>Screenshot of your customized output in the terminal</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Try running Python from the REPL and experiment with simple math and <code>print()</code> statements</li>
+      <li>Create a second file called <code>greeting.py</code> that prints a personalized welcome message</li>
+      <li>Explore the <code>sys.version</code> variable to see detailed Python build info</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When might you prefer running code in the REPL vs. running a saved script?</li>
+      <li>Why is it important to add Python to your system PATH?</li>
+      <li>What kinds of IT tasks could you imagine automating with Python in your future role?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You installed Python 3 and VS Code, learned the difference between REPL and scripts, wrote and ran your first Python file, and personalized your output. This is your foundation for the rest of the Python labs.</p>
+  </div>
+</body>
+</html>
