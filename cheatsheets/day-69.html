@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 69 Cheat Sheet - Disk & File System Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 69 Cheat Sheet</h1>
+    <h2>Disk & File System Management</h2>
+
+    <p>Quick reference for viewing, mounting, and managing disks and file systems in Linux.</p>
+
+    <h3>View Storage Devices</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th></tr>
+      <tr><td><code>lsblk</code></td><td>List block devices</td></tr>
+      <tr><td><code>lsblk -f</code></td><td>List devices with file system info</td></tr>
+      <tr><td><code>sudo fdisk -l</code></td><td>Detailed disk/partition info</td></tr>
+    </table>
+
+    <h3>View Mounted File Systems</h3>
+    <table>
+      <tr><td><code>mount | column -t</code></td><td>List mounted file systems</td></tr>
+      <tr><td><code>df -T</code></td><td>Show disk space with file system type</td></tr>
+      <tr><td><code>findmnt</code></td><td>Tree view of mounts</td></tr>
+    </table>
+
+    <h3>Check Disk Space</h3>
+    <table>
+      <tr><td><code>df -h</code></td><td>Human-readable disk space</td></tr>
+      <tr><td><code>du -sh /path</code></td><td>Directory size summary</td></tr>
+      <tr><td><code>du -ah / | sort -rh | head -n 10</code></td><td>Top 10 largest files/dirs</td></tr>
+    </table>
+
+    <h3>Mount & Unmount</h3>
+    <table>
+      <tr><td><code>sudo mkdir /mnt/point</code></td><td>Create mount point</td></tr>
+      <tr><td><code>sudo mount /dev/sdX# /mnt/point</code></td><td>Mount device</td></tr>
+      <tr><td><code>sudo umount /mnt/point</code></td><td>Unmount by path</td></tr>
+      <tr><td><code>sudo umount /dev/sdX#</code></td><td>Unmount by device</td></tr>
+    </table>
+
+    <h3>File System Maintenance</h3>
+    <table>
+      <tr><td><code>sudo fsck /dev/sdX#</code></td><td>Check & repair file system (unmounted)</td></tr>
+      <tr><td><code>sudo mkfs.ext4 /dev/sdX#</code></td><td>Create ext4 file system (erases data!)</td></tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># View all disks with FS info
+lsblk -f
+
+# Check disk usage
+df -h
+
+# Find largest files in /var
+du -ah /var | sort -rh | head -n 10
+
+# Mount a USB drive
+sudo mount /dev/sdb1 /mnt/usb
+
+# Unmount a USB drive
+sudo umount /mnt/usb
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Always unmount before running <code>fsck</code> to avoid corruption.</li>
+      <li><code>du</code> shows space used by files/directories; <code>df</code> shows free/used space per filesystem.</li>
+      <li>Use <code>mount -o loop file.iso /mnt/iso</code> to mount ISO images.</li>
+      <li>File system creation commands will erase all data on the target partition — double check before running.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 69 Lab:</strong> Keep this open while working through the disk & file system exercises for quick syntax recall.</p>
+  </div>
+</body>
+</html>
