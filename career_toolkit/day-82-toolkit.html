@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 82 Toolkit — LinkedIn Mastery</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2 { grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 82 Toolkit</h1>
+    <h2>LinkedIn Mastery</h2>
+    <p class="subtitle muted">Swipe files, templates, and scripts to optimize your profile and outreach—fast.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-82-checklist.html">Day 82 Checklist</a></p>
+      <p>Use the <em>Copy</em> buttons to paste templates directly into LinkedIn.</p>
+    </div>
+
+    <h3>1) Headline Swipe File</h3>
+    <p class="muted">Role + Credential + Impact. Keep it clear and skimmable.</p>
+    <div class="snippet">
+      <button class="copybtn" data-copy="headlines">Copy</button>
+      <pre id="headlines">Help Desk Technician | CompTIA Network+ | Troubleshooting & Customer Support
+SOC Analyst | Security+ | Threat Monitoring & Incident Response
+Cloud Support Associate | AZ-900 | Identity, M365, Reliability
+IT Support Specialist | Windows/Mac | Ticket Triage & Documentation
+Junior Network Tech | Network+ | Switches, VLANs, Wi‑Fi
+Cybersecurity Analyst | Splunk Core User | Log Analysis & Detection</pre>
+    </div>
+
+    <h3>2) About Section Templates</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="about1">Copy</button>
+        <pre id="about1">I’m an entry-level IT professional with hands-on labs in networking, cloud, and security. Recent projects include network mapping, log analysis, and secure configuration baselines. Certified in [Network+ / Security+ / AZ‑900], I’m targeting roles in [help desk / SOC / cloud support] where I can improve uptime, documentation, and customer experience.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="about2">Copy</button>
+        <pre id="about2">I focus on practical problem solving: fast triage, clear runbooks, and measurable reliability. I’ve built and documented projects with [tools], contributed to [repos/portfolio], and I’m looking to support a team that values responsiveness and continuous improvement.</pre>
+      </div>
+    </div>
+
+    <h3>3) Experience Bullets (Results > Tasks)</h3>
+    <p class="muted">Use strong verbs, add context, end with impact.</p>
+    <div class="snippet">
+      <button class="copybtn" data-copy="expbullets">Copy</button>
+      <pre id="expbullets">• Resolved 20+ user tickets/week across Windows/Mac, reducing average time-to-resolution by 30% through better triage and KB use.
+• Built a virtual lab to practice VLANs and routing; documented 10+ troubleshooting scenarios for repeatable fixes.
+• Hardened baseline configs (Windows & M365) following CIS guidance; reduced common misconfigurations in lab by 60%.
+• Analyzed auth logs in Splunk to identify failed login patterns; proposed lockout threshold and user training updates.</pre>
+    </div>
+
+    <h3>4) Featured Section Ideas</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="featured1">Copy</button>
+        <pre id="featured1">• Portfolio: YourName.dev (projects, write-ups, contact)
+• GitHub Repo: “tiny-log-analyzer” (README w/ results & next steps)
+• Lab Write-up: “Network Mapping with CLI & Traceroute” (screenshots)
+• Cert Verification: CompTIA / Microsoft links</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="featured2">Copy</button>
+        <pre id="featured2">Thumbnail tips:
+• Use a clean screenshot with a descriptive title overlay.
+• Keep text short; prioritize recognizable visuals.
+• Order best work first.</pre>
+      </div>
+    </div>
+
+    <h3>5) Skill Taxonomy (Starter Set)</h3>
+    <p class="muted">Prioritize the first three; mix core tech + supporting skills.</p>
+    <div class="snippet">
+      <button class="copybtn" data-copy="skills">Copy</button>
+      <pre id="skills">TCP/IP, DNS, DHCP, VLANs, Wi‑Fi, Windows Administration, Microsoft 365, Azure (AZ‑900), Identity & Access, Ticketing Systems, Troubleshooting, Documentation, Customer Support, Scripting (Python/Bash), Splunk (Log Analysis), Security Fundamentals.</pre>
+    </div>
+
+    <h3>6) Connection Request Scripts</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="conn1">Copy</button>
+        <pre id="conn1">Hi [Name] — I’m starting my IT career and noticed your work in [company/role]. I’m focusing on [skill/cert]. Would love to connect and follow your posts. Thanks!</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="conn2">Copy</button>
+        <pre id="conn2">Hi [Name], fellow [alumni/bootcamp/cohort]. I’m targeting [role] and building projects in [area]. Appreciate connecting—happy to share resources too.</pre>
+      </div>
+    </div>
+
+    <h3>7) Recruiter Outreach & Follow‑Up</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="rec1">Copy</button>
+        <pre id="rec1">Subject: Entry-level [Role] — Quick Intro
+Hi [Name], I’m an entry-level [role] with [certs] and hands-on labs in [skills]. I’m targeting [team/industry] and would value any guidance on roles at [Company]. Portfolio: [link]. Thanks for your time!</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="follow1">Copy</button>
+        <pre id="follow1">Hi [Name] — following up on my note last week. I applied to [role, job ID]. Happy to share more about my projects relevant to [requirement]. Appreciate any next steps you’d recommend.</pre>
+      </div>
+    </div>
+
+    <h3>8) “Open to Work” & Job Preferences (Reference Text)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="prefs">Copy</button>
+      <pre id="prefs">Job titles: Help Desk Technician, IT Support Specialist, SOC Analyst (Entry), Cloud Support Associate (Entry)
+Locations: [City/Remote/Hybrid]
+Start date: Immediately
+Job types: Full-time, Contract-to-hire
+Workplace: On-site, Hybrid, Remote</pre>
+    </div>
+
+    <h3>9) First Post & Comment Starters</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="post1">Copy</button>
+        <pre id="post1">I’m leveling up my LinkedIn this week: clearer headline, Featured projects, and verified certs. If you’re in [role/industry], I’d love feedback on my portfolio: [link].</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="comment1">Copy</button>
+        <pre id="comment1">Great insight. I saw similar patterns while analyzing auth logs in my Splunk lab—failed login spikes before lockouts. Curious how your team tunes thresholds?</pre>
+      </div>
+    </div>
+
+    <h3>10) Boolean Search Helpers (Use in LinkedIn/Google)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="boolean">Copy</button>
+      <pre id="boolean">("help desk" OR "it support" OR "service desk") AND (Network+ OR "CompTIA Network+") AND (troubleshooting OR "customer support")
+("soc analyst" OR "security operations") AND (Security+ OR "CompTIA Security+") AND (siem OR splunk OR "log analysis")
+("cloud support" OR "azure support") AND (AZ-900 OR "Azure Fundamentals") AND (identity OR "microsoft 365")</pre>
+    </div>
+
+    <h3>11) Settings & Privacy Notes</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="settings">Copy</button>
+      <pre id="settings">• Public profile ON; custom URL set.
+• “Open to Work” ON (recruiters or public per preference).
+• Show recruiters you’re open; set job titles/locations.
+• Visibility: connections & activity professional.
+• Add portfolio and GitHub to Contact info.</pre>
+    </div>
+
+    <h3>12) Recommended Helpers</h3>
+    <ul class="link-list">
+      <li><span class="badge">Headshot</span> <a href="https://www.canva.com/" target="_blank" rel="noopener">Canva — quick banner/headshot cleanup</a></li>
+      <li><span class="badge">Keywords</span> <a href="https://www.jobscan.co/" target="_blank" rel="noopener">Jobscan — JD keyword ideas (free tier)</a></li>
+      <li><span class="badge">Short URLs</span> <a href="https://bitly.com/" target="_blank" rel="noopener">Bitly — clean links for posts/messages</a></li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Up Next:</strong> GitHub for Beginners (Day 83). You’ll connect your GitHub to LinkedIn and structure repos so recruiters can understand your work in seconds.</p>
+      <p><a href="../career_checklist/day-83-checklist.html">Go to Day 83 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Copy-to-clipboard for all .copybtn buttons
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = el.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
