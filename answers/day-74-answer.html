@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 74 Answer Key - If / Elif / Else</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 74 – Answer Key</h1>
+    <h2>If / Elif / Else</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+        <h3>Reference Code for <code>triage.py</code></h3>
+<pre><code># Gather inputs
+severity = int(input("Severity (1-5): "))
+category = input("Category (network/password/malware): ").strip().lower()
+hours_open = int(input("Hours open: "))
+vip_user = input("VIP user? (y/n): ").strip().lower()
+vip = (vip_user == "y")
+
+# Decision logic
+if severity >= 4 or (vip and severity >= 3):
+    action = "Page on-call now"
+    if category == "network":
+        action += " and create network incident bridge"
+elif category == "malware":
+    action = "Isolate host and escalate to security"
+elif category == "network" and hours_open >= 2:
+    action = "Create network incident bridge"
+elif category == "password":
+    action = "Guide reset (verify identity)"
+else:
+    action = "Queue for next available technician"
+
+# Output
+print("\n=== Ticket Summary ===")
+print(f"Severity: {severity}")
+print(f"Category: {category}")
+print(f"Hours Open: {hours_open}")
+print(f"VIP: {vip}")
+print(f"\nRecommended Action: {action}")
+</code></pre>
+
+        <h3>Sample Terminal Run 1 (VIP High Severity)</h3>
+<pre><code>Severity (1-5): 4
+Category (network/password/malware): network
+Hours open: 3
+VIP user? (y/n): y
+
+=== Ticket Summary ===
+Severity: 4
+Category: network
+Hours Open: 3
+VIP: True
+
+Recommended Action: Page on-call now and create network incident bridge
+</code></pre>
+
+        <h3>Sample Terminal Run 2 (Standard Password Reset)</h3>
+<pre><code>Severity (1-5): 2
+Category (network/password/malware): password
+Hours open: 1
+VIP user? (y/n): n
+
+=== Ticket Summary ===
+Severity: 2
+Category: password
+Hours Open: 1
+VIP: False
+
+Recommended Action: Guide reset (verify identity)
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li>Uses comparison operators to evaluate severity and hours open.</li>
+          <li>Combines conditions with <code>or</code> and <code>and</code> for VIP escalation logic.</li>
+          <li>Normalizes input with <code>.strip().lower()</code> to prevent mismatches from extra spaces or casing.</li>
+          <li>Orders branches so that critical/high-priority conditions are checked before less urgent cases.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>Logic order issues:</strong> Putting a general <code>else</code> before more specific cases will skip them — fix by ordering from most specific/urgent to least.</li>
+          <li><strong>TypeError:</strong> Forgetting to convert <code>input()</code> values to <code>int</code> before numeric comparisons.</li>
+          <li><strong>String matching errors:</strong> Not normalizing case, causing “Network” to fail equality checks.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li>Prompts for severity, category, hours_open, and VIP.</li>
+          <li>Handles all major categories (network/password/malware) plus a default route.</li>
+          <li>Correctly escalates based on severity, VIP status, and time open.</li>
+          <li>Output matches the summary format shown in the lab instructions.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># SLA breach override
+sla_breach = hours_open >= 4
+if sla_breach:
+    action = action.upper() + " (SLA BREACH!)"
+
+# MFA check for password category
+if category == "password":
+    mfa = input("MFA enabled? (y/n): ").strip().lower() == "y"
+    if not mfa:
+        action += " - Recommend enabling MFA"
+</code></pre>
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
