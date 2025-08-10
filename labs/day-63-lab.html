@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 63 Lab - Permissions and Ownership</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 63 Lab</h1>
+    <h2>Permissions and Ownership</h2>
+
+    <p><strong>Objective:</strong> Inspect and modify Linux file permissions and ownership using <code>ls -l</code>, <code>chmod</code> (symbolic & octal), <code>chown</code>, and <code>chgrp</code>. Practice safe defaults for files vs directories.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+      <li><em>Note:</em> <code>chown</code>/<code>chgrp</code> may require <code>sudo</code> on your system</li>
+    </ul>
+
+    <h3>Reference: Permission Bits</h3>
+<pre><code># rwx mapping and octal
+r = 4, w = 2, x = 1
+
+Owner   Group   Others     Octal  Example
+rwx     r-x     r-x        755    scripts, directories
+rw-     r--     r--        644    text/config files
+rw-     ---     ---        600    private keys/creds
+</code></pre>
+
+    <h3>Step 1: Create a Lab Workspace</h3>
+<pre><code>cd ~
+mkdir -p perm_lab/subdir
+cd perm_lab
+touch public.txt private.txt runme.sh
+echo "hello" &gt; public.txt
+echo "secrets" &gt; private.txt
+echo -e "#!/bin/bash\necho Run Me" &gt; runme.sh
+</code></pre>
+
+    <h3>Step 2: Inspect Current Permissions</h3>
+    <p>List long format to view <em>owner</em>, <em>group</em>, and <em>rwx</em> bits:</p>
+<pre><code>ls -l
+</code></pre>
+
+    <h3>Step 3: Make a File Executable (Symbolic Mode)</h3>
+    <p>Add execute permission for the owner on <code>runme.sh</code>:</p>
+<pre><code>chmod u+x runme.sh
+ls -l runme.sh
+./runme.sh
+</code></pre>
+
+    <h3>Step 4: Set Common File Modes (Octal)</h3>
+    <p>Set <code>public.txt</code> to <code>644</code> (rw-r--r--):</p>
+<pre><code>chmod 644 public.txt
+ls -l public.txt
+</code></pre>
+    <p>Lock down <code>private.txt</code> to <code>600</code> (rw-------):</p>
+<pre><code>chmod 600 private.txt
+ls -l private.txt
+</code></pre>
+
+    <h3>Step 5: Directory Permissions</h3>
+    <p>Directories need <code>x</code> to enter. Make <code>subdir</code> behave like a typical code folder (755):</p>
+<pre><code>chmod 755 subdir
+ls -ld subdir
+</code></pre>
+
+    <h3>Step 6: Apply Permissions Recursively (Use Carefully)</h3>
+    <p>Give directories execute-bit and files read-only for group/others inside <code>perm_lab</code>:</p>
+<pre><code># make sure we are in ~/perm_lab
+pwd
+
+# For demonstration: set everything to 644 then fix directories to 755
+chmod -R 644 .
+find . -type d -exec chmod 755 {} \;
+ls -l
+</code></pre>
+    <p><em>Why not</em> <code>chmod -R 755 .</code>? It would make <em>files</em> unnecessarily executable.</p>
+
+    <h3>Step 7: Ownership (User & Group)</h3>
+    <p>Check your user and groups:</p>
+<pre><code>whoami
+groups
+</code></pre>
+    <p>Change group ownership of <code>public.txt</code> to your primary group (example uses command substitution):</p>
+<pre><code>chgrp "$(id -gn)" public.txt
+ls -l public.txt
+</code></pre>
+    <p>Change owner <em>and</em> group on <code>subdir</code> (may require <code>sudo</code>):</p>
+<pre><code># Replace myuser:mygroup with your actual user:group
+sudo chown myuser:mygroup subdir
+ls -ld subdir
+</code></pre>
+
+    <h3>Step 8: Quick Audit</h3>
+    <p>List everything with types and numeric modes to verify final state:</p>
+<pre><code>find . -printf "%y %m %u %g %p\n"
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ls -l</code> after Steps 3–4 showing <code>runme.sh</code>, <code>public.txt</code> (644), and <code>private.txt</code> (600)</li>
+      <li>Screenshot of <code>ls -ld subdir</code> showing <code>755</code></li>
+      <li>Screenshot of <code>find . -printf "%y %m %u %g %p\n"</code> output</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create a shared folder with group write: <code>mkdir shared; chmod 2775 shared</code> (sets the <em>setgid</em> bit so new files inherit group)</li>
+      <li>Explore the sticky bit for shared temp dirs: <code>chmod 1777 scratch</code>, then <code>ls -ld scratch</code> (note the trailing <code>t</code>)</li>
+      <li>Preview your default mask: <code>umask</code>; test how it affects newly created files/dirs</li>
+      <li>Use symbolic combos: <code>chmod u=rw,go=r public.txt</code> (equivalent to 644)</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you choose symbolic mode (e.g., <code>u+x</code>) vs octal (e.g., <code>755</code>)?</li>
+      <li>Why are directories often <code>755</code> while regular files are <code>644</code>?</li>
+      <li>How does the setgid bit (<code>2</code> in the thousands place) help team collaboration in shared folders?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You reviewed and changed permissions using symbolic and octal modes, set directory-safe defaults, and adjusted ownership and group membership. These are daily-driver skills for keeping files usable and secure.</p>
+  </div>
+</body>
+</html>
