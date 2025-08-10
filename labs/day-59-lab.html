@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 59 - Night-Before Exam Game Plan</title>
+  <link rel="stylesheet" href="../lab.css" />
+  <style>
+    /* Tiny helper so checkboxes line up nicely if lab.css is minimal */
+    .checklist li { margin: 0.5rem 0; line-height: 1.5; }
+    .checklist input { margin-right: .5rem; }
+    .pill { display:inline-block; padding:.15rem .5rem; border:1px solid #888; border-radius:999px; font-size:.85em; opacity:.9 }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 59</h1>
+    <h2>Night-Before Exam Game Plan</h2>
+
+    <p><strong>Message:</strong> You’ve put in the reps—now protect your score with smart prep. Tonight is about logistics, light recall, and sleep. Keep it calm, simple, and focused.</p>
+
+    <h3>Steps for Tonight</h3>
+    <ol class="checklist">
+      <li><label><input type="checkbox"> <strong>Confirm logistics.</strong> Verify <span class="pill">date</span>, <span class="pill">time zone</span>, testing method (<em>test center</em> or <em>online proctored</em>), and sign-in credentials. Know your reschedule rules just in case.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Environment & tech.</strong> Charge laptop, pack charger, turn on Do Not Disturb, disable VPNs. If possible, use wired power and reliable internet.</label></li>
+
+      <li><label><input type="checkbox"> <strong>If online-proctored:</strong> Run the vendor’s system check, test webcam/mic, clear your desk, close background apps, and have your government ID ready. Log in 15–30 minutes early tomorrow.</label></li>
+
+      <li><label><input type="checkbox"> <strong>If test center:</strong> Pack two acceptable IDs, directions/parking info, and arrive 30 minutes early. Plan clothing with no large pockets; lockers are usually provided.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Light recall (30–45 min max).</strong> No cramming. Do quick reps on high-yield Splunk basics:
+        <ul>
+          <li><code>index=...</code> keyword + Boolean + field filters, wildcards</li>
+          <li>Time: picker, <code>earliest</code>/<code>latest</code>, <code>@</code> snaps, <code>timechart</code> vs <code>bin</code></li>
+          <li><code>stats</code>: <code>count</code>, <code>values()</code>, <code>dc()</code>, <code>avg()</code></li>
+          <li><code>eval</code>: <code>if()</code>, <code>case()</code>, <code>coalesce()</code>, <code>lower()</code>, <code>len()</code></li>
+          <li>Fields: sidebar, <code>fields</code>/<code>table</code>/<code>rename</code>/<code>dedup</code>, <code>rex</code></li>
+          <li>Lookups: <code>inputlookup</code>, <code>lookup</code>, automatic lookups</li>
+          <li>Visuals/Dashboards: choosing charts, tokens, drilldowns</li>
+        </ul>
+      </label></li>
+
+      <li><label><input type="checkbox"> <strong>Write 5 SPLs from memory.</strong> On paper, jot five “bread-and-butter” searches (e.g., a <code>timechart</code>, a <code>stats</code> by two fields, a <code>lookup</code> example). Don’t bring this to the exam—the act of writing cements it.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Set test strategy.</strong> Pace ~1 minute per question. Read stem first, then options. Eliminate wrongs, mark tough ones, and return. Trust your first correct rationale.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Prepare your body.</strong> Hydrate, light dinner (protein + complex carbs), lay out clothes, set 2 alarms. Cut screens 60 minutes before bed.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Morning plan ready.</strong> Simple breakfast, arrive/log in early, two deep breaths before section starts. If stuck: mark, move, return.</label></li>
+
+      <li><label><input type="checkbox"> <strong>Shut it down.</strong> You’re ready. Sleep 7–8 hours. No last-minute scrolling.</label></li>
+    </ol>
+
+    <h3>Optional Quick Prompts (5 minutes)</h3>
+    <ul>
+      <li>Explain the difference between <code>_time</code> and <code>_indextime</code>—when do you care?</li>
+      <li>When would you use <code>values()</code> vs <code>dc()</code>?</li>
+      <li>Give an example of <code>case()</code> labeling HTTP classes.</li>
+      <li>How does an automatic lookup change your SPL?</li>
+    </ul>
+
+    <hr />
+    <p><strong>Final note:</strong> You’ve done the work. Tomorrow is execution. Calm mind, clean reads, steady pacing. You got this. 🫡</p>
+  </div>
+</body>
+</html>
