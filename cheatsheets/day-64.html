@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 64 Cheat Sheet - Process Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 64 Cheat Sheet</h1>
+    <h2>Process Management: ps, top, kill</h2>
+
+    <p>Quick reference for viewing, filtering, and controlling processes in Linux using <code>ps</code>, <code>top</code>, <code>kill</code>, and related tools.</p>
+
+    <h3>Core Commands</h3>
+    <table>
+      <tr>
+        <th>Command</th><th>What it does</th><th>Examples</th>
+      </tr>
+      <tr>
+        <td><code>ps</code></td>
+        <td>Snapshot of processes</td>
+        <td>
+          <code>ps aux</code> (BSD style)<br/>
+          <code>ps -ef</code> (SysV style)<br/>
+          <code>ps -u user</code> (user only)<br/>
+          <code>ps -eo pid,cmd --sort=pid</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>pgrep</code></td>
+        <td>Find PID(s) by name</td>
+        <td>
+          <code>pgrep ssh</code><br/>
+          <code>pgrep -a ssh</code> (show args)
+        </td>
+      </tr>
+      <tr>
+        <td><code>top</code></td>
+        <td>Live process view</td>
+        <td>
+          <code>top</code> (press <kbd>q</kbd> to quit)<br/>
+          Keys: <kbd>P</kbd>=CPU sort, <kbd>M</kbd>=MEM sort, <kbd>k</kbd>=kill
+        </td>
+      </tr>
+      <tr>
+        <td><code>kill</code></td>
+        <td>Send signal to PID</td>
+        <td>
+          <code>kill -15 PID</code> (SIGTERM)<br/>
+          <code>kill -9 PID</code> (SIGKILL)
+        </td>
+      </tr>
+      <tr>
+        <td><code>pkill</code></td>
+        <td>Send signal by name</td>
+        <td>
+          <code>pkill sleep</code><br/>
+          <code>pkill -9 sleep</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>nice</code> / <code>renice</code></td>
+        <td>Adjust process priority</td>
+        <td>
+          <code>nice -n 10 cmd</code> (start lower priority)<br/>
+          <code>sudo renice -n 5 -p PID</code>
+        </td>
+      </tr>
+    </table>
+
+    <h3>Signals</h3>
+    <table>
+      <tr><th>Name</th><th>Number</th><th>Purpose</th></tr>
+      <tr><td><code>SIGTERM</code></td><td>15</td><td>Graceful stop (default)</td></tr>
+      <tr><td><code>SIGKILL</code></td><td>9</td><td>Force kill (can’t be caught)</td></tr>
+      <tr><td><code>SIGSTOP</code></td><td>19</td><td>Pause process</td></tr>
+      <tr><td><code>SIGCONT</code></td><td>18</td><td>Resume paused process</td></tr>
+    </table>
+
+    <h3>Useful ps Output Formats</h3>
+    <table>
+      <tr><th>Option</th><th>What it shows</th><th>Example</th></tr>
+      <tr>
+        <td><code>-eo pid,ppid,cmd</code></td>
+        <td>PID, parent PID, command</td>
+        <td><code>ps -eo pid,ppid,cmd</code></td>
+      </tr>
+      <tr>
+        <td><code>--sort=-pcpu</code></td>
+        <td>Sort by CPU usage (desc)</td>
+        <td><code>ps -eo pid,pcpu,pmem,cmd --sort=-pcpu</code></td>
+      </tr>
+      <tr>
+        <td><code>--sort=-pmem</code></td>
+        <td>Sort by memory usage (desc)</td>
+        <td><code>ps -eo pid,pmem,pcpu,cmd --sort=-pmem</code></td>
+      </tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># Find and kill a process by name
+pgrep sleep
+kill -15 &lt;PID&gt;
+
+# Force kill if needed
+kill -9 &lt;PID&gt;
+
+# View top 5 CPU-hungry processes
+ps -eo pid,ppid,user,pcpu,pmem,comm --sort=-pcpu | head -n 6
+
+# Live monitor
+top
+
+# Start process with lower priority
+nice -n 10 longtask.sh
+
+# Change priority of running process
+sudo renice -n 5 -p &lt;PID&gt;
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Always try <code>SIGTERM</code> (15) before <code>SIGKILL</code> (9) — it lets the process clean up.</li>
+      <li>Use <code>pgrep</code>/<code>pkill</code> to avoid matching the <code>grep</code> command itself.</li>
+      <li>In <code>top</code>, press <kbd>1</kbd> to view per-core CPU usage.</li>
+      <li><code>htop</code> (if installed) is a friendlier, colorized alternative to <code>top</code>.</li>
+      <li>List all signals with <code>kill -l</code>.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 64 Lab:</strong> Keep this open while finding PIDs, monitoring processes in <code>top</code>, and using <code>kill</code>/<code>pkill</code> to stop them.</p>
+  </div>
+</body>
+</html>
