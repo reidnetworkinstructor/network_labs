@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 79 Answer Key - Files & Errors</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 79 – Answer Key</h1>
+    <h2>Files & Errors</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+
+        <h3>Reference Code – <code>log_rotator.py</code></h3>
+<pre><code>from pathlib import Path
+from datetime import datetime
+import shutil
+
+DATA = Path("day79_data")
+ARCH = DATA / "archive"
+LOG  = DATA / "app.log"
+DATA.mkdir(exist_ok=True)
+ARCH.mkdir(exist_ok=True)
+
+def write_event(message: str) -> None:
+    ts = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    line = f"{ts} - {message}\n"
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(line)
+
+def rotate_if_needed(limit_bytes: int = 5 * 1024) -> None:
+    try:
+        size = LOG.stat().st_size if LOG.exists() else 0
+        if size >= limit_bytes:
+            stamp = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
+            target = ARCH / f"app-{stamp}.log"
+            shutil.move(str(LOG), str(target))
+            LOG.touch()
+            print(f"Rotated -> {target.name}")
+    except OSError as e:
+        print(f"[WARN] rotation failed: {e}")
+
+if __name__ == "__main__":
+    write_event("user login jkim")
+    rotate_if_needed()
+    print("Event written.")
+</code></pre>
+
+        <h3>Sample Terminal Runs – <code>log_rotator.py</code></h3>
+<pre><code>$ python log_rotator.py
+Event written.
+
+$ # after many runs or big log
+$ python log_rotator.py
+Rotated -> app-20250810-173012.log
+Event written.
+</code></pre>
+
+        <h3>Reference Code – <code>import_users.py</code></h3>
+<pre><code>from pathlib import Path
+
+DATA = Path("day79_data")
+CSV  = DATA / "users.csv"
+OUT  = DATA / "users_ok.txt"
+DATA.mkdir(exist_ok=True)
+
+errors = []
+users  = []
+
+try:
+    with CSV.open("r", encoding="utf-8") as f:
+        lines = f.read().splitlines()
+
+    if not lines:
+        raise ValueError("CSV is empty")
+
+    header, *rows = lines
+    for i, row in enumerate(rows, start=2):
+        parts = row.split(",")
+        if len(parts) != 3:
+            errors.append((i, "wrong_field_count"))
+            continue
+        username, full_name, age_str = parts
+        try:
+            age = int(age_str)
+        except ValueError:
+            errors.append((i, "age_not_int"))
+            continue
+        users.append({"username": username, "full_name": full_name, "age": age})
+
+    if users:
+        with OUT.open("w", encoding="utf-8") as f:
+            for u in users:
+                f.write(f"{u['username']} | {u['full_name']} | {u['age']}\n")
+    else:
+        print("[INFO] No valid users to write.")
+
+except FileNotFoundError:
+    print(f"[ERROR] Missing file: {CSV}")
+except (OSError, ValueError) as e:
+    print(f"[ERROR] {e}")
+else:
+    print(f"Imported: {len(users)} users")
+    if errors:
+        print("Skipped rows:")
+        for line_no, reason in errors:
+            print(f"  line {line_no}: {reason}")
+finally:
+    print("Import attempt complete.")
+</code></pre>
+
+        <h3>Sample Files & Output – <code>import_users.py</code></h3>
+<pre><code># day79_data/users.csv
+username,full_name,age
+jkim,Jordan Kim,29
+mgarcia,Maria Garcia,notanumber
+tsmith,Tom Smith,41
+badrow_without_commas
+</code></pre>
+<pre><code>$ python import_users.py
+Imported: 2 users
+Skipped rows:
+  line 3: age_not_int
+  line 5: wrong_field_count
+Import attempt complete.
+</code></pre>
+<pre><code># day79_data/users_ok.txt
+jkim | Jordan Kim | 29
+tsmith | Tom Smith | 41
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><code>pathlib.Path</code> keeps paths OS‑agnostic and readable.</li>
+          <li>Context managers (<code>with ... open()</code>) close files even on exceptions.</li>
+          <li><code>try/except/else/finally</code> separates happy path from error and cleanup logic.</li>
+          <li>Explicit size check + timestamped filename ensures safe log rotation without overwrite.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>Windows path issues:</strong> manual backslashes → use <code>Path</code> join instead.</li>
+          <li><strong>File locks / permissions:</strong> wrap moves/writes in <code>try/except OSError</code> and report a friendly warning.</li>
+          <li><strong>CSV parsing:</strong> splitting on commas without validating field count → guard with <code>len(parts) != 3</code>.</li>
+          <li><strong>Crashes on bad ages:</strong> convert inside a nested <code>try/except ValueError</code> and continue.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li><code>log_rotator.py</code> writes events and rotates at the size threshold, creating <code>archive/</code> files.</li>
+          <li><code>import_users.py</code> imports valid rows, skips/records bad rows, and writes <code>users_ok.txt</code>.</li>
+          <li>Scripts handle missing files/folders without crashing and print clear status messages.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># argparse for custom rotate limit
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument("--limit", type=int, default=5*1024)
+args = parser.parse_args()
+rotate_if_needed(limit_bytes=args.limit)
+</code></pre>
+<pre><code># write .errors file during import
+ERR = DATA / "users.errors"
+if errors:
+    with ERR.open("w", encoding="utf-8") as ef:
+        for line_no, reason in errors:
+            ef.write(f"line {line_no}: {reason}\n")
+</code></pre>
+
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
