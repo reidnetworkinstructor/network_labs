@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 74 Lab - If / Elif / Else</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 74 Lab</h1>
+    <h2>If / Elif / Else</h2>
+
+    <p><strong>Objective:</strong> Learn Python decision-making with <code>if</code>, <code>elif</code>, and <code>else</code>, including comparisons, logical operators, and input-driven branching. Build a simple help desk ticket triage tool.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – If / Else Basics</h3>
+    <p>Blocks are defined by a colon and <strong>indentation</strong> (4 spaces recommended).</p>
+<pre><code>score = 85
+
+if score >= 70:
+    print("Pass")
+else:
+    print("Retake")
+</code></pre>
+
+    <h3>Step 2 – Elif Chains</h3>
+    <p>Use <code>elif</code> for multiple exclusive branches.</p>
+<pre><code>temp_c = 29
+
+if temp_c >= 40:
+    print("Critical heat")
+elif temp_c >= 30:
+    print("Very hot")
+elif temp_c >= 20:
+    print("Warm")
+else:
+    print("Cool")
+</code></pre>
+
+    <h3>Step 3 – Comparisons & Logical Operators</h3>
+    <p>Common operators: <code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>. Combine with <code>and</code>, <code>or</code>, <code>not</code>.</p>
+<pre><code>cpu = 72
+mem = 68
+
+if cpu > 80 and mem > 80:
+    print("Both CPU and memory are high")
+elif cpu > 80 or mem > 80:
+    print("One resource is high")
+else:
+    print("Resources OK")
+</code></pre>
+
+    <h3>Step 4 – Truthy / Falsy</h3>
+    <p>Empty strings, 0, empty lists/dicts/sets are <em>falsy</em>. Non-empty values are truthy.</p>
+<pre><code>username = ""
+
+if username:
+    print("Welcome", username)
+else:
+    print("Please enter a username")
+</code></pre>
+
+    <h3>Step 5 – Mini Lab: Help Desk Ticket Triage</h3>
+    <p>Create <code>triage.py</code> that asks for ticket details and recommends an action.</p>
+    <ol>
+      <li>Prompt the user for:
+        <ul>
+          <li><code>severity</code> (1–5 where 5 = highest)</li>
+          <li><code>category</code> (e.g., <code>network</code>, <code>password</code>, <code>malware</code>)</li>
+          <li><code>hours_open</code> (integer)</li>
+          <li><code>vip_user</code> (<code>y</code>/<code>n</code>)</li>
+        </ul>
+      </li>
+      <li>Normalize inputs:
+        <ul>
+          <li><code>category = category.strip().lower()</code></li>
+          <li><code>vip = (vip_user.strip().lower() == "y")</code></li>
+          <li>Convert numbers with <code>int()</code></li>
+        </ul>
+      </li>
+      <li>Decision rules (example logic—feel free to tweak):
+        <ul>
+          <li>If <code>severity &gt;= 4</code> or (<code>vip</code> and <code>severity &gt;= 3</code>) → <strong>Page on-call now</strong></li>
+          <li><code>category == "malware"</code> → <strong>Isolate host and escalate to security</strong></li>
+          <li><code>category == "network"</code> and <code>hours_open &gt;= 2</code> → <strong>Create network incident bridge</strong></li>
+          <li><code>category == "password"</code> → <strong>Guide reset (verify identity)</strong></li>
+          <li>Else → <strong>Queue for next available technician</strong></li>
+        </ul>
+      </li>
+      <li>Print a neat summary with your recommendation.</li>
+    </ol>
+
+    <p><strong>Example output:</strong></p>
+<pre><code>=== Ticket Summary ===
+Severity: 4
+Category: network
+Hours Open: 3
+VIP: True
+
+Recommended Action: Page on-call now (VIP high severity) and create network incident bridge.
+</code></pre>
+
+    <h3>Step 6 – Branching with Nested Conditions (Optional)</h3>
+    <p>Sometimes you want a second decision inside the first.</p>
+<pre><code>if category == "network":
+    if severity >= 4:
+        action = "Page on-call and open bridge"
+    else:
+        action = "Standard network ticket workflow"
+else:
+    action = "Route to appropriate team"
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>triage.py</code> in VS Code</li>
+      <li>Two terminal runs showing different recommendations (e.g., VIP vs. non-VIP)</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Validate inputs: re‑prompt until <code>severity</code> is 1–5 and <code>hours_open</code> is an integer.</li>
+      <li>Add a <code>password</code> branch that checks if MFA is enabled (<code>y/n</code>) and adjusts the guidance.</li>
+      <li>Introduce an <code>sla_breach</code> boolean: <code>hours_open</code> ≥ 4 → escalate regardless of severity.</li>
+      <li>Print the final action in ALL CAPS if it’s paging / isolation (urgent).</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When is a long <code>if/elif</code> chain harder to maintain than nested blocks (or vice versa)?</li>
+      <li>Where did logical operators (<code>and</code>/<code>or</code>/<code>not</code>) simplify your conditions?</li>
+      <li>How would you adapt today’s logic to a real help desk in your environment?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You used <code>if</code>, <code>elif</code>, and <code>else</code> to make data-driven decisions, combined comparisons with logical operators, and built a practical ticket triage script—your first step toward real automation logic.</p>
+  </div>
+</body>
+</html>
