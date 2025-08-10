@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 58 Lab - Lookups & Knowledge Objects</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 58 Lab</h1>
+    <h2>Lookups & Knowledge Objects</h2>
+
+    <p><strong>Objective:</strong> Enrich events using a CSV lookup, then promote that enrichment to an <em>automatic lookup</em>. You’ll also create and test several Knowledge Objects: <em>field aliases</em>, <em>calculated fields</em>, <em>event types</em>, <em>tags</em>, and a reusable <em>search macro</em>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Splunk Cloud Trial (or Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Prepare a Status → Label Lookup (CSV)</h3>
+    <p>Create a tiny CSV on your machine named <code>http_status_map.csv</code> with the contents below:</p>
+<pre><code>status,status_label,severity
+200,Success,info
+301,Redirect,info
+302,Redirect,info
+400,Client Error,warning
+401,Unauthorized,warning
+403,Forbidden,warning
+404,Not Found,warning
+500,Server Error,critical
+502,Bad Gateway,critical
+503,Service Unavailable,critical
+</code></pre>
+
+    <h3>Step 2: Upload the Lookup Table File</h3>
+    <ol>
+      <li>Go to <strong>Settings ▸ Lookups ▸ Lookup table files ▸ Add new</strong>.</li>
+      <li>Destination app: your current app (e.g., <em>search</em>).</li>
+      <li>Upload <strong>http_status_map.csv</strong> and save.</li>
+    </ol>
+
+    <h3>Step 3: Create a Lookup <em>Definition</em></h3>
+    <ol>
+      <li>Still under <strong>Settings ▸ Lookups</strong>, open <strong>Lookup definitions ▸ Add new</strong>.</li>
+      <li>Name it <strong>http_status_map</strong>, Type: <em>File-based</em>, and select your CSV file.</li>
+      <li>Save (App scope).</li>
+    </ol>
+
+    <h3>Step 4: Sanity-Check with <code>inputlookup</code></h3>
+    <ul>
+      <li>Run: <code>| inputlookup http_status_map.csv</code></li>
+      <li>Or using the definition name: <code>| inputlookup http_status_map</code></li>
+      <li>You should see your 10 rows.</li>
+    </ul>
+
+    <h3>Step 5: Enrich Events with the <code>lookup</code> Command</h3>
+    <p>Use web-like internal logs so everyone has data.</p>
+    <pre><code>index=_internal sourcetype=splunkd_ui_access
+| lookup http_status_map status OUTPUTNEW status_label severity
+| stats count by status status_label severity
+| sort - count
+</code></pre>
+    <p><em>Note:</em> <code>OUTPUTNEW</code> won’t overwrite an existing field of the same name.</p>
+
+    <h3>Step 6: Make It Automatic (Automatic Lookup)</h3>
+    <ol>
+      <li><strong>Settings ▸ Lookups ▸ Automatic lookups ▸ Add new</strong>.</li>
+      <li>Apply to <strong>sourcetype = splunkd_ui_access</strong>.</li>
+      <li>Lookup table: <strong>http_status_map</strong>.</li>
+      <li>Field mappings: <code>status → status</code>. Outputs: <code>status_label</code>, <code>severity</code>.</li>
+      <li>Save, App scope, readable by your role.</li>
+    </ol>
+    <p>Test:</p>
+    <pre><code>index=_internal sourcetype=splunkd_ui_access
+| stats count by status_label
+</code></pre>
+    <p>You should see labels without calling <code>lookup</code> explicitly (Splunk applied it automatically).</p>
+
+    <h3>Step 7: Keep the Lookup Fresh with <code>outputlookup</code></h3>
+    <p>Find any statuses not yet labeled and append a new mapping.</p>
+    <pre><code>index=_internal sourcetype=splunkd_ui_access
+| stats count by status
+| lookup http_status_map status OUTPUT status_label
+| where isnull(status_label)
+</code></pre>
+    <p>If you discover a missing code (e.g., <code>418</code>), append it:</p>
+    <pre><code>| makeresults
+| eval status=418, status_label="Teapot", severity="info"
+| outputlookup append=true http_status_map.csv
+</code></pre>
+    <p>Verify:</p>
+    <pre><code>| inputlookup http_status_map.csv | search status=418</code></pre>
+
+    <h3>Step 8: Other Knowledge Objects (fast tour)</h3>
+
+    <h4>8A) Field Alias</h4>
+    <ol>
+      <li><strong>Settings ▸ Fields ▸ Field aliases ▸ Add new</strong>.</li>
+      <li>Sourcetype: <em>splunkd_ui_access</em>. Alias <code>status → http_status</code>.</li>
+      <li>Search and confirm <code>http_status</code> now appears.</li>
+    </ol>
+
+    <h4>8B) Calculated Field</h4>
+    <ol>
+      <li><strong>Settings ▸ Fields ▸ Calculated fields ▸ Add new</strong>.</li>
+      <li>Sourcetype: <em>splunkd_ui_access</em>.</li>
+      <li>Field name: <code>status_class</code></li>
+      <li>Eval expression:<br>
+<code>case(status&gt;=500,"5xx", status&gt;=400,"4xx", status&gt;=300,"3xx", status&gt;=200,"2xx", true(),"other")</code></li>
+      <li>Test: <code>index=_internal sourcetype=splunkd_ui_access | stats count by status_class</code></li>
+    </ol>
+
+    <h4>8C) Event Type + Tag</h4>
+    <ol>
+      <li>Open any results for <code>index=_internal sourcetype=splunkd_ui_access status&gt;=400</code>.</li>
+      <li><strong>Save As ▸ Event Type</strong>, name: <strong>ui_errors</strong>, share in App.</li>
+      <li><strong>Settings ▸ Event types</strong> → open <em>ui_errors</em> → add tag <strong>error</strong>.</li>
+      <li>Now try: <code>eventtype=ui_errors | stats count by status_label</code></li>
+    </ol>
+
+    <h4>8D) Search Macro</h4>
+    <ol>
+      <li><strong>Settings ▸ Advanced search ▸ Search macros ▸ New</strong>.</li>
+      <li>Name: <strong>ui_base</strong>, Arguments: <em>none</em>, Definition:<br>
+<code>index=_internal sourcetype=splunkd_ui_access</code></li>
+      <li>Use it with backticks:<br>
+<code>`ui_base` status&gt;=400 | stats count by status_label</code></li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <strong>Lookup table files</strong> showing <em>http_status_map.csv</em> and the <strong>Lookup definition</strong>.</li>
+      <li>Screenshot of a search using <code>| lookup http_status_map ...</code> with labeled results.</li>
+      <li>Screenshot proving the <strong>automatic lookup</strong> works (no <code>lookup</code> in SPL, but <code>status_label</code> is present).</li>
+      <li>Screenshot of <code>| inputlookup http_status_map.csv</code> with your appended row (if you added one).</li>
+      <li>Screenshot of any two additional Knowledge Objects in action (e.g., table showing <code>http_status</code> alias; <code>status_class</code> counts; <code>eventtype=ui_errors</code>; or macro <code>`ui_base`</code> in a search).</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create a <strong>KV Store</strong> lookup instead of CSV. Add/remove rows with <code>outputlookup</code> (no file upload needed).</li>
+      <li>Build a small dashboard that uses your automatic lookup fields (<em>status_label</em>, <em>severity</em>) to drive panels.</li>
+      <li>Add a <strong>scheduled report</strong> that exports a daily CSV of 4xx/5xx counts by <em>status_label</em>.</li>
+      <li>Compare <code>lookup</code> vs <code>join</code> performance on the same task—note why <code>lookup</code> is usually preferred.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you choose an <strong>automatic</strong> lookup instead of calling <code>lookup</code> in each search?</li>
+      <li>Which Knowledge Object today will save your team the most time (and why)?</li>
+      <li>What governance rules would you set for who can edit shared lookups in App scope?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You built a CSV lookup, validated it with <code>inputlookup</code>, enriched searches with <code>lookup</code>, and promoted it to an automatic lookup. You also created core Knowledge Objects—aliases, calculated fields, event types, tags, and a macro—to standardize and speed up Splunk analysis.</p>
+  </div>
+</body>
+</html>
