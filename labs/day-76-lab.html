@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 76 Lab - Collections: Lists & Tuples</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 76 Lab</h1>
+    <h2>Collections: Lists & Tuples</h2>
+
+    <p><strong>Objective:</strong> Create and manipulate lists, understand indexing & slicing, practice common list methods, and learn when to use <code>tuple</code> for fixed data.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – Lists: your go-to, editable sequence</h3>
+<pre><code># Create a list
+devices = ["router", "switch", "firewall"]
+print(devices)              # ['router', 'switch', 'firewall']
+
+# Indexing (0-based)
+print(devices[0])           # router
+print(devices[-1])          # firewall
+
+# Slicing [start:stop:step] (stop is exclusive)
+print(devices[0:2])         # ['router', 'switch']
+print(devices[::-1])        # reversed copy
+</code></pre>
+
+    <h3>Step 2 – List methods you’ll use constantly</h3>
+<pre><code>devices = ["router", "switch", "firewall"]
+
+devices.append("ap")        # add to end
+devices.insert(1, "ids")    # insert at index
+print(devices)              # ['router','ids','switch','firewall','ap']
+
+devices.remove("ids")       # remove first match
+last = devices.pop()        # remove & return last ('ap')
+print(last, devices)
+
+devices.extend(["server","nas"])     # add many
+devices.sort()               # alphabetical in-place
+devices.reverse()            # reverse in-place
+print(devices)
+</code></pre>
+
+    <h3>Step 3 – Membership, counting, deduping</h3>
+<pre><code>devices = ["router","switch","switch","ap","router","server"]
+print("switch" in devices)       # True
+print(devices.count("router"))   # 2
+
+# Deduplicate while keeping order (simple approach)
+unique = []
+for d in devices:
+    if d not in unique:
+        unique.append(d)
+print(unique)  # ['router','switch','ap','server']
+</code></pre>
+
+    <h3>Step 4 – Tuple: like a list, but immutable (read-only)</h3>
+    <p>Use a <strong>tuple</strong> when the collection should not change (e.g., coordinates, constant settings, fixed record).</p>
+<pre><code># Tuple creation
+coords = (29.7604, -95.3698)   # (lat, lon)
+dns = ("8.8.8.8", "1.1.1.1")
+
+# Index & unpack
+print(coords[0])
+lat, lon = coords
+print(lat, lon)
+
+# Immutability demo
+# dns[0] = "9.9.9.9"   # ❌ TypeError: 'tuple' object does not support item assignment
+</code></pre>
+
+    <h3>Step 5 – Useful patterns: enumerate & unpacking</h3>
+<pre><code>devices = ["router","switch","ap"]
+for i, name in enumerate(devices, start=1):
+    print(f"{i}. {name}")
+
+# Tuple unpacking in loops
+inventory = [("router", 2), ("switch", 5), ("ap", 3)]
+total = 0
+for item, qty in inventory:
+    total += qty
+print("Total devices:", total)
+</code></pre>
+
+    <h3>Mini Lab A – Help Desk: Device Inventory</h3>
+    <p>Create <code>inventory.py</code> that manages a small list of devices.</p>
+    <ol>
+      <li>Start with <code>devices = ["router","switch","switch","ap","router","server"]</code></li>
+      <li>Print the original list, count duplicates of each item you see.</li>
+      <li>Build a <em>deduplicated</em> list in original order (no sets yet).</li>
+      <li>Ask the user for a device name. If it exists, remove one occurrence. If it doesn’t, append it.</li>
+      <li>Sort the final list and print it nicely with line numbers using <code>enumerate</code>.</li>
+    </ol>
+    <p><strong>Example output (abridged):</strong></p>
+<pre><code>Original: ['router','switch','switch','ap','router','server']
+Counts: router=2, switch=2, ap=1, server=1
+Action: add 'firewall'
+Final inventory:
+1. ap
+2. firewall
+3. router
+4. server
+5. switch
+</code></pre>
+
+    <h3>Mini Lab B – Immutable Defaults (Tuples)</h3>
+    <p>Create <code>defaults.py</code> that stores constant settings in tuples, then unpacks & prints them.</p>
+    <ol>
+      <li><code>dns = ("8.8.8.8","1.1.1.1")</code>, <code>ntp = ("time.google.com","time.cloudflare.com")</code></li>
+      <li>Unpack and print with labels using f-strings (e.g., <code>Primary/Secondary</code>).</li>
+      <li>Attempt to change an element (comment out the line and print a note explaining immutability).</li>
+      <li>Create a <strong>record tuple</strong> for a user: <code>user = ("jkim","Jordan Kim","student")</code>; unpack to variables and print a formatted summary.</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>inventory.py</code> with before/after lists and counts.</li>
+      <li>Screenshot of <code>defaults.py</code> output showing unpacked tuple values and an immutability note.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>In <code>inventory.py</code>, print a <em>frequency table</em> sorted by count (highest first).</li>
+      <li>Add a simple menu: (L)ist, (A)dd, (R)emove, (Q)uit—loop until user quits.</li>
+      <li>Use slicing to show only the first 3 and last 3 items of the final list.</li>
+      <li>Create a list of tuples for assets like <code>[("router","core01"),("switch","sw01")]</code> and print a table.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you choose a tuple over a list in an IT script?</li>
+      <li>How does immutability help prevent bugs?</li>
+      <li>Which list methods felt most useful for your workflow today?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced list creation, indexing, slicing, and common methods; used <code>enumerate</code> and unpacking; and learned how tuples protect constant data. These patterns are foundational for processing logs, inventories, and configuration data.</p>
+  </div>
+</body>
+</html>
