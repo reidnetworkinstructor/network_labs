@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 75 Lab - Loops: for, while, range()</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 75 Lab</h1>
+    <h2>Loops: <code>for</code>, <code>while</code>, and <code>range()</code></h2>
+
+    <p><strong>Objective:</strong> Practice iterating with <code>for</code>, controlling repetition with <code>while</code>, and generating sequences with <code>range()</code>. Build a small “ops helper” that repeats actions over lists and numeric ranges.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – <code>for</code> over a list</h3>
+    <p>Use <code>for</code> when you have a known collection and want to visit each item.</p>
+<pre><code>users = ["jkim", "mgarcia", "tsmith"]
+
+for u in users:
+    print("Creating folder for:", u)
+</code></pre>
+
+    <h3>Step 2 – <code>range()</code> for counting</h3>
+    <p><code>range(start, stop, step)</code> yields numbers up to but not including <code>stop</code>.</p>
+<pre><code># 0..4
+for i in range(5):
+    print("Index:", i)
+
+# 2..10 step 2 → 2,4,6,8,10
+for port in range(2, 11, 2):
+    print("Even port:", port)
+</code></pre>
+
+    <h3>Step 3 – Basic accumulation patterns</h3>
+<pre><code># Sum numbers 1..100
+total = 0
+for n in range(1, 101):
+    total += n
+print("Total:", total)
+
+# Count how many strong passwords (>= 8 chars)
+pwds = ["abc", "longpassword", "Hoodie123", "qwe"]
+strong = 0
+for p in pwds:
+    if len(p) >= 8:
+        strong += 1
+print("Strong passwords:", strong)
+</code></pre>
+
+    <h3>Step 4 – <code>while</code> for “repeat until”</h3>
+    <p><code>while</code> runs as long as a condition is <code>True</code>. Be sure the loop can end.</p>
+<pre><code>attempts = 0
+while attempts < 3:
+    code = input("Enter code: ")
+    if code == "blue42":
+        print("Access granted")
+        break
+    attempts += 1
+else:
+    print("Locked out (too many attempts)")
+</code></pre>
+
+    <h3>Step 5 – Loop control: <code>break</code>, <code>continue</code></h3>
+<pre><code>for n in range(1, 11):
+    if n % 2 == 0:
+        continue    # skip even
+    if n > 7:
+        break       # stop early
+    print("Odd and <= 7:", n)
+</code></pre>
+
+    <h3>Step 6 – Mini Lab A: Simple Ping Sweep (Simulated)</h3>
+    <p>Create <code>ping_sweep.py</code> that prints simulated reachability for a small IP range.</p>
+    <ol>
+      <li>Ask for a base subnet like <code>192.168.1</code> (no last octet).</li>
+      <li>Loop over <code>range(1, 11)</code> to “check” <code>base.i</code>.</li>
+      <li>For demo purposes, treat hosts divisible by 3 as “up”, others “down”.</li>
+      <li>Print a one-line result per host.</li>
+    </ol>
+    <p><strong>Example output:</strong></p>
+<pre><code>192.168.1.1  -> down
+192.168.1.2  -> down
+192.168.1.3  -> UP
+...
+</code></pre>
+
+    <h3>Step 7 – Mini Lab B: Ticket Reminder Cycler</h3>
+    <p>Create <code>reminders.py</code> that loops through a list of ticket IDs and prints a reminder until the user types “done”.</p>
+<ol>
+  <li>Start with <code>tickets = ["INC-101", "INC-102", "INC-103"]</code>.</li>
+  <li>Use a <code>while True</code> loop to rotate through tickets with an index.</li>
+  <li>Each iteration, print the current ticket and prompt: <code>press Enter to continue, type "done" to stop</code>.</li>
+  <li>If the user types <code>done</code>, break.</li>
+</ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ping_sweep.py</code> code and a run showing addresses labeled UP/DOWN.</li>
+      <li>Screenshot of <code>reminders.py</code> running and stopping after typing <code>done</code>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li><strong>Ping Sweep:</strong> Format columns using f-strings and <code>str.ljust()</code> so the arrows line up.</li>
+      <li>Accept a <code>start</code> and <code>end</code> host number from the user, and loop that range.</li>
+      <li>Only print “UP” rows (use <code>continue</code> to skip “down”).</li>
+      <li><strong>Reminders:</strong> Add a counter and print <code>Processed N reminders</code> when exiting.</li>
+      <li>Protect against empty subnet input with a <code>while not subnet</code> reprompt.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When is a <code>for</code> loop more appropriate than a <code>while</code> loop?</li>
+      <li>What bug happens if you forget to update the condition inside a <code>while</code> loop?</li>
+      <li>Where did <code>break</code> or <code>continue</code> make your code clearer today?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You iterated over lists and ranges, used <code>while</code> for “repeat until”, and applied <code>break</code>/<code>continue</code>. Your sweep and reminder scripts mirror real IT workflows where actions repeat across hosts or tickets.</p>
+  </div>
+</body>
+</html>
