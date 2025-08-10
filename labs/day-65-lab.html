@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 65 Lab - Package Management & Installing Tools</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 65 Lab</h1>
+    <h2>Package Management & Installing Tools</h2>
+
+    <p><strong>Objective:</strong> Detect your Linux distribution’s package manager, update indexes, search for packages, install & verify tools, remove them cleanly, and (optionally) manage a service-based package.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (Ubuntu/Debian, Fedora/RHEL, Arch, openSUSE, Alpine, etc.)</li>
+      <li>Terminal with sudo privileges</li>
+      <li>Internet access</li>
+    </ul>
+
+    <h3>Step 1: Identify Your Package Manager</h3>
+    <p>Run the commands below. Note which ones return a path (installed):</p>
+<pre><code>command -v apt
+command -v dnf || command -v yum
+command -v pacman
+command -v zypper
+command -v apk
+</code></pre>
+
+    <table>
+      <tr><th>Distro family</th><th>Manager</th></tr>
+      <tr><td>Ubuntu/Debian</td><td><code>apt</code></td></tr>
+      <tr><td>Fedora/RHEL/CentOS</td><td><code>dnf</code> (or <code>yum</code>)</td></tr>
+      <tr><td>Arch/Manjaro</td><td><code>pacman</code></td></tr>
+      <tr><td>openSUSE</td><td><code>zypper</code></td></tr>
+      <tr><td>Alpine</td><td><code>apk</code></td></tr>
+    </table>
+
+    <h3>Step 2: Refresh Package Index (Update Catalog)</h3>
+<pre><code># Ubuntu/Debian
+sudo apt update
+
+# Fedora/RHEL/CentOS
+sudo dnf check-update
+
+# Arc
