@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 77 Answer Key - Dictionaries & Sets</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 77 – Answer Key</h1>
+    <h2>Dictionaries & Sets</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+
+        <h3>Reference Code – <code>log_snapshot.py</code></h3>
+<pre><code>levels = ["INFO","ERROR","INFO","WARN","INFO","ERROR","DEBUG","INFO"]
+ip_hits = ["10.0.0.1","10.0.0.2","10.0.0.1","10.0.0.3",
+           "10.0.0.2","10.0.0.4","10.0.0.1"]
+
+# Count levels
+level_counts = {}
+for lvl in levels:
+    level_counts[lvl] = level_counts.get(lvl, 0) + 1
+
+# Count IP hits
+ip_counts = {}
+for ip in ip_hits:
+    ip_counts[ip] = ip_counts.get(ip, 0) + 1
+
+# Unique IPs
+unique_ips = set(ip_hits)
+
+# Print report
+print("Levels:")
+for lvl, count in sorted(level_counts.items(), key=lambda x: x[1], reverse=True):
+    print(f"  {lvl} = {count}")
+
+print(f"\nUnique IPs: {len(unique_ips)} -> {unique_ips}")
+
+# Top 2 IPs by hits
+print("\nTop IPs:")
+for ip, hits in sorted(ip_counts.items(), key=lambda x: x[1], reverse=True)[:2]:
+    print(f"  {ip} = {hits}")
+</code></pre>
+
+        <h3>Sample Output – <code>log_snapshot.py</code></h3>
+<pre><code>Levels:
+  INFO = 4
+  ERROR = 2
+  WARN = 1
+  DEBUG = 1
+
+Unique IPs: 4 -> {'10.0.0.4', '10.0.0.3', '10.0.0.1', '10.0.0.2'}
+
+Top IPs:
+  10.0.0.1 = 3
+  10.0.0.2 = 2
+</code></pre>
+
+        <h3>Reference Code – <code>access_check.py</code></h3>
+<pre><code>ROLE_PERMS = {
+  "student": {"read_lessons"},
+  "helpdesk": {"read_lessons","open_incident","reset_password"},
+  "soc": {"read_lessons","read_logs","isolate_host","open_incident"}
+}
+
+username = input("User: ").strip()
+roles_input = input("Roles (comma-separated): ").strip()
+roles = [r.strip().lower() for r in roles_input.split(",")]
+
+# Compute effective permissions
+effective_perms = set()
+for r in roles:
+    perms = ROLE_PERMS.get(r, set())
+    effective_perms |= perms  # union
+
+requested_action = input("Requested action: ").strip()
+
+# Decision
+if requested_action in effective_perms:
+    decision = "ALLOW"
+else:
+    decision = f"DENY (missing: {requested_action})"
+
+# Output
+print(f"\nEffective perms: {sorted(effective_perms)}")
+print(f"Decision: {decision}")
+</code></pre>
+
+        <h3>Sample Output – <code>access_check.py</code></h3>
+<pre><code>User: jkim
+Roles (comma-separated): student,helpdesk
+Requested action: isolate_host
+
+Effective perms: ['open_incident', 'read_lessons', 'reset_password']
+Decision: DENY (missing: isolate_host)
+
+---
+
+User: analyst
+Roles (comma-separated): soc
+Requested action: isolate_host
+
+Effective perms: ['isolate_host', 'open_incident', 'read_lessons', 'read_logs']
+Decision: ALLOW
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><code>dict.get()</code> with a default prevents KeyErrors for unknown roles.</li>
+          <li>Using <code>set()</code> makes combining permissions via union <code>|=</code> straightforward.</li>
+          <li>Sorting <code>effective_perms</code> improves readability of output.</li>
+          <li>Counting with <code>dict.get(key, 0) + 1</code> avoids needing to check key existence.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li>Not stripping whitespace in roles → mismatched keys in <code>ROLE_PERMS</code>.</li>
+          <li>Forgetting to convert lists to sets before set math → leads to TypeErrors.</li>
+          <li>Hardcoding permissions instead of looping → less scalable if adding roles.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li><code>log_snapshot.py</code> correctly counts events & IP hits, lists unique IPs, sorts by counts.</li>
+          <li><code>access_check.py</code> correctly merges permissions across roles and allows/denies based on request.</li>
+          <li>Output matches the expected structure and runs without errors.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># Show missing permissions as set diff
+missing = {requested_action} - effective_perms
+if missing:
+    print("Missing perms:", missing)
+
+# Role explainer
+for r in roles:
+    if requested_action in ROLE_PERMS.get(r, set()):
+        print(f"Granted by role: {r}")
+</code></pre>
+
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
