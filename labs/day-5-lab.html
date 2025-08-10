@@ -3,78 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Subnetting with CIDR - Diagramming Networks</title>
-  <link rel="stylesheet" href="../assets/lab.css" />
+  <title>Day 5 Lab - Subnetting with CIDR: Diagramming Networks</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <header>
-    <h1>Subnetting with CIDR - Diagramming Networks</h1>
-    <p class="subtitle">Use diagrams.net to visually break down a Class C network into multiple subnets.</p>
-  </header>
-  <main class="lab-content">
-    <section>
-      <h2>Objective</h2>
-      <p>Use diagrams.net to create a visual subnet diagram for a network divided using CIDR notation, mastering Network+ subnetting skills.</p>
-    </section>
+  <div class="lab-container">
+    <h1>Day 5 Lab</h1>
+    <h2>Subnetting with CIDR — Diagramming Networks</h2>
 
-    <section>
-      <h2>Tools Needed</h2>
+    <p><strong>Objective:</strong> Use <a href="https://www.diagrams.net" target="_blank" rel="noopener">diagrams.net</a> to create a visual subnet diagram for a network divided using CIDR notation, reinforcing Network+ subnetting skills.</p>
+    <p><strong>Tools Needed:</strong> 
       <ul>
-        <li><a href="https://www.diagrams.net" target="_blank">Diagrams.net</a> (free, web-based)</li>
-        <li>Paper/pen or Notepad for calculations</li>
+        <li><a href="https://www.diagrams.net" target="_blank" rel="noopener">Diagrams.net</a> (free, browser-based)</li>
+        <li>Paper/pen or Notepad for manual calculations</li>
         <li>Optional: Windows Calculator in Programmer mode</li>
       </ul>
-    </section>
+    </p>
 
-    <section>
-      <h2>Step 1: Plan Your Network</h2>
-      <p>Start with a Class C network: <strong>192.168.1.0/24</strong> (256 addresses).</p>
-      <p><strong>Goal:</strong> Divide it into 3 subnets:</p>
-      <ul>
-        <li><strong>IT</strong> – needs ~120 hosts</li>
-        <li><strong>Sales</strong> – needs ~60 hosts</li>
-        <li><strong>Guest</strong> – needs ~30 hosts</li>
-      </ul>
-    </section>
+    <h3>Step 1: Plan Your Network</h3>
+    <p>Starting network: <strong>192.168.1.0/24</strong> (256 total addresses).</p>
+    <p><strong>Goal:</strong> Divide it into 3 subnets to meet department needs:</p>
+    <ul>
+      <li><strong>IT</strong> — ~120 hosts</li>
+      <li><strong>Sales</strong> — ~60 hosts</li>
+      <li><strong>Guest</strong> — ~30 hosts</li>
+    </ul>
 
-    <section>
-      <h2>Step 2: Calculate Subnets with CIDR</h2>
-      <ul>
-        <li><strong>IT:</strong> /25 → 192.168.1.0 - 192.168.1.127 (126 usable)</li>
-        <li><strong>Sales:</strong> /26 → 192.168.1.128 - 192.168.1.191 (62 usable)</li>
-        <li><strong>Guest:</strong> /27 → 192.168.1.192 - 192.168.1.223 (30 usable)</li>
-      </ul>
-      <p>Optional: Use Windows Calculator (Programmer mode) to verify block sizes and masks.</p>
-    </section>
+    <h3>Step 2: Calculate Subnets with CIDR</h3>
+    <ul>
+      <li><strong>IT:</strong> /25 → <code>192.168.1.0 – 192.168.1.127</code> (126 usable hosts)</li>
+      <li><strong>Sales:</strong> /26 → <code>192.168.1.128 – 192.168.1.191</code> (62 usable hosts)</li>
+      <li><strong>Guest:</strong> /27 → <code>192.168.1.192 – 192.168.1.223</code> (30 usable hosts)</li>
+    </ul>
+    <p>Optional: Use Windows Calculator (Programmer mode) to verify block sizes and subnet masks.</p>
 
-    <section>
-      <h2>Step 3: Create Diagram in Diagrams.net</h2>
-      <ol>
-        <li>Open <a href="https://www.diagrams.net" target="_blank">diagrams.net</a>.</li>
-        <li>Use network shapes to create:
-          <ul>
-            <li>Cloud labeled “Internet”</li>
-            <li>Router labeled “192.168.1.1/24”</li>
-            <li>Three subnet blocks:
-              <ul>
-                <li>IT: 192.168.1.0/25</li>
-                <li>Sales: 192.168.1.128/26</li>
-                <li>Guest: 192.168.1.192/27</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>Add IP ranges, examples (e.g., IT Server at .10), and icons.</li>
-        <li>Save as PNG or PDF.</li>
-      </ol>
-    </section>
+    <h3>Step 3: Create Diagram in diagrams.net</h3>
+    <ol>
+      <li>Go to <a href="https://www.diagrams.net" target="_blank" rel="noopener">diagrams.net</a> and start a new blank diagram.</li>
+      <li>Add a cloud labeled <strong>Internet</strong>.</li>
+      <li>Add a router labeled <strong>192.168.1.1/24</strong>.</li>
+      <li>Create three subnet blocks:
+        <ul>
+          <li><strong>IT:</strong> 192.168.1.0/25</li>
+          <li><strong>Sales:</strong> 192.168.1.128/26</li>
+          <li><strong>Guest:</strong> 192.168.1.192/27</li>
+        </ul>
+      </li>
+      <li>Include IP ranges, sample devices (e.g., IT Server at <code>.10</code>), and icons for clarity.</li>
+      <li>Save the diagram as PNG or PDF for your portfolio.</li>
+    </ol>
 
-    <section>
-      <h2>Step 4: Reflect</h2>
-      <p>Write a short paragraph: How did diagramming help you understand CIDR subnetting?</p>
-      <p><em>Hint: Visualizing /25, /26, and /27 makes Layer 3 subnetting easier to grasp!</em></p>
-    </section>
-  </main>
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph on how visualizing CIDR subnets helped your understanding of IP addressing and block allocation.</p>
+    <p><em>Hint:</em> Seeing /25, /26, and /27 subnets visually makes it easier to grasp how address space is divided and used efficiently.</p>
+
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 5</p>
+  </div>
 </body>
 </html>
-
