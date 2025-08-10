@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 55 Lab - Search Commands Deep Dive: Part 1</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 55 Lab</h1>
+    <h2>Search Commands Deep Dive: Part 1</h2>
+
+    <p><strong>Objective:</strong> Get fluent with core <code>stats</code> functions used every day: <code>count</code>, <code>values()</code>, <code>dc()</code>, and <code>avg()</code>. You’ll practice grouping with <em>by</em>, shaping tables, and creating a safe numeric field for averages.</p>
+
+    <h3>Quick Reference</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Function</th><th>What It Does</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>count</code></td>
+          <td>Total number of events</td>
+          <td><code>| stats count by user</code></td>
+        </tr>
+        <tr>
+          <td><code>values(field)</code></td>
+          <td>Show all unique values</td>
+          <td><code>| stats values(action) by user</code></td>
+        </tr>
+        <tr>
+          <td><code>dc(field)</code></td>
+          <td>Distinct count</td>
+          <td><code>| stats dc(ip) by user</code></td>
+        </tr>
+        <tr>
+          <td><code>avg(field)</code></td>
+          <td>Average</td>
+          <td><code>| stats avg(response_time) by uri_path</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Splunk Cloud Trial (or Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Pick a Dataset & Set Time</h3>
+    <ol>
+      <li>Open <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Time range: <strong>Last 24 hours</strong>.</li>
+      <li>We’ll use built-in data:
+        <ul>
+          <li><strong>Preferred:</strong> <code>index=_internal sourcetype=splunkd_ui_access</code> (has web-like fields such as <code>user</code>, <code>status</code>, sometimes <code>bytes</code>).</li>
+          <li><strong>Fallback:</strong> <code>index=_internal sourcetype=splunkd</code>.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>Step 2: <code>count</code> — How Many?</h3>
+    <ul>
+      <li>Total events by sourcetype:<br>
+        <code>index=_internal | stats count by sourcetype</code>
+      </li>
+      <li>UI access only, by <code>status</code>:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats count by status</code>
+      </li>
+      <li>Clean table:<br>
+        <code>... | sort - count</code>
+      </li>
+    </ul>
+
+    <h3>Step 3: <code>values()</code> — What Unique Values Exist?</h3>
+    <ul>
+      <li>All unique <code>method</code> values per user:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats values(method) by user</code>
+      </li>
+      <li>All unique <code>uri_path</code> seen per status:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats values(uri_path) as paths by status</code>
+      </li>
+    </ul>
+
+    <h3>Step 4: <code>dc()</code> — Distinct Counts</h3>
+    <ul>
+      <li>Distinct users per status:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats dc(user) as unique_users by status</code>
+      </li>
+      <li>Distinct paths per method:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats dc(uri_path) as unique_paths by method</code>
+      </li>
+    </ul>
+
+    <h3>Step 5: <code>avg()</code> — Averages (Create a Safe Numeric)</h3>
+    <p>Not all sources ship a numeric “response time.” Create one we can average reliably.</p>
+    <ul>
+      <li>Make a proxy size metric and average it:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval raw_len=len(_raw)</code><br>
+        <code>| stats avg(raw_len) as avg_raw_len by uri_path</code><br>
+        <code>| sort - avg_raw_len</code>
+      </li>
+      <li><em>If</em> your data has a numeric field like <code>bytes</code> or <code>duration</code>, try:<br>
+        <code>... | stats avg(bytes) as avg_bytes by uri_path</code></li>
+    </ul>
+
+    <h3>Step 6: Combine Multiple Metrics in One <code>stats</code></h3>
+    <ul>
+      <li>Counts + distinct + average together:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval raw_len=len(_raw)</code><br>
+        <code>| stats count, dc(user) as unique_users, values(method) as methods, avg(raw_len) as avg_raw_len by status</code>
+      </li>
+      <li>Trim columns for readability:<br>
+        <code>| table status count unique_users methods avg_raw_len</code></li>
+    </ul>
+
+    <h3>Step 7: Grouping Strategy & Filters</h3>
+    <ul>
+      <li>Limit to the “top talkers” first, then expand:
+        <ul>
+          <li>Top 5 users, then deep-dive:<br>
+            <code>index=_internal sourcetype=splunkd_ui_access | top user limit=5</code><br>
+            <code>index=_internal sourcetype=splunkd_ui_access (user=*&lt;pick one from top&gt;*) | stats count by uri_path</code>
+          </li>
+        </ul>
+      </li>
+      <li>Use <code>where</code> for post-aggregation filters:<br>
+        <code>... | stats count by uri_path | where count &gt; 10</code>
+      </li>
+    </ul>
+
+    <h3>Step 8: Save a Reusable Report</h3>
+    <ol>
+      <li>Run:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | eval raw_len=len(_raw) | stats count, dc(user) as unique_users, avg(raw_len) as avg_raw_len by method</code>
+      </li>
+      <li><strong>Save As ▸ Report</strong> → Name: <em>Day55: Methods Summary</em> → add a description.</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot: <code>| stats count by status</code> (sorted).</li>
+      <li>Screenshot: <code>| stats values(method) by user</code>.</li>
+      <li>Screenshot: <code>| stats dc(uri_path) by method</code>.</li>
+      <li>Screenshot: your <code>avg()</code> example (using <code>raw_len</code> or a real numeric field) grouped by a dimension.</li>
+      <li>Screenshot: your saved report visible in <strong>Reports</strong>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add <code>min()</code>, <code>max()</code>, and <code>range()</code> to your combined <code>stats</code>.</li>
+      <li>Create a dashboard panel from your favorite table.</li>
+      <li>Build a drilldown: clicking a <code>status</code> value opens a filtered search for that status.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When is <code>values()</code> helpful vs. overwhelming? How do you keep it readable?</li>
+      <li>What business question does <code>dc()</code> answer that plain <code>count</code> cannot?</li>
+      <li>What numeric field (real or derived) would you average in your own environment, and why?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced core transforming search skills—grouping with <code>stats</code>, listing unique values with <code>values()</code>, counting uniques with <code>dc()</code>, and computing averages with <code>avg()</code>. These are the workhorse functions you’ll use across dashboards, reports, and alerts.</p>
+  </div>
+</body>
+</html>
