@@ -3,96 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Map Your Network with Command-Line Tools</title>
-  <link rel="stylesheet" href="../assets/lab.css" />
+  <title>Day 9 Lab - Map Your Network with Command-Line Tools</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <header>
-    <h1>Map Your Network with Command-Line Tools</h1>
-    <p class="subtitle">Investigate local and internet connections using ping, netstat, tracert, and more</p>
-  </header>
+  <div class="lab-container">
+    <h1>Day 9 Lab</h1>
+    <h2>Map Your Network with Command-Line Tools</h2>
 
-  <main class="lab-content">
-    <section>
-      <h2>Part 1: Local Network</h2>
+    <p><strong>Objective:</strong> Use common command-line tools to map local and internet connections, identify devices on your network, and view how data travels from your device to external destinations.</p>
+    <p><strong>Tools Needed:</strong> Command Prompt (Windows) or Terminal (macOS/Linux).</p>
 
-      <h3><code>ipconfig</code> / <code>ifconfig</code></h3>
-      <ul>
-        <li>Run: <code>ipconfig</code> (Windows) or <code>ifconfig</code> (macOS/Linux)</li>
-        <li>Look for: IPv4 address, subnet mask, default gateway</li>
-        <li>Example: <em>"IPv4: 192.168.1.10, Subnet: 255.255.255.0, Gateway: 192.168.1.1" → "My IP and router address"</em></li>
-      </ul>
+    <h3>Part 1: Local Network</h3>
 
-      <h3><code>ping</code> (local)</h3>
-      <ul>
-        <li>Run: <code>ping [your gateway]</code> (e.g., <code>ping 192.168.1.1</code>)</li>
-        <li>Look for: Reply time, TTL</li>
-        <li>Example: <em>"Reply from 192.168.1.1: time=1ms TTL=64" → "Router is up, fast response"</em></li>
-      </ul>
+    <h4><code>ipconfig</code> / <code>ifconfig</code></h4>
+    <ul>
+      <li>Windows: <code>ipconfig</code> | macOS/Linux: <code>ifconfig</code></li>
+      <li>Look for IPv4 address, subnet mask, default gateway.</li>
+      <li><em>Example:</em> IPv4: <code>192.168.1.10</code>, Subnet: <code>255.255.255.0</code>, Gateway: <code>192.168.1.1</code>.</li>
+    </ul>
 
-      <h3><code>arp -a</code></h3>
-      <ul>
-        <li>Run: <code>arp -a</code></li>
-        <li>Look for: IP-to-MAC mappings of local devices</li>
-        <li>Example: <em>"192.168.1.1 00-14-22-01-23-45" → "Router’s MAC; other devices on my network"</em></li>
-      </ul>
+    <h4><code>ping</code> (local)</h4>
+    <ul>
+      <li>Run: <code>ping [your gateway]</code> (e.g., <code>ping 192.168.1.1</code>)</li>
+      <li>Check reply time and TTL.</li>
+      <li><em>Example:</em> <code>Reply from 192.168.1.1: time=1ms TTL=64</code> → Router is up, quick response.</li>
+    </ul>
 
-      <h3><code>netstat -an</code></h3>
-      <ul>
-        <li>Run: <code>netstat -an</code></li>
-        <li>Look for: Active connections</li>
-        <li>Example: <em>"TCP 192.168.1.10:49152 142.250.190.78:443 ESTABLISHED" → "I’m browsing HTTPS"</em></li>
-      </ul>
-    </section>
+    <h4><code>arp -a</code></h4>
+    <ul>
+      <li>Run: <code>arp -a</code></li>
+      <li>Review IP-to-MAC address mappings for local devices.</li>
+      <li><em>Example:</em> <code>192.168.1.1 00-14-22-01-23-45</code> → Router’s MAC address.</li>
+    </ul>
 
-    <section>
-      <h2>Part 2: Internet Path</h2>
+    <h4><code>netstat -an</code></h4>
+    <ul>
+      <li>Run: <code>netstat -an</code></li>
+      <li>View active TCP/UDP connections.</li>
+      <li><em>Example:</em> <code>TCP 192.168.1.10:49152 142.250.190.78:443 ESTABLISHED</code> → Active HTTPS connection.</li>
+    </ul>
 
-      <h3><code>ping</code> (public)</h3>
-      <ul>
-        <li>Run: <code>ping 8.8.8.8</code></li>
-        <li>Look for: Response time, consistency</li>
-        <li>Example: <em>"Reply from 8.8.8.8: time=20ms TTL=117" → "Google’s DNS is reachable, decent speed"</em></li>
-      </ul>
+    <h3>Part 2: Internet Path</h3>
 
-      <h3><code>tracert</code> / <code>traceroute</code></h3>
-      <ul>
-        <li>Run: <code>tracert 8.8.8.8</code> (Windows) or <code>traceroute 8.8.8.8</code> (macOS/Linux)</li>
-        <li>Look for: First few hops (router, ISP, upstream routers)</li>
-        <li>Example: <em>"1 192.168.1.1 2ms, 2 10.0.0.1 10ms, 3 172.16.0.1 15ms"</em></li>
-      </ul>
+    <h4><code>ping</code> (public)</h4>
+    <ul>
+      <li>Run: <code>ping 8.8.8.8</code></li>
+      <li>Check response time and stability.</li>
+      <li><em>Example:</em> <code>Reply from 8.8.8.8: time=20ms TTL=117</code> → Google DNS reachable.</li>
+    </ul>
 
-      <h3><code>nslookup</code></h3>
-      <ul>
-        <li>Run: <code>nslookup google.com</code></li>
-        <li>Look for: Resolved IPs</li>
-        <li>Example: <em>"Name: google.com, Address: 142.250.190.78"</em></li>
-      </ul>
-    </section>
+    <h4><code>tracert</code> / <code>traceroute</code></h4>
+    <ul>
+      <li>Windows: <code>tracert 8.8.8.8</code> | macOS/Linux: <code>traceroute 8.8.8.8</code></li>
+      <li>View the hops from your device to the destination.</li>
+      <li><em>Example:</em> Hop 1: <code>192.168.1.1</code>, Hop 2: ISP gateway, Hop 3: upstream router, etc.</li>
+    </ul>
 
-    <section>
-      <h2>Part 3: Routing</h2>
+    <h4><code>nslookup</code></h4>
+    <ul>
+      <li>Run: <code>nslookup google.com</code></li>
+      <li>View resolved IP addresses for the domain.</li>
+      <li><em>Example:</em> <code>Name: google.com, Address: 142.250.190.78</code></li>
+    </ul>
 
-      <h3><code>route print</code> / <code>netstat -r</code></h3>
-      <ul>
-        <li>Run: <code>route print</code> (Windows) or <code>netstat -r</code> (macOS/Linux)</li>
-        <li>Look for: Default gateway, routing table entries</li>
-        <li>Example: <em>"0.0.0.0 0.0.0.0 192.168.1.1" → "All traffic goes through my router"</em></li>
-      </ul>
-    </section>
+    <h3>Part 3: Routing</h3>
 
-    <section>
-      <h2>Step 4: Wrap-Up</h2>
-      <p><strong>Share:</strong> Pick one row (e.g., <code>tracert</code>) and post it in the challenge group or forum. What’s your path to 8.8.8.8 like?</p>
-      <p><strong>Reflect:</strong> How many devices showed up in <code>arp -a</code>? What’s your ping time to Google?</p>
+    <h4><code>route print</code> / <code>netstat -r</code></h4>
+    <ul>
+      <li>Windows: <code>route print</code> | macOS/Linux: <code>netstat -r</code></li>
+      <li>Check your default gateway and routing table entries.</li>
+      <li><em>Example:</em> <code>0.0.0.0 0.0.0.0 192.168.1.1</code> → All traffic goes through your router.</li>
+    </ul>
 
-      <h3>Quick Quiz</h3>
-      <ul>
-        <li>What does <code>ipconfig</code> tell you?</li>
-        <li>Why use <code>tracert</code> instead of <code>ping</code>?</li>
-        <li>What’s one thing <code>netstat -an</code> shows?</li>
-      </ul>
-    </section>
-  </main>
+    <h3>Step 4: Wrap-Up</h3>
+    <p><strong>Share:</strong> Post one interesting finding (e.g., your <code>tracert</code> output) in the challenge group or forum.</p>
+    <p><strong>Reflect:</strong> How many devices appeared in your <code>arp -a</code> output? What’s your average ping time to Google?</p>
+
+    <h3>Quick Quiz</h3>
+    <ul>
+      <li>What does <code>ipconfig</code> tell you?</li>
+      <li>Why use <code>tracert</code> instead of <code>ping</code>?</li>
+      <li>What’s one thing <code>netstat -an</code> shows?</li>
+    </ul>
+
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 9</p>
+  </div>
 </body>
 </html>
