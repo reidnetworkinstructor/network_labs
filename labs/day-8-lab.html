@@ -3,59 +3,49 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Analyze Network Traffic with Wireshark</title>
-  <link rel="stylesheet" href="../assets/lab.css" />
+  <title>Day 8 Lab - Analyze Network Traffic with Wireshark</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <header>
-    <h1>Analyze Network Traffic with Wireshark</h1>
-    <p class="subtitle">Capture HTTP, HTTPS, and DNS traffic to see ports and protocols in action.</p>
-  </header>
-  <main class="lab-content">
-    <section>
-      <h2>Objective</h2>
-      <p>Use Wireshark to capture and analyze network traffic, observing how application-layer protocols like HTTP, HTTPS, and DNS use specific ports, and identify the role of ports in communication.</p>
-    </section>
+  <div class="lab-container">
+    <h1>Day 8 Lab</h1>
+    <h2>Analyze Network Traffic with Wireshark</h2>
 
-    <section>
-      <h2>Tool Needed</h2>
-      <p>Wireshark (free, download from <a href="https://www.wireshark.org" target="_blank">wireshark.org</a>) — a network protocol analyzer for capturing and analyzing traffic.</p>
-    </section>
+    <p><strong>Objective:</strong> Use Wireshark to capture and analyze HTTP, HTTPS, and DNS traffic. Observe how application-layer protocols use specific ports and understand the role of ports in communication.</p>
+    <p><strong>Tools Needed:</strong> <a href="https://www.wireshark.org" target="_blank" rel="noopener">Wireshark</a> (free network protocol analyzer).</p>
 
-    <section>
-      <h2>Step 1: Install and Set Up Wireshark</h2>
-      <ol>
-        <li>Download Wireshark and install it on your computer (you may also be prompted to install Npcap).</li>
-        <li>Open Wireshark and select your active network interface (e.g., Wi-Fi or Ethernet).</li>
-        <li>Click the green shark fin icon to begin capturing packets.</li>
-      </ol>
-    </section>
+    <h3>Step 1: Install and Set Up Wireshark</h3>
+    <ol>
+      <li>Download and install Wireshark on your computer (install Npcap if prompted).</li>
+      <li>Open Wireshark and select your active network interface (e.g., Wi-Fi or Ethernet).</li>
+      <li>Click the green shark fin icon to begin capturing packets.</li>
+    </ol>
 
-    <section>
-      <h2>Step 2: Generate and Capture HTTP Traffic</h2>
-      <ol>
-        <li>In your browser, visit a non-secure site using <code>http://</code> (e.g., <code>http://example.com</code>).</li>
-        <li>Stop the capture in Wireshark after the page loads (red square icon).</li>
-        <li>In the filter bar, type <code>tcp.port == 80</code> and press Enter.</li>
-        <li>Look for packets with “HTTP” in the Protocol column and inspect their source/destination ports.</li>
-        <li>Note: “HTTP traffic on port 80, source port [random], destination port 80.”</li>
-      </ol>
-    </section>
+    <h3>Step 2: Generate and Capture HTTP Traffic</h3>
+    <ol>
+      <li>In your browser, visit a non-secure site using <code>http://</code> (e.g., <code>http://example.com</code>).</li>
+      <li>Stop the capture once the page loads (red square icon).</li>
+      <li>In the filter bar, type <code>tcp.port == 80</code> and press Enter.</li>
+      <li>Look for packets with “HTTP” in the Protocol column and inspect their source/destination ports.</li>
+      <li>Note example: “HTTP traffic on port 80, source port [random], destination port 80.”</li>
+    </ol>
 
-    <section>
-      <h2>Step 3: Generate and Capture HTTPS and DNS Traffic</h2>
-      <ol>
-        <li>Start a new capture.</li>
-        <li>Visit <code>https://google.com</code> in your browser.</li>
-        <li>Stop the capture.</li>
-        <li>Filter for HTTPS: <code>tcp.port == 443</code>. Look for “TLS” packets.</li>
-        <li>Filter for DNS: <code>udp.port == 53</code>. Look for “DNS” packets with queries and responses.</li>
-        <li>Note: “HTTPS traffic on port 443, DNS query for google.com on port 53.”</li>
-      </ol>
-    </section>
+    <h3>Step 3: Generate and Capture HTTPS and DNS Traffic</h3>
+    <ol>
+      <li>Start a new capture.</li>
+      <li>Visit <code>https://google.com</code> in your browser.</li>
+      <li>Stop the capture.</li>
+      <li>Filter for HTTPS: <code>tcp.port == 443</code> — look for “TLS” packets.</li>
+      <li>Filter for DNS: <code>udp.port == 53</code> — look for “DNS” query and response packets.</li>
+      <li>Note example: “HTTPS traffic on port 443, DNS query for google.com on port 53.”</li>
+    </ol>
 
-    <section>
-      <h2>Step 4: Reflect</h2>
-      <p>Write a paragraph answering: How did Wireshark help you understand the role of ports in network communication? What did you learn about protocol-port relationships?</p>
-      <p><em>Hint: HTTP on port 80, HTTPS on 443, DNS on 53 — ports route the traffic
+    <h3>Step 4: Reflect</h3>
+    <p>Write a short paragraph: How did Wireshark help you understand the role of ports in communication? What did you learn about protocol-port relationships?</p>
+    <p><em>Hint:</em> HTTP uses port 80, HTTPS uses port 443, DNS uses port 53 — ports guide traffic to the correct service.</p>
 
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 8</p>
+  </div>
+</body>
+</html>
