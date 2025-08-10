@@ -3,125 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 25 Lab – Simulate SDN and IoT with Azure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #e6f1ff;
-      font-family: 'Fira Code', monospace;
-      padding: 2rem;
-    }
-    h1, h2 {
-      color: #00ffff;
-    }
-    code {
-      background-color: #1e1e1e;
-      color: #80cbc4;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-    }
-    .log {
-      background-color: #1c1f26;
-      border-left: 4px solid #00e5ff;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-    }
-    .step {
-      margin-bottom: 2rem;
-    }
-    .reflect {
-      background-color: #263238;
-      border-left: 4px solid #26c6da;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    .screenshot {
-      color: #b2ebf2;
-    }
-    a {
-      color: #66d9ef;
-    }
-  </style>
+  <title>Day 25 Lab - Simulate SDN & IoT with Azure (Beginner)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 25 Lab</h1>
+    <h2>Simulate SDN & IoT with Microsoft Azure (Beginner)</h2>
 
-  <h1>Day 25 Premium Lab:</h1>
-  <h2>Simulate SDN and IoT with Microsoft Azure</h2>
+    <p><strong>Objective:</strong> Use the Azure Portal to mimic SDN “intent” and an IoT network zone—no VMs or CLI. You’ll create a VNet with two subnets, attach an NSG with simple allow/deny rules for an IoT subnet, and label resources with tags (policy-style grouping).</p>
+    <p><strong>Estimated time:</strong> 20–30 minutes • <strong>Cost:</strong> $0 (no compute)</p>
 
-  <div class="step">
-    <h2>Step 1: Set Up Azure Account</h2>
+    <h3>🛠 What You Need</h3>
     <ul>
-      <li>Go to <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a> to sign up (free tier).</li>
-      <li>Log into <a href="https://portal.azure.com" target="_blank">Azure Portal</a>.</li>
+      <li>Azure account (<a href="https://azure.microsoft.com/free" target="_blank" rel="noopener">free tier</a> is fine)</li>
+      <li>Access to the <a href="https://portal.azure.com" target="_blank" rel="noopener">Azure Portal</a></li>
     </ul>
-    <div class="log">Log: “Azure ready for SDN/IoT simulation!”</div>
-  </div>
 
-  <div class="step">
-    <h2>Step 2: Create an SDN-Like Virtual Network (VNet)</h2>
-    <ul>
-      <li>Go to <strong>Virtual Networks</strong> > <strong>Create</strong>.</li>
-      <li>Settings:
+    <h3>Step 1 — Create a Resource Group</h3>
+    <ol>
+      <li>Portal → search <strong>Resource groups</strong> → <strong>Create</strong>.</li>
+      <li><strong>Name:</strong> <code>HL-SDN-RG</code> • <strong>Region:</strong> your closest (e.g., East US).</li>
+      <li><strong>Review + create</strong> → <strong>Create</strong>.</li>
+    </ol>
+
+    <h3>Step 2 — Create a VNet with Two Subnets</h3>
+    <ol>
+      <li><strong>Create a resource</strong> → search <strong>Virtual Network</strong> → <strong>Create</strong>.</li>
+      <li><strong>Resource group:</strong> <code>HL-SDN-RG</code> • <strong>Name:</strong> <code>HL-SDN-VNet</code> • <strong>Region:</strong> same as RG.</li>
+      <li><strong>IP addresses</strong> tab:
         <ul>
-          <li><strong>Subscription:</strong> Free Trial</li>
-          <li><strong>Resource Group:</strong> Create new → HoodieTech</li>
-          <li><strong>Name:</strong> HoodieSDNVNet</li>
-          <li><strong>Region:</strong> Closest to you (e.g., East US)</li>
-          <li><strong>Address Space:</strong>
+          <li><strong>IPv4 address space:</strong> <code>10.25.0.0/16</code></li>
+          <li>Edit subnets:
             <ul>
-              <li>IPv4: 10.0.0.0/16</li>
-              <li>IPv6: 2001:db8:1234::/48</li>
+              <li><code>PublicSubnet</code> → <code>10.25.1.0/24</code></li>
+              <li><code>IoTSubnet</code> → <code>10.25.2.0/24</code></li>
             </ul>
           </li>
-          <li><strong>Subnets:</strong>
-            <ul>
-              <li>Public Subnet: 10.0.1.0/24, 2001:db8:1234:1::/64</li>
-              <li>IoT Subnet: 10.0.2.0/24, 2001:db8:1234:2::/64</li>
-            </ul>
-          </li>
+          <li>(Optional) Enable IPv6 and add <code>2001:db8:25::/48</code> with /64 slices to mirror dual-stack.</li>
         </ul>
       </li>
-      <li>Click <strong>Review + Create</strong> > <strong>Create</strong>.</li>
-    </ul>
-    <p>Open HoodieSDNVNet from All Resources and note the subnets created.</p>
-    <code>Note: Azure API = SDN Controller managing subnets + routes</code>
-    <div class="log">Log: “VNet created—10.0.0.0/16, 2001:db8:1234::/48, public/IoT subnets, SDN-like.”</div>
-  </div>
+      <li><strong>Review + create</strong> → <strong>Create</strong>.</li>
+    </ol>
 
-  <div class="step">
-    <h2>Step 3: Simulate SD-WAN and IoT</h2>
+    <h3>Step 3 — Attach an NSG to the IoT Subnet (Simple Policy)</h3>
+    <p>This mimics “policy intent” in SDN: allow MQTT to IoT devices, deny old protocols like Telnet.</p>
+    <ol>
+      <li><strong>Create a resource</strong> → <strong>Network security group</strong> → <strong>Create</strong>.</li>
+      <li><strong>Name:</strong> <code>HL-IoT-NSG</code> • <strong>RG:</strong> <code>HL-SDN-RG</code> • <strong>Region:</strong> same.</li>
+      <li>Open <code>HL-IoT-NSG</code> → <strong>Inbound security rules</strong> → <strong>Add</strong>:
+        <ul>
+          <li><strong>Name:</strong> <code>Allow-MQTT</code> • <strong>Priority:</strong> <code>100</code> • <strong>Protocol:</strong> TCP • <strong>Port:</strong> <code>1883</code> • <strong>Source:</strong> <em>VirtualNetwork</em> • <strong>Action:</strong> Allow.</li>
+          <li><strong>Name:</strong> <code>Deny-Telnet</code> • <strong>Priority:</strong> <code>120</code> • <strong>Protocol:</strong> TCP • <strong>Port:</strong> <code>23</code> • <strong>Source:</strong> <em>Any</em> • <strong>Action:</strong> Deny.</li>
+        </ul>
+      </li>
+      <li>Associate to subnet: <strong>Subnets</strong> → <strong>Associate</strong> → VNet <code>HL-SDN-VNet</code> → Subnet <code>IoTSubnet</code>.</li>
+    </ol>
+    <div class="note">Concept: The NSG acts like a distributed firewall policy—very SDN-ish. We’re not deploying devices; just defining intent on the fabric.</div>
+
+    <h3>Step 4 — Tag Resources (Group by “Intent”)</h3>
+    <p>Tags help you target policy or cost views—think of them like SDN metadata.</p>
+    <ol>
+      <li>Open <code>HL-SDN-VNet</code> → <strong>Tags</strong> → <strong>Edit</strong>:
+        <ul>
+          <li><code>env=lab</code>, <code>owner=hoodie</code></li>
+        </ul>
+      </li>
+      <li>Open each subnet → <strong>Tags</strong>:
+        <ul>
+          <li><code>tier=public</code> on <code>PublicSubnet</code></li>
+          <li><code>tier=iot</code> on <code>IoTSubnet</code></li>
+        </ul>
+      </li>
+    </ol>
+    <p>Later, Azure Policy or automation could use these tags to apply rules programmatically (controller-style).</p>
+
+    <h3>Step 5 — Explore What You Built</h3>
     <ul>
-      <li><strong>SD-WAN Simulation:</strong>
-        <ul>
-          <li>In Notepad, write:</li>
-          <code>SD-WAN rule: Prioritize port 5060 (SIP) to 10.0.1.0/24 for VoIP traffic.</code>
-          <li>No need to implement—just simulate intent.</li>
-        </ul>
-      </li>
-      <li><strong>IoT Simulation:</strong>
-        <ul>
-          <li>Attach a <strong>Network Security Group (NSG)</strong> to the IoT Subnet.</li>
-          <li>Add two inbound rules:
-            <ul>
-              <li><strong>Priority 100:</strong> Allow TCP 1883 (MQTT)</li>
-              <li><strong>Priority 200:</strong> Deny TCP 23 (Telnet)</li>
-            </ul>
-          </li>
-          <li>Note: “IoT device at 10.0.2.10 uses MQTT, Telnet denied.”</li>
-        </ul>
-      </li>
+      <li><strong>VNet → Overview:</strong> verify address space <code>10.25.0.0/16</code>.</li>
+      <li><strong>Subnets:</strong> confirm <code>PublicSubnet</code> <code>10.25.1.0/24</code> and <code>IoTSubnet</code> <code>10.25.2.0/24</code>, with NSG attached to IoT.</li>
+      <li><strong>NSG → Inbound rules:</strong> verify priority order (100 allow MQTT, 120 deny Telnet, then defaults).</li>
+      <li><strong>Tags:</strong> confirm VNet/subnet tags are present.</li>
     </ul>
-    <div class="log">Log: “SD-WAN prioritized VoIP, IoT secured with MQTT—emerging tech simulated!”</div>
-  </div>
 
-  <div class="step reflect">
-    <h2>Step 4: Reflect</h2>
-    <p><strong>Question:</strong> How does this reflect SDN and emerging tech?</p>
-    <p><em>Hint:</em> Azure API mimicked SDN control, NSG protected IoT, and route table logic simulated SD-WAN functionality.</p>
-    <p class="screenshot">📷 Portfolio Bonus: Screenshot VNet + NSG + SD-WAN note.</p>
-  </div>
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot: <strong>HL-SDN-VNet</strong> <em>Overview</em> with address space.</li>
+      <li>Screenshot: <strong>Subnets</strong> blade showing both subnets and the NSG association on <code>IoTSubnet</code>.</li>
+      <li>Screenshot: <strong>HL-IoT-NSG</strong> inbound rules table (priorities visible).</li>
+      <li>Screenshot: <strong>Tags</strong> on VNet/subnets (showing <code>tier</code> and <code>env</code>).</li>
+      <li>2–3 sentences: “How do NSGs + tags emulate SDN ‘intent’ without deploying devices?”</li>
+    </ul>
 
+    <h3>🎯 Stretch (Optional)</h3>
+    <ul>
+      <li>Add one more NSG rule on IoTSubnet: <code>Allow-HTTPS</code> (TCP/443, priority 110). Explain why it sits between 100 and 120.</li>
+      <li>Create a second VNet <code>HL-Edge-VNet</code> (e.g., <code>10.26.0.0/16</code>) and add a VNet peering both ways (no VMs required) to visualize fabric stitching.</li>
+      <li>Write a one-line “policy intent” note you’d push with automation, e.g., “<em>Deny Telnet everywhere in <code>env=lab</code></em>”.</li>
+    </ul>
+
+    <h3>🧠 Quick Ref</h3>
+    <ul>
+      <li><strong>VNet</strong> = software-defined private network boundary.</li>
+      <li><strong>Subnet</strong> = segmented slice of the VNet (useful for zones like public vs. IoT).</li>
+      <li><strong>NSG</strong> = simple, distributed firewall policy you can attach to subnets/NICs.</li>
+      <li><strong>Tags</strong> = metadata that controllers/policy engines can target.</li>
+    </ul>
+
+    <h3>🧹 Clean Up (recommended)</h3>
+    <ul>
+      <li>Portal → <strong>Resource groups</strong> → open <code>HL-SDN-RG</code> → <strong>Delete resource group</strong> → type the name to confirm.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You modeled SDN intent in Azure by defining network segments, attaching a policy (NSG) for the IoT zone, and tagging resources for future automation—without spinning up any paid resources.</p>
+  </div>
 </body>
 </html>
