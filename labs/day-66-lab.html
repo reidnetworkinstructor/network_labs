@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 66 Lab - Text Viewing, Redirection & Search</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 66 Lab</h1>
+    <h2>Text Viewing, Redirection & Search</h2>
+
+    <p><strong>Objective:</strong> Work efficiently with text on Linux using <code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>, <code>grep</code>, redirection (<code>&gt;</code>, <code>&gt;&gt;</code>), pipes (<code>|</code>), and helpers like <code>tee</code>, <code>sort</code>, <code>uniq</code>, <code>cut</code>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+    </ul>
+
+    <h3>Step 1: Create a Practice Workspace</h3>
+<pre><code>cd ~
+mkdir -p text_lab
+cd text_lab
+
+# Create two sample files
+cat &gt; access.log &lt;&lt;'EOF'
+2025-08-10 12:01:03 GET /index.html 200
+2025-08-10 12:01:05 GET /login 302
+2025-08-10 12:01:09 POST /api/upload 500
+2025-08-10 12:01:12 GET /dashboard 200
+2025-08-10 12:01:14 GET /favicon.ico 404
+2025-08-10 12:01:20 GET /reports 200
+EOF
+
+cat &gt; users.csv &lt;&lt;'EOF'
+id,name,role,dept
+101,Alice,analyst,IT
+102,Bob,admin,IT
+103,Carol,analyst,Finance
+104,Dan,intern,IT
+105,Eve,analyst,Security
+EOF
+</code></pre>
+
+    <h3>Step 2: Quick Views (cat, head, tail)</h3>
+<pre><code># whole file (small files)
+cat access.log
+
+# first/last N lines
+head -n 3 access.log
+tail -n 2 access.log
+</code></pre>
+
+    <h3>Step 3: Page Through Files (less)</h3>
+    <p>Open then navigate with keys (<kbd>Space</kbd> next page, <kbd>b</kbd> back, <kbd>/</kbd> search, <kbd>n</kbd> next, <kbd>q</kbd> quit):</p>
+<pre><code>less access.log
+</code></pre>
+
+    <h3>Step 4: Redirection and Append (&gt; and &gt;&gt;)</h3>
+<pre><code># write output to a new file (overwrite)
+echo "note: generated $(date)" &gt; notes.txt
+
+# append more lines
+echo "another line" &gt;&gt; notes.txt
+cat notes.txt
+</code></pre>
+
+    <h3>Step 5: Pipes and Filters (| with grep)</h3>
+<pre><code># filter only 4xx/5xx responses
+cat access.log | grep -E ' (4|5)[0-9]{2}$'
+
+# count how many 200s vs others
+cat access.log | grep -E ' [0-9]{3}$' | cut -d' ' -f4 | sort | uniq -c
+</code></pre>
+
+    <h3>Step 6: Extract Columns (cut)</h3>
+    <p>Our log format is: <code>DATE TIME METHOD PATH STATUS</code>. Extract METHOD and PATH:</p>
+<pre><code>cat access.log | awk '{print $3, $4}'
+# or using cut if delimited consistently by spaces:
+cat access.log | cut -d' ' -f3,4
+</code></pre>
+
+    <h3>Step 7: Save While Viewing (tee)</h3>
+    <p><code>tee</code> writes output to screen and file simultaneously.</p>
+<pre><code>cat access.log | grep ' 200$' | tee ok_200.log
+ls -l ok_200.log
+</code></pre>
+
+    <h3>Step 8: CSV Basics (head/tail/grep/cut)</h3>
+<pre><code># show headers
+head -n 1 users.csv
+
+# list all analysts
+grep ',analyst,' users.csv
+
+# extract names of IT department
+grep ',IT$' users.csv | cut -d',' -f2
+</code></pre>
+
+    <h3>Step 9: Simple Report (sort + uniq)</h3>
+<pre><code># count hits per status code, most frequent last
+cut -d' ' -f5 access.log | sort | uniq -c | sort -n
+
+# count roles from CSV
+cut -d',' -f3 users.csv | tail -n +2 | sort | uniq -c
+</code></pre>
+
+    <h3>Step 10: Combine Tools</h3>
+<pre><code># Find non-200 requests and write a timestamped report
+cat access.log \
+ | awk '$5!=200 {print}' \
+ | tee non200_$(date +%Y%m%d_%H%M%S).log
+
+# Verify file created
+ls -l non200_*.log
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>head -n 3 access.log</code> and <code>tail -n 2 access.log</code> outputs</li>
+      <li>Screenshot of <code>grep -E ' (4|5)[0-9]{2}$'</code> results</li>
+      <li>Screenshot of status-count report: <code>cut -d' ' -f5 access.log | sort | uniq -c | sort -n</code></li>
+      <li>Screenshot of <code>ok_200.log</code> creation via <code>tee</code> (show <code>ls -l</code> and a <code>head</code>)</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Show only unique PATHs requested: <code>awk '{print $4}' access.log | sort -u</code></li>
+      <li>Top N PATHs by frequency: <code>awk '{print $4}' access.log | sort | uniq -c | sort -nr | head</code></li>
+      <li>Case-insensitive search: <code>grep -i 'dashboard' access.log</code></li>
+      <li>Colorized grep (if supported): <code>grep --color=auto 200 access.log</code></li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When is <code>less</code> better than <code>cat</code> for viewing files?</li>
+      <li>Why chain tools with pipes instead of writing intermediate files?</li>
+      <li>How would you adapt these patterns to much larger log files?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced fast file viewing, searching, and reporting with core CLI tools, plus redirection and piping to create simple, repeatable text-processing workflows.</p>
+  </div>
+</body>
+</html>
