@@ -1,119 +1,162 @@
+Here’s a friendlier, cleaned-up Day 24 lab wired to your shared stylesheet (no inline CSS). I simplified PRTG to use Ping/HTTP sensors (no SNMP setup required) and made the Ansible portion run locally with a tiny, idempotent playbook and variables.
+
+Save as `labs/day-24-lab.html`.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 24 Lab – Automate and Monitor with Ansible and PRTG</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #e6f1ff;
-      font-family: 'Fira Code', monospace;
-      padding: 2rem;
-    }
-    h1, h2 {
-      color: #00ffff;
-    }
-    code {
-      background-color: #1e1e1e;
-      color: #80cbc4;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-    }
-    .log {
-      background-color: #1c1f26;
-      border-left: 4px solid #00e5ff;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-    }
-    .step {
-      margin-bottom: 2rem;
-    }
-    .reflect {
-      background-color: #263238;
-      border-left: 4px solid #26c6da;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    .screenshot {
-      color: #b2ebf2;
-    }
-    a {
-      color: #66d9ef;
-    }
-  </style>
+  <title>Day 24 Lab - Automate & Monitor (Ansible + PRTG)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 24 Lab</h1>
+    <h2>Automate & Monitor with Ansible and PRTG</h2>
 
-  <h1>Day 24 Premium Lab:</h1>
-  <h2>Automate and Monitor with Ansible and PRTG</h2>
+    <p><strong>Objective:</strong> Use Ansible to push a small, repeatable “config” (simulated) and use PRTG to monitor simple network health (ping/HTTP). No SNMP required.</p>
+    <p><strong>Estimated time:</strong> 30–45 minutes</p>
 
-  <div class="step">
-    <h2>Step 1: Set Up Tools</h2>
+    <h3>🛠 What You Need</h3>
     <ul>
-      <li><strong>Ansible:</strong>
+      <li><strong>Ansible</strong> on Windows via WSL, or on macOS/Linux
         <ul>
-          <li>Install Windows Subsystem for Linux (WSL):</li>
-          <code>wsl --install</code>
-          <li>Launch WSL and install Ansible:</li>
-          <code>sudo apt update && sudo apt install ansible</code>
+          <li>Windows: open PowerShell as Admin → <code>wsl --install</code> (then reboot if prompted)</li>
+          <li>In WSL (Ubuntu): <code>sudo apt update && sudo apt install -y ansible</code></li>
+          <li>macOS (Homebrew): <code>brew install ansible</code></li>
         </ul>
       </li>
-      <li><strong>PRTG:</strong>
-        <ul>
-          <li>Download PRTG from <a href="https://www.paessler.com/prtg" target="_blank">paessler.com</a> (100 sensors free).</li>
-          <li>Install and access via <code>localhost:8080</code> on your browser.</li>
-        </ul>
-      </li>
+      <li><strong>PRTG Network Monitor</strong> (Windows host). After install, open the PRTG web interface from Start Menu.</li>
     </ul>
-    <div class="log">Log: “Ansible and PRTG ready—automation and monitoring set!”</div>
-  </div>
 
-  <div class="step">
-    <h2>Step 2: Simulate Automation with Ansible</h2>
-    <ul>
-      <li>In WSL, create a playbook file:</li>
-      <code>nano playbook.yml</code>
-      <pre><code>- hosts: localhost
+    <h3>Step 1 — Verify Ansible Works (Local Only)</h3>
+    <ol>
+      <li>Open a terminal (WSL or macOS/Linux).</li>
+      <li>Create a tiny inventory file that targets your own machine:</li>
+    </ol>
+<pre><code>mkdir -p ~/hl-day24 &amp;&amp; cd ~/hl-day24
+cat &gt; inventory.ini &lt;&lt; 'EOF'
+[local]
+localhost ansible_connection=local
+EOF
+
+ansible -i inventory.ini local -m ping
+</code></pre>
+    <p><em>Expected:</em> <code>SUCCESS</code> with <code>"ping": "pong"</code>.</p>
+
+    <h3>Step 2 — Your First Idempotent Playbook</h3>
+    <p>This playbook “pretends” to push network config by writing a versioned note to a file. Running it twice should show <em>ok</em> (no change).</p>
+<pre><code>cat &gt; vars.yml &lt;&lt; 'EOF'
+vlan_id: "10"
+snmp_trap_host: "192.168.1.50"
+config_file: "./config_push.txt"
+EOF
+
+cat &gt; playbook.yml &lt;&lt; 'EOF'
+- name: HL Day24 - Simulated Config Push
+  hosts: local
+  gather_facts: false
+  vars_files:
+    - vars.yml
   tasks:
-    - name: Simulate VLAN config
-      debug:
-        msg: "Configured VLAN 10 on switch"
+    - name: Ensure config file exists
+      ansible.builtin.file:
+        path: "{{ config_file }}"
+        state: touch
 
-    - name: Simulate SNMP trap setup
-      debug:
-        msg: "SNMP trap host set to 192.168.1.50"</code></pre>
-      <li>Run the playbook:</li>
-      <code>ansible-playbook playbook.yml</code>
-      <li>Review output — should show both tasks completed with debug messages.</li>
-    </ul>
-    <div class="log">Log: “Ansible playbook ran—VLAN 10, SNMP traps configured (IaC)!”</div>
-  </div>
+    - name: Write VLAN note (idempotent)
+      ansible.builtin.lineinfile:
+        path: "{{ config_file }}"
+        regexp: "^VLAN:"
+        line: "VLAN: {{ vlan_id }}"
+        create: yes
 
-  <div class="step">
-    <h2>Step 3: Monitor with PRTG</h2>
-    <ul>
-      <li>In PRTG, add your local PC as a device.</li>
-      <li>Auto-discover sensors or manually add a new <strong>SNMP Traffic Sensor</strong> to monitor your network adapter.</li>
-      <li>Simulate a network issue:
+    - name: Write SNMP trap host note (idempotent)
+      ansible.builtin.lineinfile:
+        path: "{{ config_file }}"
+        regexp: "^SNMP trap host:"
+        line: "SNMP trap host: {{ snmp_trap_host }}"
+        create: yes
+
+    - name: Append timestamped audit entry
+      ansible.builtin.lineinfile:
+        path: "{{ config_file }}"
+        line: "Applied at {{ lookup('pipe','date -u +%F_%T_UTC') }}"
+        insertafter: EOF
+EOF
+
+ansible-playbook -i inventory.ini playbook.yml
+</code></pre>
+    <p>Run it again; the first two tasks should report <em>ok</em> (unchanged), proving idempotency:</p>
+<pre><code>ansible-playbook -i inventory.ini playbook.yml
+cat config_push.txt
+</code></pre>
+
+    <h3>Step 3 — Parameterize a Change</h3>
+    <p>Edit <code>vars.yml</code> to use <code>vlan_id: "20"</code> and re-run the playbook. The VLAN line should change while the SNMP line remains <em>ok</em>.</p>
+
+    <h3>Step 4 — PRTG: Quick Monitoring (No SNMP)</h3>
+    <ol>
+      <li>Open PRTG web interface (Start Menu → PRTG Network Monitor).</li>
+      <li>In the PRTG tree, add a <strong>Device</strong>:
         <ul>
-          <li>Disable and re-enable your Ethernet or Wi-Fi adapter.</li>
-          <li>Watch PRTG register link down and traffic spikes.</li>
+          <li><strong>Name:</strong> <code>HL-Gateway</code></li>
+          <li><strong>IPv4/Hostname:</strong> your default gateway IP (e.g., <code>192.168.1.1</code>)</li>
         </ul>
       </li>
-      <li>View traffic charts, latency, and alerts in the PRTG dashboard.</li>
+      <li>Add sensors to that device:
+        <ul>
+          <li><strong>Ping</strong> (default sensor) — confirms basic reachability.</li>
+          <li><strong>HTTP</strong> — monitor a URL like <code>https://www.microsoft.com</code>.</li>
+        </ul>
+      </li>
+      <li>Let it collect a few minutes of data.</li>
+    </ol>
+
+    <h3>Step 5 — Simulate an Issue & Observe</h3>
+    <ul>
+      <li>Temporarily disconnect Wi-Fi or unplug Ethernet for ~20 seconds.</li>
+      <li>Re-connect and watch PRTG:
+        <ul>
+          <li><em>Ping</em> should turn red (down) during the outage, then green (up) again.</li>
+          <li><em>HTTP</em> may show errors during the outage.</li>
+        </ul>
+      </li>
     </ul>
-    <div class="log">Log: “PRTG monitored link-down, traffic—SNMP in action!”</div>
-  </div>
 
-  <div class="step reflect">
-    <h2>Step 4: Reflect</h2>
-    <p><strong>Question:</strong> How do Ansible and PRTG enhance network efficiency?</p>
-    <p><em>Hint:</em> Ansible automated device configs (IaC), and PRTG provided SNMP-based monitoring of traffic, latency, and uptime.</p>
-    <p class="screenshot">📷 Portfolio Bonus: Screenshot Ansible playbook output and PRTG dashboard graphs.</p>
-  </div>
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ansible-playbook</code> output showing <em>changed</em> on first run and <em>ok</em> on second run.</li>
+      <li>Screenshot of <code>config_push.txt</code> contents (VLAN, SNMP, timestamps).</li>
+      <li>PRTG screenshots: device with <strong>Ping</strong> and <strong>HTTP</strong> sensors, plus a brief red “down” period during your test.</li>
+    </ul>
 
+    <h3>🎯 Stretch (Optional)</h3>
+    <ul>
+      <li>Add a variable <code>site_name</code> to <code>vars.yml</code> and have the playbook manage a line like <code>Site: HQ</code> idempotently.</li>
+      <li>In PRTG, add a second device (e.g., <code>8.8.8.8</code> Ping) and compare behavior during your outage.</li>
+      <li>Create a PRTG notification trigger for the Ping sensor (e.g., alert after 60s down).</li>
+      <li>(Advanced) If you want SNMP later, enable it on a lab VM or switch and add an SNMP sensor in PRTG.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>How does idempotency in Ansible reduce risk compared to ad-hoc scripts?</li>
+      <li>What key signals (Ping/HTTP) tell you the difference between “internet down” vs “gateway down”?</li>
+      <li>Where would you store real device variables (per-site/per-device) in Ansible?</li>
+    </ol>
+
+    <h3>🧹 Clean Up</h3>
+    <ul>
+      <li>Delete the lab folder if you want: <code>rm -rf ~/hl-day24</code></li>
+      <li>In PRTG, pause or delete the test device/sensors to keep your tree tidy.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You automated a tiny, repeatable config change with Ansible (and proved idempotency) and set up lightweight monitoring in PRTG using Ping/HTTP to visualize availability during a controlled outage.</p>
+  </div>
 </body>
 </html>
+```
