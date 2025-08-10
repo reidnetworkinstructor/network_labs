@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 63 Cheat Sheet - Permissions & Ownership</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 63 Cheat Sheet</h1>
+    <h2>Permissions & Ownership</h2>
+
+    <p>Quick reference for viewing and modifying file <strong>permissions</strong> and <strong>ownership</strong> in Linux.</p>
+
+    <h3>Core Commands</h3>
+    <table>
+      <tr>
+        <th>Command</th><th>What it does</th><th>Examples</th>
+      </tr>
+      <tr>
+        <td><code>ls -l</code></td>
+        <td>List with permissions, owner, group</td>
+        <td><code>ls -l</code> • <code>ls -ld dir/</code></td>
+      </tr>
+      <tr>
+        <td><code>chmod</code></td>
+        <td>Change file/dir mode (permissions)</td>
+        <td><code>chmod 644 file</code> • <code>chmod u+x script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>chown</code></td>
+        <td>Change owner (and optionally group)</td>
+        <td><code>sudo chown user file</code> • <code>sudo chown user:group dir</code></td>
+      </tr>
+      <tr>
+        <td><code>chgrp</code></td>
+        <td>Change group</td>
+        <td><code>chgrp devteam file</code></td>
+      </tr>
+      <tr>
+        <td><code>find</code></td>
+        <td>Bulk inspect/fix modes/owners</td>
+        <td><code>find . -type d -exec chmod 755 {} \;</code></td>
+      </tr>
+    </table>
+
+    <h3>Permission Bits (rwx) & Octal</h3>
+    <table>
+      <tr><th>Bit</th><th>Value</th><th>Meaning</th></tr>
+      <tr><td><code>r</code></td><td>4</td><td>Read</td></tr>
+      <tr><td><code>w</code></td><td>2</td><td>Write</td></tr>
+      <tr><td><code>x</code></td><td>1</td><td>Execute / enter dir</td></tr>
+    </table>
+
+    <h3>Common Modes</h3>
+    <table>
+      <tr><th>Octal</th><th>Symbolic</th><th>Use case</th></tr>
+      <tr><td><code>755</code></td><td><code>rwx r-x r-x</code></td><td>Dirs & executables</td></tr>
+      <tr><td><code>644</code></td><td><code>rw- r-- r--</code></td><td>Text/config files</td></tr>
+      <tr><td><code>600</code></td><td><code>rw- --- ---</code></td><td>Private keys/creds</td></tr>
+      <tr><td><code>700</code></td><td><code>rwx --- ---</code></td><td>Private scripts</td></tr>
+    </table>
+
+    <h3>Symbolic vs Octal</h3>
+    <table>
+      <tr><th>Style</th><th>Example</th><th>Notes</th></tr>
+      <tr>
+        <td>Symbolic</td>
+        <td><code>chmod u+x file</code>, <code>chmod g-w file</code>, <code>chmod a+r file</code></td>
+        <td>Great for incremental changes</td>
+      </tr>
+      <tr>
+        <td>Octal</td>
+        <td><code>chmod 644 file</code>, <code>chmod 755 dir</code></td>
+        <td>Great for setting exact modes</td>
+      </tr>
+    </table>
+
+    <h3>Special Bits (Thousands Place)</h3>
+    <table>
+      <tr><th>Bit</th><th>Octal</th><th>Effect</th><th>Example</th></tr>
+      <tr>
+        <td>setuid</td><td>4xxx</td><td>Run as file owner (on exec)</td>
+        <td><code>chmod 4755 /usr/bin/somebin</code></td>
+      </tr>
+      <tr>
+        <td>setgid</td><td>2xxx</td><td>New files inherit dir’s group</td>
+        <td><code>chmod 2775 shared_dir</code></td>
+      </tr>
+      <tr>
+        <td>sticky</td><td>1xxx</td><td>Only owners can delete in shared dir</td>
+        <td><code>chmod 1777 /tmp</code></td>
+      </tr>
+    </table>
+
+    <h3>Ownership</h3>
+    <table>
+      <tr><th>Task</th><th>Example</th><th>Notes</th></tr>
+      <tr>
+        <td>Change owner</td>
+        <td><code>sudo chown user file</code></td>
+        <td>Might require sudo</td>
+      </tr>
+      <tr>
+        <td>Change owner & group</td>
+        <td><code>sudo chown user:group dir</code></td>
+        <td>Colon sets both</td>
+      </tr>
+      <tr>
+        <td>Change group only</td>
+        <td><code>chgrp devteam file</code></td>
+        <td>Use groups from <code>getent group</code></td>
+      </tr>
+      <tr>
+        <td>Recursive</td>
+        <td><code>sudo chown -R user:group dir</code></td>
+        <td>Apply to all contents</td>
+      </tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># Inspect
+ls -l
+ls -ld some_dir
+
+# Make a script executable (owner)
+chmod u+x runme.sh
+
+# Set exact modes
+chmod 644 file.txt
+chmod 755 bin/
+
+# Fix mixed tree safely (files 644, dirs 755)
+find . -type f -exec chmod 644 {} \;
+find . -type d -exec chmod 755 {} \;
+
+# Ownership
+sudo chown user:group project/
+chgrp "$(id -gn)" public.txt
+</code></pre>
+
+    <h3>Troubleshooting & Tips</h3>
+    <ul>
+      <li><strong>Permission denied?</strong> Try <code>sudo</code> (if appropriate) or adjust ownership.</li>
+      <li><strong>Can’t enter a directory?</strong> Ensure it has <code>x</code> (execute) for you or your group.</li>
+      <li><strong>Too permissive?</strong> Remove execute from regular files: <code>find . -type f -exec chmod a-x {} \;</code></li>
+      <li><strong>Team folder?</strong> Use setgid on the dir: <code>chmod 2775 shared</code> and set group ownership.</li>
+      <li><strong>View numeric modes:</strong> <code>stat -c "%A %a %U %G %n" *</code></li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 63 Lab:</strong> Refer to octal map, special bits, and workflows while setting secure defaults (files 644, dirs 755) and adjusting ownership/group.</p>
+  </div>
+</body>
+</html>
