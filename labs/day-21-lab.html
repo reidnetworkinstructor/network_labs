@@ -3,101 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 21 Lab – Azure Virtual Network (VNet) Setup</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0e0e10;
-      color: #e0f2f1;
-      font-family: 'Fira Code', monospace;
-      margin: 0;
-      padding: 2rem;
-      line-height: 1.7;
-    }
-    h1, h2 {
-      color: #00e5ff;
-    }
-    code {
-      background: #1e1e20;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      color: #80cbc4;
-    }
-    .log {
-      background: #1b1f23;
-      padding: 1rem;
-      border-left: 4px solid #00e5ff;
-      margin: 1rem 0;
-      font-style: italic;
-    }
-    .step {
-      margin-bottom: 2rem;
-    }
-    .reflect {
-      background: #263238;
-      padding: 1rem;
-      border-left: 4px solid #4dd0e1;
-      margin: 2rem 0;
-    }
-    .screenshot {
-      color: #b2ebf2;
-    }
-  </style>
+  <title>Day 21 Lab - Azure Virtual Network (Beginner)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 21 Lab</h1>
+    <h2>Azure Virtual Network (Beginner)</h2>
 
-  <h1>Day 21 Premium Lab:</h1>
-  <h2>Set Up Your First Azure Virtual Network (VNet)</h2>
+    <p><strong>Objective:</strong> Create a single Virtual Network (VNet) with one subnet in the Azure Portal—no CLI, no VMs. You’ll see where IP ranges live in the portal and take a couple of screenshots for your notes.</p>
+    <p><strong>Estimated time:</strong> 15–20 minutes</p>
 
-  <div class="step">
-    <h2>Step 1: Set Up Your Free Azure Account</h2>
-    <p>Visit <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a> and sign up. You'll need an email and credit card (no charges for free tier).</p>
-    <p>Log in to the <a href="https://portal.azure.com" target="_blank">Azure Portal</a>.</p>
-    <div class="log">Log: “Azure account created—ready to build a cloud network!”</div>
-  </div>
+    <h3>🛠 What You Need</h3>
+    <ul>
+      <li>An Azure account (<a href="https://azure.microsoft.com/free" target="_blank" rel="noopener">free tier</a> is fine)</li>
+      <li>Access to the <a href="https://portal.azure.com" target="_blank" rel="noopener">Azure Portal</a></li>
+    </ul>
 
-  <div class="step">
-    <h2>Step 2: Create a Virtual Network (VNet)</h2>
-    <p>In the Azure Portal:</p>
+    <h3>Step 1 — Create a Resource Group</h3>
     <ol>
-      <li>Click <strong>Create a Resource</strong> > search for <code>Virtual Network</code> > select and click <strong>Create</strong>.</li>
-      <li>Configure:
+      <li>In the Portal, search for <strong>Resource groups</strong> → click <strong>Create</strong>.</li>
+      <li><strong>Resource group:</strong> <code>HL-Networking-RG</code></li>
+      <li><strong>Region:</strong> pick the closest to you (e.g., East US).</li>
+      <li>Click <strong>Review + create</strong> → <strong>Create</strong>.</li>
+    </ol>
+
+    <h3>Step 2 — Create a VNet with One Subnet</h3>
+    <ol>
+      <li>Click <strong>Create a resource</strong> → search <strong>Virtual Network</strong> → <strong>Create</strong>.</li>
+      <li><strong>Resource group:</strong> <code>HL-Networking-RG</code></li>
+      <li><strong>Name:</strong> <code>HL-VNet</code></li>
+      <li><strong>Region:</strong> same region as your RG.</li>
+      <li><strong>IPv4 address space:</strong> <code>10.0.0.0/16</code> (leave IPv6 off).</li>
+      <li>Go to the <strong>IP addresses</strong> tab:
         <ul>
-          <li><strong>Subscription:</strong> Free Trial</li>
-          <li><strong>Resource Group:</strong> Create new → <code>HoodieCloud</code></li>
-          <li><strong>Name:</strong> <code>HoodieVNet</code></li>
-          <li><strong>Region:</strong> Closest region (e.g., East US)</li>
-          <li><strong>Address Space:</strong> <code>10.0.0.0/16</code></li>
-          <li><strong>Subnet:</strong> Name: <code>PublicSubnet</code>, Address Range: <code>10.0.1.0/24</code></li>
+          <li>Edit the default subnet to:
+            <ul>
+              <li><strong>Subnet name:</strong> <code>PublicSubnet</code></li>
+              <li><strong>Subnet address range:</strong> <code>10.0.1.0/24</code></li>
+            </ul>
+          </li>
         </ul>
       </li>
-      <li>Click <strong>Review + Create</strong> → <strong>Create</strong> (takes ~1 min).</li>
-      <li>Check <strong>All Resources</strong> to confirm <code>HoodieVNet</code> is listed.</li>
+      <li><strong>Review + create</strong> → <strong>Create</strong> (wait ~1 minute).</li>
     </ol>
-    <div class="log">Log: “Created VNet 10.0.0.0/16 with PublicSubnet 10.0.1.0/24—IaaS in action!”</div>
-  </div>
 
-  <div class="step">
-    <h2>Step 3: Explore and Simulate</h2>
+    <h3>Step 3 — Explore What You Built</h3>
     <ul>
-      <li>View the VNet’s <strong>Subnets</strong> tab.</li>
-      <li>Note that the subnet range is <code>10.0.1.0 - 10.0.1.255</code>.</li>
-      <li>Imagine a web server at <code>10.0.1.10</code>.</li>
-      <li>Simulate a security group by writing in Notepad: 
-        <code>Permit TCP 443 (HTTPS) to 10.0.1.0/24, deny 23 (Telnet)</code>.
-      </li>
+      <li>Open <strong>HL-VNet</strong> → on the <em>Overview</em> page, note the <strong>Address space</strong> <code>10.0.0.0/16</code>.</li>
+      <li>Click <strong>Subnets</strong> → confirm <code>PublicSubnet</code> uses <code>10.0.1.0/24</code>.</li>
+      <li><em>Concept check:</em> <code>/16</code> is the big private network; your <code>/24</code> is a smaller slice inside it.</li>
     </ul>
-    <p class="screenshot">📷 Take a screenshot of the VNet details page (address space + subnet shown).</p>
-    <div class="log">Note: “VNet set, HTTPS allowed—cloud network secure and functional.”</div>
-  </div>
 
-  <div class="step reflect">
-    <h2>Step 4: Reflect</h2>
-    <p>Write a short paragraph:</p>
-    <p><em>How does this VNet reflect cloud networking?</em></p>
-    <p>Hint: You created a 10.0.0.0/16 VNet with a /24 subnet, mimicking real IaaS cloud networks—just like you'd see in Network+ objectives.</p>
-    <p class="screenshot">📷 Portfolio Bonus: Screenshot your VNet + write-up = cloud networking credibility!</p>
-  </div>
+    <h3>Step 4 — (Optional, Easy) Add a Simple Security Rule</h3>
+    <p>If you’re comfortable, create a single “allow HTTPS” rule with a Network Security Group (NSG). If not, skip this step.</p>
+    <ol>
+      <li>Create resource → <strong>Network security group</strong> → <strong>Name:</strong> <code>HL-Web-NSG</code> → same RG/Region → <strong>Create</strong>.</li>
+      <li>Open <code>HL-Web-NSG</code> → <strong>Inbound security rules</strong> → <strong>Add</strong>:
+        <ul>
+          <li><strong>Name:</strong> <code>Allow-HTTPS</code> | <strong>Priority:</strong> <code>100</code> | <strong>Protocol:</strong> TCP | <strong>Port:</strong> 443 | <strong>Action:</strong> Allow.</li>
+        </ul>
+      </li>
+      <li>Associate it to your subnet: NSG → <strong>Subnets</strong> → <strong>Associate</strong> → VNet <code>HL-VNet</code> → Subnet <code>PublicSubnet</code>.</li>
+    </ol>
 
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <strong>HL-VNet</strong> <em>Overview</em> with the <strong>Address space</strong> visible.</li>
+      <li>Screenshot of the <strong>Subnets</strong> blade showing <code>PublicSubnet</code> and <code>10.0.1.0/24</code>.</li>
+      <li>(Optional) Screenshot of <strong>HL-Web-NSG</strong> inbound rules table (showing <code>Allow-HTTPS</code> priority 100).</li>
+      <li>1–2 sentences: “What’s the difference between the VNet address space and a subnet range?”</li>
+    </ul>
+
+    <h3>🎯 Stretch (Only if you feel good)</h3>
+    <ul>
+      <li>Add a second subnet <code>PrivateSubnet</code> at <code>10.0.2.0/24</code> and explain one reason you’d keep it separate from <code>PublicSubnet</code>.</li>
+      <li>Rename things clearly (resource group, VNet, subnets) so screenshots tell a story for your portfolio.</li>
+    </ul>
+
+    <h3>🧠 Quick Ref</h3>
+    <ul>
+      <li><strong>VNet</strong> = your private network in Azure (big range, e.g., <code>10.0.0.0/16</code>).</li>
+      <li><strong>Subnet</strong> = a smaller slice inside the VNet (e.g., <code>10.0.1.0/24</code>).</li>
+      <li><strong>NSG</strong> = simple firewall you can attach to a subnet to allow/deny traffic.</li>
+    </ul>
+
+    <h3>🧹 Clean Up (recommended)</h3>
+    <p>If you’re done, delete everything at once to avoid clutter/charges:</p>
+    <ul>
+      <li>Go to <strong>Resource groups</strong> → open <code>HL-Networking-RG</code> → <strong>Delete resource group</strong> → type the name to confirm.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You created a VNet and a subnet entirely in the Portal, saw where IPv4 ranges live, and (optionally) attached a basic NSG rule. That’s enough to understand cloud networking at a beginner level.</p>
+  </div>
 </body>
 </html>
