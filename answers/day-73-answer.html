@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 73 Answer Key - Strings, Input, and f-Strings</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 73 – Answer Key</h1>
+    <h2>Strings, Input, and f-Strings</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+        <h3>Reference Code for <code>badge.py</code></h3>
+<pre><code># Gather inputs
+first_name = input("First name: ").title()
+last_name = input("Last name: ").title()
+city = input("City: ").title()
+role = input("Role: ").title()
+fav_skill = input("Favorite Hoodie Skill: ").title()
+years_exp = int(input("Years of IT Experience: "))
+
+# Derived values
+initials = first_name[0].upper() + last_name[0].upper()
+tagline = f"{first_name} builds {fav_skill} skills in {city}."
+user_id = f"{initials}{str(len(city)).zfill(2)}"
+username = (first_name[0] + last_name).lower()
+
+# Output badge
+print("="*30)
+print(" Hoodie Launchpad – Onboarding ")
+print("="*30)
+print(f"Name: {first_name} {last_name}")
+print(f"City: {city}")
+print(f"Role: {role}")
+print(f"Favorite Skill: {fav_skill}")
+print(f"Years of IT Experience: {years_exp}")
+print(f"Initials: {initials}")
+print(f"ID: {user_id}")
+print(f"Username: {username}")
+print(f"Tagline: {tagline}")
+</code></pre>
+
+        <h3>Sample Terminal Session</h3>
+<pre><code>First name: Jordan
+Last name: Kim
+City: Austin
+Role: Student
+Favorite Hoodie Skill: Cloud Security
+Years of IT Experience: 0
+==============================
+ Hoodie Launchpad – Onboarding 
+==============================
+Name: Jordan Kim
+City: Austin
+Role: Student
+Favorite Skill: Cloud Security
+Years of IT Experience: 0
+Initials: JK
+ID: JK06
+Username: jkim
+Tagline: Jordan builds Cloud Security skills in Austin.
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><code>input()</code> reads text from the user; <code>.title()</code> ensures consistent casing for names and city.</li>
+          <li>F-strings embed variables inline without clunky concatenation.</li>
+          <li>Derived values like initials, ID, and username showcase string indexing, length functions, and method chaining.</li>
+          <li>Multi-line, formatted output improves readability and user experience.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>ValueError:</strong> Trying to convert non-numeric years to <code>int</code> — fix by validating with <code>isdigit()</code> before conversion.</li>
+          <li><strong>IndexError:</strong> If first/last name is left blank — ensure the user actually enters a value before indexing.</li>
+          <li>Forgetting <code>.title()</code> on names — leads to inconsistent casing in output.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li>Program prompts for all required inputs.</li>
+          <li>Names, city, role, and skill are normalized to title case.</li>
+          <li>Derived values (initials, tagline) computed and displayed correctly.</li>
+          <li>Output matches the example structure.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># Validate numeric input for years_exp
+while True:
+    years_str = input("Years of IT Experience: ")
+    if years_str.isdigit():
+        years_exp = int(years_str)
+        break
+    else:
+        print("Please enter a number.")
+
+# Center the header
+print("Hoodie Launchpad – Onboarding".center(30, "="))
+</code></pre>
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
