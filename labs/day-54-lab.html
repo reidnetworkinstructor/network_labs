@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 54 Lab - Working with Time in Splunk</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 54 Lab</h1>
+    <h2>Working with Time in Splunk</h2>
+
+    <p><strong>Objective:</strong> Master time in Splunk: the time range picker, relative time modifiers (<code>earliest</code>/<code>latest</code>), bucketing with <code>timechart</code> and <code>bin</code>, formatting with <code>strftime</code>, and diagnosing ingestion delay using <code>_time</code> vs <code>_indextime</code>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Splunk Cloud Trial (or local Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Time Picker Basics</h3>
+    <ol>
+      <li>Open <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Set the time range (top right) to <strong>Last 24 hours</strong>.</li>
+      <li>Run a simple baseline search:<br>
+        <code>index=_internal</code></li>
+      <li>Note how the event list and timeline reflect the selected range.</li>
+    </ol>
+
+    <h3>Step 2: Relative Time Modifiers (earliest/latest)</h3>
+    <p>Override the picker directly in SPL. Use <code>@</code> to “snap” to boundaries (hour/day/week).</p>
+    <ul>
+      <li><strong>Last 2 hours, snapped to the hour:</strong><br>
+        <code>index=_internal earliest=-2h@h latest=@h</code></li>
+      <li><strong>Yesterday only:</strong><br>
+        <code>index=_internal earliest=@d-1d latest=@d</code></li>
+      <li><strong>Last 7 full days (not including today):</strong><br>
+        <code>index=_internal earliest=-7d@d latest=@d</code></li>
+    </ul>
+
+    <h3>Step 3: Trends with <code>timechart</code></h3>
+    <p>Aggregate by time buckets to see volume over time.</p>
+    <ul>
+      <li><strong>Hourly counts (last 24h):</strong><br>
+        <code>index=_internal earliest=-24h@h latest=@h | timechart span=1h count</code></li>
+      <li><strong>Compare span sizes (15m vs 1h):</strong><br>
+        <code>index=_internal earliest=-6h@h latest=@h | timechart span=15m count</code><br>
+        <em>then</em><br>
+        <code>index=_internal earliest=-6h@h latest=@h | timechart span=1h count</code></li>
+      <li><strong>Split by sourcetype:</strong><br>
+        <code>index=_internal earliest=-24h@h latest=@h | timechart span=1h count by sourcetype</code></li>
+    </ul>
+
+    <h3>Step 4: Manual Bucketing with <code>bin</code></h3>
+    <p><code>bin</code> lets you align <code>_time</code> into fixed increments, then aggregate.</p>
+    <ul>
+      <li><strong>5-minute buckets:</strong><br>
+        <code>index=_internal earliest=-60m@m latest=@m | bin _time span=5m | stats count by _time</code></li>
+      <li>Add a split:<br>
+        <code>index=_internal earliest=-60m@m latest=@m sourcetype=splunkd | bin _time span=5m | stats count by _time source</code></li>
+    </ul>
+
+    <h3>Step 5: Format & Extract Time Parts</h3>
+    <p>Use <code>strftime</code> to render readable timestamps and derive hour/day fields.</p>
+    <ul>
+      <li><strong>Human-readable timestamps:</strong><br>
+        <code>index=_internal | eval ts=strftime(_time,"%F %T") | table _time ts host source</code></li>
+      <li><strong>Hour of day & day of week:</strong><br>
+        <code>index=_internal earliest=-24h@h latest=@h</code><br>
+        <code>| eval hour=strftime(_time,"%H"), dow=strftime(_time,"%a")</code><br>
+        <code>| stats count by dow hour | sort dow hour</code></li>
+    </ul>
+
+    <h3>Step 6: Event Time vs Index Time</h3>
+    <p><code>_time</code> = event’s timestamp. <code>_indextime</code> = when Splunk indexed it. Delays can reveal ingestion issues.</p>
+    <ul>
+      <li><strong>Measure delay in seconds:</strong><br>
+        <code>index=_internal earliest=-24h@h latest=@h</code><br>
+        <code>| eval delay_sec=_indextime - _time</code><br>
+        <code>| stats count avg(delay_sec) max(delay_sec)</code></li>
+      <li><strong>Find delayed events (&gt; 60s):</strong><br>
+        <code>index=_internal earliest=-24h@h latest=@h</code><br>
+        <code>| eval delay_sec=_indextime - _time</code><br>
+        <code>| where delay_sec &gt; 60</code><br>
+        <code>| eval event_time=strftime(_time,"%F %T"), index_time=strftime(_indextime,"%F %T")</code><br>
+        <code>| table event_time index_time delay_sec host source sourcetype</code></li>
+      <li><strong>How “fresh” are results right now?</strong><br>
+        <code>index=_internal</code><br>
+        <code>| eval age_min=round((now()-_time)/60,0)</code><br>
+        <code>| stats min(age_min) as min_age min, avg(age_min) as avg_age min, max(age_min) as max_age min</code></li>
+    </ul>
+
+    <h3>Step 7: Time Zone & Preferences</h3>
+    <ul>
+      <li>Open <strong>User Preferences</strong> (top right profile menu) and confirm your <strong>Time zone</strong>.</li>
+      <li>Re-run a recent timechart after changing the time zone to observe label shifts.</li>
+    </ul>
+
+    <h3>Step 8: Save a Time-Focused Panel</h3>
+    <ol>
+      <li>Run:<br>
+        <code>index=_internal earliest=-24h@h latest=@h | timechart span=1h count by sourcetype</code></li>
+      <li><strong>Save As ▸ Dashboard Panel</strong> → Dashboard: <em>Hoodie Time Overview</em> → Panel: <em>Internal Events by Sourcetype (Hourly)</em>.</li>
+      <li>Open the dashboard and set a refresh interval (e.g., 60s).</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of a search using <strong>earliest/latest</strong> (e.g., <code>earliest=@d-1d latest=@d</code>) with visible results.</li>
+      <li>Two screenshots comparing <strong>timechart</strong> spans: one with <code>span=15m</code> and one with <code>span=1h</code>.</li>
+      <li>Screenshot of the <strong>bin</strong> + <strong>stats</strong> result (<code>span=5m</code> buckets).</li>
+      <li>Screenshot of the <strong>delay</strong> table showing <code>_time</code> vs <code>_indextime</code> for delayed events.</li>
+      <li>Screenshot of your dashboard panel <em>Internal Events by Sourcetype (Hourly)</em>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create a panel comparing the last 7 days by day:<br>
+        <code>index=_internal earliest=-7d@d latest=@d | timechart span=1d count</code></li>
+      <li>Add a Single Value panel for “Events (last hour)” with a sparkline:<br>
+        <code>index=_internal earliest=-1h@h latest=@h | timechart span=5m count</code> (then convert to Single Value with sparkline)</li>
+      <li>Alert idea: Save a search for “no events for 30m” (use <code>timechart</code> + <code>where count=0</code>) and configure an alert.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you prefer <code>timechart</code> over <code>bin + stats</code>, and why?</li>
+      <li>How can inspecting <code>_indextime - _time</code> help during data onboarding or pipeline incidents?</li>
+      <li>Which “snap” modifiers (<code>@h</code>, <code>@d</code>, etc.) will you use most in your daily workflow?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You controlled time precisely using the picker and SPL, visualized trends with <code>timechart</code>, aligned buckets with <code>bin</code>, formatted timestamps, and diagnosed ingestion delay via <code>_time</code> and <code>_indextime</code>. Time mastery = faster, clearer Splunk searches.</p>
+  </div>
+</body>
+</html>
