@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 79 Lab - Files & Errors</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 79 Lab</h1>
+    <h2>Files & Errors</h2>
+
+    <p><strong>Objective:</strong> Read and write text files with context managers, use <code>pathlib</code> for paths, and handle errors with <code>try/except</code>, <code>else</code>, and <code>finally</code>. Build a tiny log tool and a resilient CSV importer.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – Paths & Safe Open</h3>
+    <p>Use <code>pathlib.Path</code> (cleaner than raw strings) and a <strong>context manager</strong> to ensure files close even on errors.</p>
+<pre><code>from pathlib import Path
+
+data_dir = Path("day79_data")
+data_dir.mkdir(exist_ok=True)
+
+txt = data_dir / "notes.txt"
+
+# Write (overwrites)
+with txt.open("w", encoding="utf-8") as f:
+    f.write("First line\n")
+
+# Append
+with txt.open("a", encoding="utf-8") as f:
+    f.write("Another line\n")
+
+# Read
+with txt.open("r", encoding="utf-8") as f:
+    content = f.read()
+print(content)
+</code></pre>
+
+    <h3>Step 2 – Common Modes & Patterns</h3>
+    <ul>
+      <li><code>"r"</code> read (error if missing)</li>
+      <li><code>"w"</code> write (truncate)</li>
+      <li><code>"a"</code> append</li>
+      <li><code>"x"</code> create (error if exists)</li>
+    </ul>
+<pre><code># Line-by-line read (memory-friendly)
+with txt.open("r", encoding="utf-8") as f:
+    for line in f:
+        print(line.rstrip())
+</code></pre>
+
+    <h3>Step 3 – Errors: try / except / else / finally</h3>
+<pre><code>from pathlib import Path
+
+path = Path("maybe_missing.txt")
+
+try:
+    data = path.read_text(encoding="utf-8")
+except FileNotFoundError:
+    print("File not found, creating a default one...")
+    path.write_text("default\n", encoding="utf-8")
+else:
+    print("Read OK, length:", len(data))
+finally:
+    print("Done (success or fail).")
+</code></pre>
+
+    <h3>Step 4 – Raising Errors & Value Conversion</h3>
+<pre><code>def parse_int(s: str) -> int:
+    try:
+        return int(s)
+    except ValueError as e:
+        raise ValueError(f"Not an integer: {s!r}") from e
+
+print(parse_int("42"))
+# print(parse_int("forty-two"))  # would raise with context
+</code></pre>
+
+    <h3>Mini Lab A – Tiny Log Rotator</h3>
+    <p>Create <code>log_rotator.py</code> that appends events to a log and “rotates” it when it grows too large.</p>
+    <ol>
+      <li>Directory layout:
+<pre><code>day79_data/
+  app.log
+  archive/       (create if missing)
+</code></pre>
+      </li>
+      <li>Each run:
+        <ul>
+          <li>Append a timestamped line to <code>app.log</code>: <code>2025-08-10T17:05Z - user login jkim</code></li>
+          <li>If file size &gt;= <code>5 KB</code>, move it to <code>archive/app-YYYYMMDD-HHMMSS.log</code> and create a fresh <code>app.log</code>.</li>
+        </ul>
+      </li>
+      <li>Handle:
+        <ul>
+          <li>Missing <code>archive/</code> folder (create it)</li>
+          <li>IO errors with a friendly message (don’t crash)</li>
+        </ul>
+      </li>
+    </ol>
+    <p><strong>Starter:</strong></p>
+<pre><code>from pathlib import Path
+from datetime import datetime
+import shutil
+
+DATA = Path("day79_data")
+ARCH = DATA / "archive"
+LOG  = DATA / "app.log"
+DATA.mkdir(exist_ok=True)
+ARCH.mkdir(exist_ok=True)
+
+def write_event(message: str) -> None:
+    ts = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
+    line = f"{ts} - {message}\n"
+    with LOG.open("a", encoding="utf-8") as f:
+        f.write(line)
+
+def rotate_if_needed(limit_bytes: int = 5 * 1024) -> None:
+    try:
+        size = LOG.stat().st_size if LOG.exists() else 0
+        if size >= limit_bytes:
+            stamp = datetime.utcnow().strftime("%Y%m%d-%H%M%S")
+            target = ARCH / f"app-{stamp}.log"
+            shutil.move(str(LOG), str(target))
+            LOG.touch()  # new empty log
+            print(f"Rotated -> {target.name}")
+    except OSError as e:
+        print(f"[WARN] rotation failed: {e}")
+
+if __name__ == "__main__":
+    write_event("user login jkim")
+    rotate_if_needed()
+    print("Event written.")
+</code></pre>
+
+    <h3>Mini Lab B – Resilient CSV Importer</h3>
+    <p>Create <code>import_users.py</code> that reads a CSV of users, skips bad rows, and reports errors cleanly.</p>
+    <ol>
+      <li>Create <code>day79_data/users.csv</code> with some good and bad rows:
+<pre><code>username,full_name,age
+jkim,Jordan Kim,29
+mgarcia,Maria Garcia,notanumber
+tsmith,Tom Smith,41
+badrow_without_commas
+</code></pre>
+      </li>
+      <li>Script requirements:
+        <ul>
+          <li>Open CSV safely with <code>encoding="utf-8"</code></li>
+          <li>Skip header</li>
+          <li>For each row, validate there are exactly 3 fields and that <code>age</code> is an int</li>
+          <li>Collect valid users in a list of dicts; count and print how many rows were skipped and why</li>
+          <li>Write <code>day79_data/users_ok.txt</code> with one user per line</li>
+        </ul>
+      </li>
+    </ol>
+    <p><strong>Starter:</strong></p>
+<pre><code>from pathlib import Path
+
+DATA = Path("day79_data")
+CSV  = DATA / "users.csv"
+OUT  = DATA / "users_ok.txt"
+DATA.mkdir(exist_ok=True)
+
+errors = []
+users  = []
+
+try:
+    with CSV.open("r", encoding="utf-8") as f:
+        lines = f.read().splitlines()
+
+    if not lines:
+        raise ValueError("CSV is empty")
+
+    header, *rows = lines
+    for i, row in enumerate(rows, start=2):   # start=2 (line numbers)
+        parts = row.split(",")
+        if len(parts) != 3:
+            errors.append((i, "wrong_field_count"))
+            continue
+        username, full_name, age_str = parts
+        try:
+            age = int(age_str)
+        except ValueError:
+            errors.append((i, "age_not_int"))
+            continue
+        users.append({"username": username, "full_name": full_name, "age": age})
+
+    # Write output only if we have at least one user
+    if users:
+        with OUT.open("w", encoding="utf-8") as f:
+            for u in users:
+                f.write(f"{u['username']} | {u['full_name']} | {u['age']}\n")
+    else:
+        print("[INFO] No valid users to write.")
+
+except FileNotFoundError:
+    print(f"[ERROR] Missing file: {CSV}")
+except (OSError, ValueError) as e:
+    print(f"[ERROR] {e}")
+else:
+    print(f"Imported: {len(users)} users")
+    if errors:
+        print("Skipped rows:")
+        for line_no, reason in errors:
+            print(f"  line {line_no}: {reason}")
+finally:
+    print("Import attempt complete.")
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your <code>day79_data/</code> folder showing <code>app.log</code> and any archived logs.</li>
+      <li>Screenshot of <code>log_rotator.py</code> running (one normal run and one rotation event).</li>
+      <li>Screenshot of <code>import_users.py</code> output showing imported count and skipped-row reasons, plus the generated <code>users_ok.txt</code>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li><strong>Log Rotator:</strong> Add a <code>--limit</code> CLI arg (bytes) with <code>argparse</code>. Log a <code>[ROTATE]</code> line when rotation happens.</li>
+      <li><strong>CSV Import:</strong> Accept the CSV path via CLI; write a <code>.errors</code> report file with line numbers and reasons.</li>
+      <li>Wrap CSV parsing in a function that returns <code>(users, errors)</code>; add docstrings and type hints.</li>
+      <li>Add <code>try/except</code> around the <code>OUT.open()</code> write to catch permission errors.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Where did <code>try/except</code> prevent your script from crashing today?</li>
+      <li>Why use <code>Path</code> and <code>with open(...)</code> instead of manual close calls?</li>
+      <li>How would you surface errors to a non-technical teammate (e.g., a short <code>.errors</code> file)?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You worked with real files safely, structured paths with <code>pathlib</code>, and used exceptions to handle missing files, bad data, and I/O issues gracefully—skills you’ll use constantly in IT automation and tooling.</p>
+  </div>
+</body>
+</html>
