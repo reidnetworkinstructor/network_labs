@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 72 Answer Key - Variables & Basic Types</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 72 – Answer Key</h1>
+    <h2>Variables & Basic Types</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+        <h3>Expected Output for <code>type()</code> Demo</h3>
+<pre><code>&lt;class 'str'&gt;
+&lt;class 'int'&gt;
+&lt;class 'float'&gt;
+&lt;class 'bool'&gt;
+</code></pre>
+
+        <h3>Reference Code for <code>profile.py</code></h3>
+<pre><code>name = "Jordan Kim"
+age = 29
+favorite_skill = "Cloud Security"
+has_cert = False
+
+age_in_5_years = age + 5
+
+print(f"Name: {name}")
+print(f"Age now: {age}")
+print(f"Age in 5 years: {age_in_5_years}")
+print(f"Favorite Hoodie Skill: {favorite_skill}")
+print(f"Has Certification? {has_cert}")
+</code></pre>
+
+        <h3>Sample Output</h3>
+<pre><code>Name: Jordan Kim
+Age now: 29
+Age in 5 years: 34
+Favorite Hoodie Skill: Cloud Security
+Has Certification? False
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li>Variables store values in memory so they can be reused and manipulated.</li>
+          <li><code>int</code> allows math operations; <code>str</code> is for text; <code>bool</code> represents logical state; <code>float</code> handles decimals.</li>
+          <li><code>f-strings</code> make it easy to combine text with variable values in output.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>TypeError with concatenation:</strong> Trying to add int to str → use <code>f-strings</code> or convert with <code>str()</code>.</li>
+          <li><strong>NameError:</strong> Variable name typo → check spelling exactly.</li>
+          <li><strong>Wrong output order:</strong> Print statements out of sequence → match the example for grading.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li><code>type()</code> demo shows correct classes for all four basic types.</li>
+          <li>Variables for name, age, favorite skill, and boolean created correctly.</li>
+          <li>Age in 5 years is calculated using math on the integer variable.</li>
+          <li>Output matches the required structure in the lab instructions.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code>name = "Jordan Kim"
+age = 29
+height_meters = 1.75
+has_cert = False
+
+print(f"{name} will be {age + 5} in five years.")
+print(f"Height: {round(height_meters, 2)}m")
+
+# Conditional boolean
+if age &gt;= 18:
+    is_adult = True
+else:
+    is_adult = False
+print(f"Is Adult? {is_adult}")
+</code></pre>
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
