@@ -3,118 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 20: Access Control and Segmentation Lab</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #0a0f0d;
-      color: #e2e8f0;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-
-    h1 {
-      color: #00ffcc;
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-    }
-
-    h2 {
-      color: #38bdf8;
-      margin-top: 2rem;
-    }
-
-    p, li {
-      line-height: 1.6;
-    }
-
-    code {
-      background-color: #1e293b;
-      color: #facc15;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-family: monospace;
-    }
-
-    .note {
-      background-color: #1e1b4b;
-      border-left: 4px solid #7c3aed;
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 6px;
-    }
-
-    ul {
-      list-style-type: disc;
-      padding-left: 1.5rem;
-    }
-  </style>
+  <title>Day 20 Lab - Access Control & Segmentation (Windows Firewall)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <h1>Day 20: Access Control and Segmentation in Action</h1>
-  <p><strong>Lab Focus:</strong> Simulate ACLs with Windows Firewall</p>
+  <div class="lab-container">
+    <h1>Day 20 Lab</h1>
+    <h2>Access Control & Segmentation (Windows Firewall)</h2>
 
-  <h2>Objective</h2>
-  <p>Create firewall rules to simulate access control lists (ACLs), test them, and understand how segmentation and rule enforcement work in real networks.</p>
+    <p><strong>Objective:</strong> Simulate network ACLs on a Windows host: block by <em>port</em>, restrict by <em>remote IP</em> (micro-segmentation), verify with `Test-NetConnection`, and capture evidence via firewall logs. Finish with a cleanup step.</p>
 
-  <h2>Tools Needed</h2>
-  <ul>
-    <li>Windows PC</li>
-    <li>Windows Defender Firewall</li>
-    <li>Command Prompt</li>
-    <li>Internet access</li>
-  </ul>
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Windows 10/11 PC with local admin rights</li>
+      <li>Windows Defender Firewall (built-in)</li>
+      <li>PowerShell (for quick tests)</li>
+      <li>Internet access</li>
+    </ul>
 
-  <h2>Step 1: Create a Firewall Rule</h2>
-  <ol>
-    <li>Open <strong>Windows Defender Firewall with Advanced Security</strong>:
-      <ul>
-        <li>Go to <em>Settings → Update & Security → Windows Security → Firewall & Network Protection</em>.</li>
-        <li>Click <em>Advanced Settings</em>.</li>
-      </ul>
-    </li>
-    <li>In the left pane, click <strong>Outbound Rules</strong>.</li>
-    <li>On the right pane, click <strong>New Rule…</strong>.</li>
-    <li>Select <strong>Port</strong> → click <strong>Next</strong>.</li>
-    <li>Choose <strong>TCP</strong> and enter <code>23</code> as the specific port (Telnet).</li>
-    <li>Select <strong>Block the connection</strong>.</li>
-    <li>Apply to all profiles (Domain, Private, Public).</li>
-    <li>Name it something like: <code>Block Telnet</code>.</li>
-  </ol>
+    <h3>⚠️ Safety First</h3>
+    <p>These rules affect only your PC. Don’t create “block all” rules. We’ll remove everything in the cleanup step.</p>
 
-  <div class="note">
-    ✅ <strong>Note:</strong> This simulates an ACL blocking Telnet (port 23).
+    <h3>Step 1 — Create a Port-Based Block (Telnet / TCP 23)</h3>
+    <p><em>GUI path:</em> Open <strong>Windows Defender Firewall with Advanced Security</strong> → <strong>Outbound Rules</strong> → <strong>New Rule…</strong> → <strong>Port</strong> → <strong>TCP</strong> port <code>23</code> → <strong>Block the connection</strong> → apply to all profiles → name it <code>HL Block Telnet Out</code>.</p>
+    <p><em>PowerShell (optional, one-liner):</em></p>
+<pre><code>New-NetFirewallRule -DisplayName "HL Block Telnet Out" -Direction Outbound -Action Block -Protocol TCP -RemotePort 23 -Profile Any
+</code></pre>
+
+    <h3>Step 2 — Verify the Rule</h3>
+    <ul>
+      <li>Test a Telnet socket (no client install needed):<br>
+      <code>Test-NetConnection towel.blinkenlights.nl -Port 23</code><br>
+      <em>Expected:</em> <code>TcpTestSucceeded : False</code> (blocked).</li>
+      <li>Control test that should still work:<br>
+      <code>Test-NetConnection 8.8.8.8 -Port 53</code> (DNS over UDP/TCP) or<br>
+      <code>Test-NetConnection www.microsoft.com -Port 443</code> (HTTPS).</li>
+    </ul>
+    <div class="note">You just implemented a classic ACL: “deny tcp/23, permit the rest.”</div>
+
+    <h3>Step 3 — Micro-Segmentation by Remote IP</h3>
+    <p>Create a rule that blocks traffic to a specific remote host/subnet while leaving others alone.</p>
+    <p><em>GUI:</em> New <strong>Outbound</strong> → <strong>Custom</strong> → <em>Any program</em> → <em>Any protocol</em> → <strong>Which remote IP addresses?</strong> → <em>These IP addresses</em> → add <code>1.1.1.1</code> (Cloudflare) → <strong>Block</strong> → all profiles → name <code>HL Block 1.1.1.1</code>.</p>
+    <p><em>PowerShell (optional):</em></p>
+<pre><code>New-NetFirewallRule -DisplayName "HL Block 1.1.1.1" -Direction Outbound -Action Block -RemoteAddress 1.1.1.1 -Profile Any
+</code></pre>
+    <p><em>Test:</em></p>
+<pre><code>Test-NetConnection 1.1.1.1 -Port 443     # should fail
+Test-NetConnection 8.8.8.8 -Port 443     # should succeed
+</code></pre>
+    <div class="note">This demonstrates host-level segmentation/allowlisting: one destination is isolated without touching everything else.</div>
+
+    <h3>Step 4 — Enable Logging & Capture Evidence</h3>
+    <p>Turn on firewall logging and then re-run a blocked test to generate entries.</p>
+<pre><code># Enable logging of allowed and dropped connections (per profile)
+Set-NetFirewallProfile -Profile Domain,Public,Private -LogAllowed True -LogDropped True `
+  -LogFileName "$env:windir\System32\LogFiles\Firewall\pfirewall.log" -LogMaxSizeKilobytes 16384
+
+# Tail the last 50 lines after a failed connection attempt
+Get-Content "$env:windir\System32\LogFiles\Firewall\pfirewall.log" -Tail 50
+</code></pre>
+    <p><em>Deliverable idea:</em> copy a few relevant log lines showing the block with timestamps.</p>
+
+    <h3>Step 5 — (Optional) Inbound Ping Control</h3>
+    <p>If you have another device to ping you, try blocking ICMP Echo <em>inbound</em> on the <strong>Public</strong> profile:</p>
+<pre><code>New-NetFirewallRule -DisplayName "HL Block ICMP In (Public)" -Direction Inbound `
+  -Action Block -Protocol ICMPv4 -IcmpType 8 -Profile Public
+</code></pre>
+    <p>Connect your PC to a “Public” network (or set the adapter to Public temporarily), then have a second device ping your IP. It should fail while other traffic (e.g., web) still works.</p>
+
+    <h3>Step 6 — Clean Up</h3>
+<pre><code>Remove-NetFirewallRule -DisplayName "HL Block Telnet Out"
+Remove-NetFirewallRule -DisplayName "HL Block 1.1.1.1"
+# Optional, if you created it:
+Remove-NetFirewallRule -DisplayName "HL Block ICMP In (Public)"
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your two rules in <em>Outbound Rules</em> (names visible).</li>
+      <li>PowerShell output showing <code>Test-NetConnection ... -Port 23</code> failing and HTTPS succeeding.</li>
+      <li>Log snippet from <code>pfirewall.log</code> that captures a blocked attempt.</li>
+      <li>(Optional) Evidence of inbound ICMP block from another device.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals</h3>
+    <ul>
+      <li>Create an <em>allow</em> rule that permits HTTPS only to <code>8.8.8.8/32</code> and confirm other HTTPS destinations fail.</li>
+      <li>Convert the GUI rules to PowerShell and export them:
+        <br><code>Get-NetFirewallRule | ? DisplayName -like "HL *" | Export-Clixml "$env:USERPROFILE\Desktop\hl-rules.xml"</code>
+      </li>
+      <li>Discuss how host-based rules complement network ACLs/VLANs (“defense in depth”).</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>In what ways do these host rules behave like router/firewall ACLs?</li>
+      <li>How does blocking by remote IP simulate segmentation or zero-trust principles?</li>
+      <li>When might logging be more valuable than blocking?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You enforced port and destination controls with Windows Firewall, validated behavior with socket tests, and recorded proof via logs—mirroring how ACLs and segmentation are applied in real environments.</p>
   </div>
-
-  <h2>Step 2: Test the Rule</h2>
-  <ol>
-    <li>Open <strong>Command Prompt</strong> (Win + R, type <code>cmd</code>).</li>
-    <li>Try a Telnet connection:
-      <ul>
-        <li><code>telnet towel.blinkenlights.nl 23</code></li>
-        <li>It should fail (connection refused or timeout).</li>
-      </ul>
-    </li>
-    <li>Now test something that should still work:
-      <ul>
-        <li><code>ping 8.8.8.8</code> → you should get replies.</li>
-      </ul>
-    </li>
-  </ol>
-
-  <div class="note">
-    🔍 <strong>Observation:</strong> You’ve successfully blocked Telnet but allowed other traffic—just like an ACL would!
-  </div>
-
-  <h2>Step 3: Reflect</h2>
-  <p>Write a few sentences on the following:</p>
-  <ul>
-    <li>How did this firewall rule simulate an ACL?</li>
-    <li>Why block specific ports instead of turning everything off?</li>
-    <li>How does segmentation reduce attack surface?</li>
-  </ul>
-
-  <p>Example answer: “By creating a rule for port 23, I simulated denying Telnet traffic while allowing others like ping. This kind of selective filtering is how ACLs work to control access.”</p>
 </body>
 </html>
