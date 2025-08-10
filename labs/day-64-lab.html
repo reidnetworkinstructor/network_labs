@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 64 Lab - Process Management (ps, top, kill)</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 64 Lab</h1>
+    <h2>Process Management: ps, top, kill</h2>
+
+    <p><strong>Objective:</strong> Inspect and control Linux processes using <code>ps</code>, <code>top</code>, and <code>kill</code>. Practice finding PIDs, filtering output, and safely terminating test processes.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+      <li>(Optional) <code>htop</code> and <code>pstree</code> if installed</li>
+    </ul>
+
+    <h3>Step 1: Create Safe Test Processes</h3>
+    <p>Start a few benign processes you can manage during the lab:</p>
+<pre><code># 1) A sleeping process (runs 300 seconds)
+sleep 300 &amp;
+
+# 2) A tail following /var/log (stop later with Ctrl+C if foreground)
+tail -f /var/log/syslog &gt; /tmp/syslog_follow.out 2&gt;/dev/null &amp;
+
+# 3) A CPU-lite loop (will exit on kill)
+( while true; do date &gt; /dev/null; sleep 1; done ) &amp;
+
+# Show background jobs (optional)
+jobs -l
+</code></pre>
+
+    <h3>Step 2: List Processes with ps</h3>
+    <p>Common ps styles:</p>
+<pre><code># BSD style (user-friendly on many distros)
+ps aux | head
+
+# SysV style (portable)
+ps -ef | head
+
+# Your processes only
+ps -u "$(whoami)"
+
+# Show only PID and command, sorted by PID
+ps -eo pid,cmd --sort=pid | head
+</code></pre>
+
+    <h3>Step 3: Find Specific Processes</h3>
+    <p>Filter by name and extract PIDs:</p>
+<pre><code># Using grep (mind the grep itself)
+ps aux | grep '[s]leep'
+
+# More direct helpers
+pgrep sleep
+pgrep -a tail   # show name + args
+</code></pre>
+
+    <h3>Step 4: Inspect CPU / Memory Usage</h3>
+<pre><code># Show CPU% and MEM% columns, top talkers first
+ps -eo pid,ppid,user,pcpu,pmem,comm --sort=-pcpu | head
+
+# Same but by memory
+ps -eo pid,ppid,user,pmem,pcpu,comm --sort=-pmem | head
+</code></pre>
+
+    <h3>Step 5: Monitor Live with top</h3>
+    <p>Start <code>top</code> and try these keys:</p>
+    <ul>
+      <li><strong>q</strong> = quit</li>
+      <li><strong>k</strong> = kill a PID from inside top</li>
+      <li><strong>P</strong> = sort by CPU • <strong>M</strong> = sort by memory</li>
+      <li><strong>1</strong> = show all CPU cores (if supported)</li>
+      <li><strong>h</strong> = help</li>
+    </ul>
+<pre><code>top
+</code></pre>
+
+    <h3>Step 6: Send Signals with kill</h3>
+    <p>Graceful first (<code>SIGTERM</code>=15), force only if needed (<code>SIGKILL</code>=9):</p>
+<pre><code># Get PID of the sleep process
+pgrep sleep
+
+# Try graceful stop
+kill -15 &lt;PID&gt;
+
+# If it doesn't exit, force kill
+kill -9 &lt;PID&gt;
+</code></pre>
+    <p>Kill by name (use carefully):</p>
+<pre><code>pkill tail      # sends SIGTERM by default
+pkill -9 tail   # force kill by name
+</code></pre>
+
+    <h3>Step 7: Verify Processes Ended</h3>
+<pre><code># Should return nothing if process is gone
+pgrep sleep || echo "sleep is not running"
+pgrep tail  || echo "tail is not running"
+</code></pre>
+
+    <h3>Step 8: Nice / Renice (Optional)</h3>
+    <p>Adjust CPU scheduling priority (lower is higher priority; default usually 0):</p>
+<pre><code># Start a command with lower priority (nice level 10)
+nice -n 10 sleep 120 &amp;
+
+# Change priority of an existing PID to 5
+sudo renice -n 5 -p &lt;PID&gt;
+
+# Inspect priorities
+ps -o pid,ni,cmd -p &lt;PID&gt;
+</code></pre>
+
+    <h3>Step 9: (Optional) Trees & htop</h3>
+<pre><code># Process tree (if available)
+pstree -p | head
+
+# htop (interactive, if installed)
+htop
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ps -eo pid,ppid,user,pcpu,pmem,comm --sort=-pcpu | head</code> output</li>
+      <li>Screenshot of <code>top</code> running (sorted by CPU or memory)</li>
+      <li>Screenshot showing a successful <code>kill -15</code> then verification with <code>pgrep</code></li>
+      <li>(Optional) Screenshot of <code>pstree -p</code> or <code>htop</code></li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Use <code>ps -C</code> to select by command name: <code>ps -C sleep -o pid,cmd</code></li>
+      <li>Format ps output for CSV export: <code>ps -eo pid,ppid,user,pcpu,pmem,comm --sort=-pcpu --no-headers | head &gt; top_procs.csv</code></li>
+      <li>Test handling a misbehaving process: try <code>kill -15</code> then <code>kill -9</code>, note the difference</li>
+      <li>Explore other signals: <code>kill -l</code> (e.g., <code>SIGSTOP</code>=19, <code>SIGCONT</code>=18)</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why should you try <code>SIGTERM</code> before <code>SIGKILL</code>?</li>
+      <li>When would adjusting <code>nice</code> / <code>renice</code> be appropriate?</li>
+      <li>What’s the advantage of using <code>pgrep</code>/<code>pkill</code> over <code>ps | grep</code>?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You created controllable test processes, listed and filtered them with <code>ps</code>, monitored live usage with <code>top</code>, and terminated processes using <code>kill</code>/<code>pkill</code>. You also explored priorities with <code>nice</code>/<code>renice</code> and optional tree/interactive views.</p>
+  </div>
+</body>
+</html>
