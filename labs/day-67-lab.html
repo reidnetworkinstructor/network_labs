@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 67 Lab - Network & Connectivity Commands</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 67 Lab</h1>
+    <h2>Network & Connectivity Commands</h2>
+
+    <p><strong>Objective:</strong> Use Linux networking tools to view interface details, test connectivity, resolve DNS names, trace routes, and check open ports/services.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+      <li>Internet connectivity for external tests</li>
+    </ul>
+
+    <h3>Step 1: View IP Address & Interfaces</h3>
+<pre><code># Modern tool
+ip addr show
+
+# Shorter form (only IPv4/IPv6 addresses)
+ip -brief addr
+
+# Legacy ifconfig (if installed)
+ifconfig
+</code></pre>
+
+    <h3>Step 2: Check Routing Table & Default Gateway</h3>
+<pre><code># Show routing table
+ip route show
+
+# Show default route only
+ip route | grep default
+</code></pre>
+
+    <h3>Step 3: Test Basic Connectivity (ping)</h3>
+<pre><code># Ping external host (Ctrl+C to stop)
+ping -c 4 8.8.8.8
+
+# Ping by hostname
+ping -c 4 google.com
+</code></pre>
+
+    <h3>Step 4: Trace the Path to a Host</h3>
+<pre><code># Install traceroute if missing (Debian/Ubuntu example)
+# sudo apt install traceroute
+traceroute google.com
+</code></pre>
+
+    <h3>Step 5: DNS Lookups</h3>
+<pre><code># Simple lookup
+nslookup openai.com
+
+# Detailed (if dig installed)
+dig openai.com
+
+# Query specific record type
+dig MX gmail.com
+</code></pre>
+
+    <h3>Step 6: View Current Network Connections</h3>
+<pre><code># List listening ports (netstat variant)
+ss -tuln
+
+# With process info (sudo may be needed)
+sudo ss -tulpn
+</code></pre>
+
+    <h3>Step 7: Test Port Connectivity</h3>
+<pre><code># Using nc (netcat) to test TCP connection
+nc -vz google.com 80
+
+# Test multiple ports
+nc -vz google.com 80 443
+</code></pre>
+
+    <h3>Step 8: Download a File via CLI (curl/wget)</h3>
+<pre><code># wget example
+wget https://example.com
+
+# curl example
+curl -O https://example.com/index.html
+</code></pre>
+
+    <h3>Step 9: Display Interface Statistics</h3>
+<pre><code># Summary statistics
+ip -s link
+
+# Old style
+netstat -i
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ip addr show</code> output</li>
+      <li>Screenshot of successful <code>ping</code> to both IP and hostname</li>
+      <li>Screenshot of <code>traceroute google.com</code> output</li>
+      <li>Screenshot of <code>ss -tuln</code> showing listening ports</li>
+      <li>Screenshot of <code>nc -vz</code> test result</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Run <code>ping</code> to a host on your LAN and compare latency to an internet host.</li>
+      <li>Use <code>dig</code> with <code>+trace</code> to see the full DNS resolution path.</li>
+      <li>List only TCP listening sockets: <code>ss -lt</code>.</li>
+      <li>Check which process is bound to port 22 (SSH): <code>sudo ss -tulpn | grep :22</code>.</li>
+      <li>Test a closed port to see how <code>nc</code> reports failures.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you test connectivity by IP address instead of hostname?</li>
+      <li>Why is <code>ss</code> preferred over older <code>netstat</code> on modern Linux?</li>
+      <li>How can traceroute help in diagnosing network issues?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You used core Linux networking tools to inspect interfaces, check routing, test connectivity, resolve DNS, trace routes, and identify open ports and services.</p>
+  </div>
+</body>
+</html>
