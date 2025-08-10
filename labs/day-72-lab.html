@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 72 Lab - Variables & Basic Types</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 72 Lab</h1>
+    <h2>Variables & Basic Types</h2>
+
+    <p><strong>Objective:</strong> Learn how to store information in variables, understand Python’s basic data types, and practice simple operations with each.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3 installed (from Day 71)</li>
+      <li>Visual Studio Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – What is a Variable?</h3>
+    <p>A variable is like a labeled box where Python stores a value for you to use later.</p>
+<pre><code># Assign values to variables
+name = "Jordan"
+age = 29
+height_meters = 1.75
+is_student = True
+</code></pre>
+
+    <h3>Step 2 – Basic Data Types</h3>
+    <p>In Python, the main built-in types you’ll use right away are:</p>
+    <ul>
+      <li><strong>str</strong> (string) – text</li>
+      <li><strong>int</strong> (integer) – whole numbers</li>
+      <li><strong>float</strong> – decimal numbers</li>
+      <li><strong>bool</strong> (boolean) – <code>True</code> or <code>False</code></li>
+    </ul>
+
+<pre><code># Examples of each type
+message = "Hello Hoodie!"
+year = 2025
+price = 19.99
+is_admin = False
+
+print(type(message))
+print(type(year))
+print(type(price))
+print(type(is_admin))
+</code></pre>
+
+    <h3>Step 3 – Working with Variables</h3>
+    <p>You can combine or manipulate variable values:</p>
+<pre><code># String concatenation
+first = "Jordan"
+last = "Kim"
+full_name = first + " " + last
+print(full_name)
+
+# Math with numbers
+apples = 5
+oranges = 3
+total_fruit = apples + oranges
+print("Total fruit:", total_fruit)
+
+# Boolean logic
+has_id = True
+is_over_18 = True
+can_enter = has_id and is_over_18
+print("Allowed in?", can_enter)
+</code></pre>
+
+    <h3>Step 4 – Mini Lab: Your Profile</h3>
+    <p>Create a script called <code>profile.py</code> that:</p>
+    <ol>
+      <li>Stores your name, age, and favorite Hoodie skill in variables.</li>
+      <li>Calculates how old you’ll be in 5 years.</li>
+      <li>Stores whether you have any IT certifications yet (<code>True</code> or <code>False</code>).</li>
+      <li>Prints all the information in a nicely formatted output.</li>
+    </ol>
+    <p>Example output:</p>
+<pre><code>Name: Jordan Kim
+Age now: 29
+Age in 5 years: 34
+Favorite Hoodie Skill: Cloud Security
+Has Certification? False
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>type()</code> output for all four basic types</li>
+      <li>Screenshot of your <code>profile.py</code> code</li>
+      <li>Screenshot of your profile output in the terminal</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Use <code>f-strings</code> to make your print statements cleaner:
+<pre><code>print(f"{name} will be {age + 5} in five years.")
+</code></pre>
+      </li>
+      <li>Add a <code>float</code> variable for your height in meters and print it rounded to 2 decimals.</li>
+      <li>Create a boolean variable that changes based on an <code>if</code> statement (e.g., <code>is_graduate</code>).</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why might Python’s dynamic typing be helpful for a beginner?</li>
+      <li>What are the risks of not knowing a variable’s type in a larger project?</li>
+      <li>How could you use variables to store data collected from a user?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You learned how to declare variables, worked with Python’s basic types, performed operations on them, and created a personal profile program. This sets you up for handling user input and more complex data in the next labs.</p>
+  </div>
+</body>
+</html>
