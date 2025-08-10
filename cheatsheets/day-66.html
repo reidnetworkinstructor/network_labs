@@ -3,141 +3,147 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 66 Cheat Sheet - Text Viewing, Redirection & Search</title>
+  <title>Day 66 Cheat Sheet - User & Group Management</title>
   <link rel="stylesheet" href="../assets/lab.css" />
 </head>
 <body>
   <div class="lab-container">
     <h1>Day 66 Cheat Sheet</h1>
-    <h2>Text Viewing, Redirection & Search</h2>
+    <h2>User & Group Management</h2>
 
-    <p>Quick reference for working with text files, logs, and CSVs using Linux command-line tools.</p>
+    <p>Quick reference for creating users, managing groups, granting limited admin, locking accounts, and safe removal.</p>
 
-    <h3>Viewing Files</h3>
+    <h3>Core Identity & Lookup</h3>
     <table>
       <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td><code>whoami</code></td><td>Current user</td><td><code>whoami</code></td></tr>
+      <tr><td><code>id [user]</code></td><td>UID/GIDs</td><td><code>id trainee</code></td></tr>
+      <tr><td><code>groups [user]</code></td><td>Group memberships</td><td><code>groups trainee</code></td></tr>
+      <tr><td><code>getent passwd|group</code></td><td>Accounts / groups DB</td><td><code>getent passwd trainee</code></td></tr>
+    </table>
+
+    <h3>Create Users & Groups</h3>
+    <table>
+      <tr><th>Task</th><th>Debian/Ubuntu</th><th>Portable/Other</th></tr>
       <tr>
-        <td><code>cat</code></td>
-        <td>View entire file (small files)</td>
-        <td><code>cat file.txt</code></td>
+        <td>Create user + home</td>
+        <td><code>sudo adduser trainee</code></td>
+        <td><code>sudo useradd -m -s /bin/bash trainee</code></td>
       </tr>
       <tr>
-        <td><code>less</code></td>
-        <td>Page through file with navigation</td>
-        <td><code>less file.txt</code> (<kbd>Space</kbd>=next, <kbd>/</kbd>=search, <kbd>q</kbd>=quit)</td>
+        <td>Set password</td>
+        <td colspan="2"><code>sudo passwd trainee</code></td>
       </tr>
       <tr>
-        <td><code>head</code></td>
-        <td>Show first N lines</td>
-        <td><code>head -n 10 file.txt</code></td>
+        <td>Create group</td>
+        <td colspan="2"><code>sudo groupadd interns</code></td>
       </tr>
       <tr>
-        <td><code>tail</code></td>
-        <td>Show last N lines; <code>-f</code> follows updates</td>
-        <td><code>tail -n 20 file.txt</code> • <code>tail -f logfile</code></td>
+        <td>Add to group(s)</td>
+        <td colspan="2"><code>sudo usermod -aG interns trainee</code></td>
       </tr>
     </table>
 
-    <h3>Searching</h3>
+    <h3>Admin Rights (sudo / wheel)</h3>
     <table>
-      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr><th>Distro</th><th>Admin group</th><th>Grant</th></tr>
+      <tr><td>Debian/Ubuntu</td><td><code>sudo</code></td><td><code>sudo usermod -aG sudo trainee</code></td></tr>
+      <tr><td>RHEL/Fedora</td><td><code>wheel</code></td><td><code>sudo usermod -aG wheel trainee</code></td></tr>
+    </table>
+    <p><strong>Test:</strong> <code>su - trainee</code> → <code>sudo -v</code> then <code>sudo id</code> (enter trainee’s password).</p>
+
+    <h3>Modify Accounts</h3>
+    <table>
+      <tr><th>Task</th><th>Command</th><th>Notes</th></tr>
       <tr>
-        <td><code>grep</code></td>
-        <td>Search text by pattern</td>
-        <td><code>grep "ERROR" logfile</code></td>
+        <td>Change primary group</td>
+        <td><code>sudo usermod -g interns trainee</code></td>
+        <td>Primary group shown as GID in <code>id</code></td>
       </tr>
       <tr>
-        <td><code>grep -i</code></td>
-        <td>Case-insensitive search</td>
-        <td><code>grep -i "login" logfile</code></td>
+        <td>Change login shell</td>
+        <td><code>sudo usermod -s /bin/zsh trainee</code></td>
+        <td>Valid shells in <code>/etc/shells</code></td>
       </tr>
       <tr>
-        <td><code>grep -E</code></td>
-        <td>Extended regex patterns</td>
-        <td><code>grep -E "200|404" access.log</code></td>
+        <td>Lock / Unlock</td>
+        <td><code>sudo usermod -L trainee</code> / <code>sudo usermod -U trainee</code></td>
+        <td>Check: <code>sudo passwd -S trainee</code></td>
+      </tr>
+      <tr>
+        <td>Password aging</td>
+        <td><code>sudo chage -l trainee</code></td>
+        <td>Force change: <code>sudo chage -d 0 trainee</code></td>
       </tr>
     </table>
 
-    <h3>Redirection & Append</h3>
+    <h3>Remove Accounts (Careful)</h3>
     <table>
-      <tr><th>Symbol</th><th>Purpose</th><th>Example</th></tr>
+      <tr><th>Task</th><th>Command</th><th>Effect</th></tr>
       <tr>
-        <td><code>&gt;</code></td>
-        <td>Write output to file (overwrite)</td>
-        <td><code>echo "note" &gt; notes.txt</code></td>
+        <td>Delete user + home</td>
+        <td><code>sudo userdel -r trainee</code></td>
+        <td>Removes account and <code>/home/trainee</code></td>
       </tr>
       <tr>
-        <td><code>&gt;&gt;</code></td>
-        <td>Append output to file</td>
-        <td><code>echo "line2" &gt;&gt; notes.txt</code></td>
+        <td>Delete group</td>
+        <td><code>sudo groupdel interns</code></td>
+        <td>Only if no members depend on it</td>
       </tr>
     </table>
 
-    <h3>Pipes & Filters</h3>
-    <table>
-      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
-      <tr>
-        <td><code>|</code> (pipe)</td>
-        <td>Send output of one command to another</td>
-        <td><code>cat file | grep ERROR</code></td>
-      </tr>
-      <tr>
-        <td><code>tee</code></td>
-        <td>Write output to screen and file</td>
-        <td><code>grep "200" access.log | tee ok.log</code></td>
-      </tr>
-    </table>
+    <h3>Shared Project Folder (Setgid Pattern)</h3>
+<pre><code># Create shared directory for a team group
+sudo mkdir -p /srv/project
+sudo chgrp interns /srv/project
+sudo chmod 2775 /srv/project   # setgid bit: new files inherit group
+# Optional: verify
+getfacl /srv/project 2>/dev/null || ls -ld /srv/project
+</code></pre>
 
-    <h3>Data Extraction</h3>
+    <h3>Service-Only / Disabled Login Accounts</h3>
     <table>
-      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr><th>Goal</th><th>Command</th><th>Result</th></tr>
       <tr>
-        <td><code>cut</code></td>
-        <td>Extract specific fields</td>
-        <td><code>cut -d',' -f2 users.csv</code></td>
+        <td>No interactive login</td>
+        <td><code>sudo usermod -s /usr/sbin/nologin svcuser</code></td>
+        <td>Blocks shell access; still usable for services</td>
       </tr>
       <tr>
-        <td><code>sort</code></td>
-        <td>Sort lines</td>
-        <td><code>sort file.txt</code></td>
-      </tr>
-      <tr>
-        <td><code>uniq</code></td>
-        <td>Filter duplicate lines</td>
-        <td><code>uniq names.txt</code></td>
-      </tr>
-      <tr>
-        <td><code>uniq -c</code></td>
-        <td>Count occurrences</td>
-        <td><code>sort names.txt | uniq -c</code></td>
+        <td>Lock password</td>
+        <td><code>sudo passwd -l svcuser</code></td>
+        <td>Disables password auth</td>
       </tr>
     </table>
 
     <h3>Mini Workflows</h3>
-<pre><code># First 5 lines of log containing 404
-grep " 404" access.log | head -n 5
+<pre><code># 1) New user with groups and sudo (Debian/Ubuntu)
+sudo adduser trainee
+sudo usermod -aG interns,sudo trainee
+id trainee && groups trainee
 
-# Count unique status codes
-cut -d' ' -f5 access.log | sort | uniq -c | sort -n
+# 2) Lock, audit, unlock
+sudo usermod -L trainee
+sudo passwd -S trainee
+sudo usermod -U trainee
 
-# Extract names from CSV where dept=IT
-grep ',IT$' users.csv | cut -d',' -f2
-
-# Save non-200 requests to file
-grep -v " 200$" access.log &gt; non200.log
+# 3) Team share with setgid
+sudo mkdir -p /srv/share
+sudo chgrp interns /srv/share
+sudo chmod 2775 /srv/share
 </code></pre>
 
     <h3>Tips</h3>
     <ul>
-      <li>Use <code>less</code> for large files to avoid flooding the terminal.</li>
-      <li>Chain commands with <code>|</code> to avoid creating intermediate files.</li>
-      <li>Use <code>grep -E</code> for complex patterns, <code>-i</code> for case-insensitive.</li>
-      <li>For CSVs, <code>cut -d',' -fN</code> is quick; <code>awk</code> is more flexible.</li>
-      <li>Combine <code>sort | uniq -c</code> to produce simple frequency reports.</li>
+      <li>Use <code>-aG</code> to <em>append</em> groups; omitting <code>-a</code> overwrites memberships.</li>
+      <li>Prefer <code>lock</code> over deletion for temporary offboarding or investigations.</li>
+      <li>Keep admin rights minimal—add to <code>sudo</code>/<code>wheel</code> only when necessary.</li>
+      <li>Validate changes with <code>id</code>, <code>groups</code>, and <code>getent</code>.</li>
+      <li>Store reasons for access changes in a ticket or change log.</li>
     </ul>
 
     <hr />
-    <p><strong>Use with Day 66 Lab:</strong> Keep this open to quickly reference viewing, searching, redirecting, and filtering commands during practice.</p>
+    <p><strong>Use with Day 66 Lab:</strong> Follow this while creating users/groups, granting limited admin, enforcing password policy, locking/unlocking, and performing safe removals.</p>
   </div>
 </body>
 </html>
