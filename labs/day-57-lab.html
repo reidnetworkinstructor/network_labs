@@ -1,0 +1,157 @@
+Here’s a ready-to-drop lab for Day 57. Save as `day-57-lab.html` in your `/labs/` folder (it uses `../lab.css` like the others).
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 57 Lab - Visualizations & Dashboards</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 57 Lab</h1>
+    <h2>Visualizations & Dashboards</h2>
+
+    <p><strong>Objective:</strong> Turn raw searches into clear visuals and assemble a multi-panel dashboard. You’ll practice choosing the right viz, adding inputs (tokens), building drilldowns, and using a base search for performance.</p>
+
+    <h3>Quick Visual Guide</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Visualization</th><th>Best For</th><th>Typical SPL</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Single Value (+sparkline)</td><td>KPI count/avg now</td><td><code>| stats count</code> or <code>| timechart span=5m count</code></td></tr>
+        <tr><td>Line/Area</td><td>Trends over time</td><td><code>| timechart span=1h count</code></td></tr>
+        <tr><td>Column/Bar</td><td>Top-N categories</td><td><code>| top field limit=10</code> or <code>| stats count by field</code></td></tr>
+        <tr><td>Pie/Donut</td><td>Simple composition (few slices)</td><td><code>| stats count by category</code></td></tr>
+        <tr><td>Trellis</td><td>Small multiples by a field</td><td>Any chart with “Trellis” layout on</td></tr>
+        <tr><td>Table</td><td>Details, drill targets</td><td><code>| table field1 field2 ...</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Splunk Cloud Trial (or Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Prep Your Dataset & Time</h3>
+    <ol>
+      <li>Open <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Set time to <strong>Last 24 hours</strong>.</li>
+      <li>We’ll use internal web-style logs:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code>
+      </li>
+    </ol>
+
+    <h3>Step 2: Build Three Reusable Searches</h3>
+    <p>Run each search and confirm you see results & the <em>Visualization</em> tab offers the chart mentioned.</p>
+    <ol>
+      <li><strong>KPI – Errors in last 24h (Single Value):</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access (error OR status&gt;=400) | stats count as errors_24h</code>
+      </li>
+      <li><strong>Trend – Requests by class (Line):</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval class=case(status&gt;=500,"5xx", status&gt;=400,"4xx", status&gt;=300,"3xx", status&gt;=200,"2xx", true(),"Other")</code><br>
+        <code>| timechart span=1h count by class</code>
+      </li>
+      <li><strong>Top Paths (Bar):</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | top uri_path limit=10</code>
+      </li>
+    </ol>
+
+    <h3>Step 3: Create a Dashboard (Dashboard Studio recommended)</h3>
+    <ol>
+      <li>Go to <strong>Dashboards ▸ Create New Dashboard</strong>.</li>
+      <li>Name: <strong>Hoodie Day57 – Visuals</strong>. Choose <strong>Dashboard Studio</strong>. Create.</li>
+      <li>Add Panel ➜ <strong>From Search</strong> and paste Search #1. Set viz to <em>Single Value</em>. Title: <em>Errors (24h)</em>. Enable sparkline if you prefer (switch to <em>Time range</em> 24h and use <code>| timechart</code> variant).</li>
+      <li>Add Panel ➜ From Search with Search #2. Set viz to <em>Line</em> or <em>Area</em>. Title: <em>Requests by Class (Hourly)</em>.</li>
+      <li>Add Panel ➜ From Search with Search #3. Set viz to <em>Column</em> (vertical bar). Title: <em>Top URI Paths</em>.</li>
+      <li>Arrange panels in a 2x2 grid and save.</li>
+    </ol>
+
+    <h3>Step 4: Add Inputs (Tokens)</h3>
+    <ol>
+      <li>In the dashboard editor, add an <strong>Input</strong> ➜ <em>Dropdown</em> labelled <strong>Sourcetype</strong>.</li>
+      <li>Set <strong>Token</strong> to <code>tok_sourcetype</code>. Provide static choices like:
+        <ul>
+          <li>Label: <code>splunkd_ui_access</code> — Value: <code>splunkd_ui_access</code> (default)</li>
+          <li>Label: <code>splunkd</code> — Value: <code>splunkd</code></li>
+        </ul>
+      </li>
+      <li>Edit each panel query to include the tokenized filter (keep your other logic intact). Example for Search #2:<br>
+        <code>index=_internal sourcetype=$tok_sourcetype$</code><br>
+        <code>| eval class=case(status&gt;=500,"5xx", status&gt;=400,"4xx", status&gt;=300,"3xx", status&gt;=200,"2xx", true(),"Other")</code><br>
+        <code>| timechart span=1h count by class</code>
+      </li>
+      <li>Save and test the dropdown. The panels should all update.</li>
+    </ol>
+
+    <h3>Step 5: Enable Drilldowns</h3>
+    <ol>
+      <li>Select the <em>Top URI Paths</em> bar chart panel → <strong>Drilldown</strong> settings.</li>
+      <li>Choose <strong>Link to New Search</strong> and pass tokens:
+        <ul>
+          <li>Search: <code>index=_internal sourcetype=$tok_sourcetype$ uri_path="$click.value$" earliest=$time.earliest$ latest=$time.latest$</code></li>
+        </ul>
+      </li>
+      <li>Apply and test by clicking a bar.</li>
+    </ol>
+
+    <h3>Step 6: (Classic) Use a Base Search for Performance (Optional)</h3>
+    <p>If you prefer Simple XML dashboards, create one panel’s search as a <em>base search</em> and make other panels use <em>post-processing</em> searches. The idea:</p>
+    <pre><code>Base:  index=_internal sourcetype=$tok_sourcetype$ earliest=$time.earliest$ latest=$time.latest$
+Post:  | timechart span=1h count by class
+Post:  | stats count as errors_24h
+Post:  | top uri_path limit=10
+</code></pre>
+    <p>This reduces repeated data scans across panels.</p>
+
+    <h3>Step 7: Polish</h3>
+    <ul>
+      <li>Set a <strong>dashboard refresh</strong> (e.g., 60s) or per-panel refresh.</li>
+      <li>Add <strong>threshold colors</strong> to the Single Value: e.g., green &lt; 50, yellow 50–200, red &gt; 200.</li>
+      <li>Try <strong>Trellis</strong> on the trend panel by <code>host</code>:
+        <pre><code>index=_internal sourcetype=$tok_sourcetype$
+| timechart span=1h count by host</code></pre>
+        Then enable <em>Trellis</em> = by series to get small multiples.</li>
+      <li>Set permissions to <em>App</em> read for your role so others can view.</li>
+    </ul>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of the finished dashboard showing:
+        <ul>
+          <li>Single Value KPI (Errors 24h)</li>
+          <li>Requests by Class line chart</li>
+          <li>Top URI Paths bar chart</li>
+        </ul>
+      </li>
+      <li>Screenshot demonstrating the <strong>Sourcetype</strong> dropdown changing all panels.</li>
+      <li>Screenshot of the <strong>drilldown search</strong> that opens from a bar click (with <code>uri_path</code> filter in SPL).</li>
+      <li>(Optional) Screenshot of a Trellis variant or threshold coloring.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add a second input: <strong>Method</strong> dropdown (<code>tok_method</code>) and include <code>method=$tok_method$</code> in panel SPL.</li>
+      <li>Create a <strong>Single Value</strong> KPI for “4xx past hour” with sparkline trend.</li>
+      <li>Export the dashboard as a <strong>PDF</strong> and attach to a weekly status email.</li>
+      <li>Refactor to a <strong>base search</strong> + post-process panels if using Classic Simple XML.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Which panel communicates meaningful change the fastest, and why?</li>
+      <li>How did tokens (inputs) reduce duplicated dashboards in your org?</li>
+      <li>What additional panel would help your team decide “Is this incident getting better or worse?”</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You selected effective visual types, built a 3-panel dashboard, added interactive inputs and drilldowns, and learned when to use base searches. You’re now ready to craft clean, performant Splunk dashboards.</p>
+  </div>
+</body>
+</html>
+```
