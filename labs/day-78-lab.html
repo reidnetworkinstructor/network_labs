@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 78 Lab - Functions & Modules</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 78 Lab</h1>
+    <h2>Functions & Modules</h2>
+
+    <p><strong>Objective:</strong> Write reusable functions with parameters, return values, and docstrings; use type hints and default args; and organize code into modules you can import from other files.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension</li>
+    </ul>
+
+    <h3>Step 1 – Your first function</h3>
+    <p>A function groups steps so you can reuse them and test them easily.</p>
+<pre><code>def greet(name: str) -> str:
+    """Return a friendly greeting for a given name."""
+    return f"Hello, {name}!"
+
+print(greet("Jordan"))
+</code></pre>
+
+    <h3>Step 2 – Parameters, defaults, and keyword args</h3>
+<pre><code>def make_badge(first: str, last: str, role: str = "Student") -> str:
+    """Create a simple text badge. Role defaults to 'Student'."""
+    full = f"{first.title()} {last.title()}"
+    return f"[{role}] {full}"
+
+print(make_badge("jordan", "kim"))
+print(make_badge("maria", "garcia", role="Help Desk"))
+</code></pre>
+
+    <h3>Step 3 – Side effects vs pure functions</h3>
+    <p><em>Pure</em> functions depend only on inputs and return a value. Functions with <em>side effects</em> change state or print/write files.</p>
+<pre><code># Pure
+def add(a: int, b: int) -> int:
+    return a + b
+
+# Side effect (prints)
+def log_line(msg: str) -> None:
+    print(f"[LOG] {msg}")
+</code></pre>
+
+    <h3>Step 4 – Docstrings & type hints matter</h3>
+    <p>Docstrings (triple quotes) show up in help() and editors; hints help readers and tools.</p>
+<pre><code>def percent(part: int, whole: int) -> float:
+    """Return percentage (0-100). Raises ValueError if whole is 0."""
+    if whole == 0:
+        raise ValueError("whole cannot be 0")
+    return (part / whole) * 100.0
+</code></pre>
+
+    <h3>Step 5 – Modules: import code from other files</h3>
+    <p>Create a folder for today (e.g., <code>day78/</code>) with two files:</p>
+<pre><code>day78/
+  utils.py
+  main.py
+</code></pre>
+
+    <p><strong>utils.py</strong> – put your reusable functions here:</p>
+<pre><code># utils.py
+from datetime import datetime
+
+def uptime_hours(start: str, end: str) -> float:
+    """Return hours between ISO-like timestamps 'YYYY-mm-dd HH:MM'."""
+    fmt = "%Y-%m-%d %H:%M"
+    s = datetime.strptime(start, fmt)
+    e = datetime.strptime(end, fmt)
+    delta = e - s
+    return round(delta.total_seconds() / 3600, 2)
+
+def password_score(pw: str) -> int:
+    """
+    Simple password score 0-4:
+    +1 length >= 8
+    +1 has digit
+    +1 has upper
+    +1 has special
+    """
+    score = 0
+    if len(pw) >= 8: score += 1
+    if any(ch.isdigit() for ch in pw): score += 1
+    if any(ch.isupper() for ch in pw): score += 1
+    if any(not ch.isalnum() for ch in pw): score += 1
+    return score
+
+def top_n(items: dict[str, int], n: int = 3) -> list[tuple[str, int]]:
+    """Return top N (key,count) pairs by count descending."""
+    return sorted(items.items(), key=lambda kv: kv[1], reverse=True)[:n]
+
+if __name__ == "__main__":
+    # Quick self-test when run directly
+    print("Self-test:", uptime_hours("2025-08-09 10:00", "2025-08-10 10:30"))
+</code></pre>
+
+    <p><strong>main.py</strong> – import and use functions from your module:</p>
+<pre><code># main.py
+from utils import uptime_hours, password_score, top_n
+
+def demo():
+    hours = uptime_hours("2025-08-10 08:00", "2025-08-10 17:30")
+    print(f"Uptime: {hours} hours")
+
+    score = password_score("Hoodie!234")
+    print(f"Password score: {score}/4")
+
+    counts = {"INFO": 11, "ERROR": 4, "WARN": 7, "DEBUG": 2}
+    print("Top levels:", top_n(counts, n=2))
+
+if __name__ == "__main__":
+    demo()
+</code></pre>
+
+    <h3>Step 6 – Import styles you’ll see often</h3>
+<pre><code># 1) import module then access names
+import math
+print(math.sqrt(16))
+
+# 2) import only what you need
+from datetime import timedelta
+
+# 3) alias the module
+import pathlib as p
+print(p.Path(".").resolve())
+</code></pre>
+
+    <h3>Mini Lab A – Mini Ops Toolkit (Modules)</h3>
+    <p>Build a tiny toolkit split across <code>utils.py</code> and <code>main.py</code> (like above):</p>
+    <ol>
+      <li>In <code>utils.py</code> implement:
+        <ul>
+          <li><code>normalize_name(s: str) -> str</code>: trims spaces, title-cases.</li>
+          <li><code>safe_div(a: float, b: float, default: float = 0.0) -> float</code>: returns <code>a/b</code> or <code>default</code> if <code>b==0</code>.</li>
+          <li><code>summary(title: str, lines: list[str]) -> str</code>: returns a multi-line string formatted with a header and bullet lines.</li>
+        </ul>
+      </li>
+      <li>In <code>main.py</code>:
+        <ul>
+          <li>Prompt for first/last name; print <code>normalize_name</code> for each.</li>
+          <li>Use <code>safe_div</code> to compute ticket close rate (closed/total).</li>
+          <li>Pass a few strings to <code>summary</code> and print the result.</li>
+        </ul>
+      </li>
+    </ol>
+    <p><strong>Example output:</strong></p>
+<pre><code>=== Daily Ops ===
+• User: Jordan Kim
+• Close rate: 66.67%
+• Notes: Shift A healthy; logs rotated
+</code></pre>
+
+    <h3>Mini Lab B – Simple Log Analyzer (Functions)</h3>
+    <p>Create <code>log_analyzer.py</code> that exposes reusable functions and a CLI:</p>
+    <ol>
+      <li>Implement:
+        <ul>
+          <li><code>count_levels(levels: list[str]) -> dict[str,int]</code></li>
+          <li><code>filter_level(events: list[tuple[str,str]], level: str) -> list[tuple[str,str]]</code> where each event is <code>(level, message)</code></li>
+          <li><code>report(counts: dict[str,int]) -> str</code> that returns nicely formatted lines sorted by count desc.</li>
+        </ul>
+      </li>
+      <li>In the <code>if __name__ == "__main__"</code> guard:
+        <ul>
+          <li>Build a small sample, call the functions, and print <code>report()</code>.</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your project tree (<code>day78/</code> with <code>utils.py</code>, <code>main.py</code>, and <code>log_analyzer.py</code>).</li>
+      <li>Terminal run of <code>main.py</code> showing uptime, password score, and top levels.</li>
+      <li>Terminal run of <code>log_analyzer.py</code> showing the generated report.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add input validation and <code>try/except</code> around user-entered numbers in <code>main.py</code>.</li>
+      <li>Create a subpackage: <code>day78/tools/__init__.py</code>, move <code>utils.py</code> into it, and update imports.</li>
+      <li>Add a simple unit test file <code>test_utils.py</code> that calls your pure functions and checks expected results (no frameworks needed yet).</li>
+      <li>In <code>utils.py</code>, add a function that returns the current script’s directory using <code>pathlib.Path(__file__).parent</code>.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Which functions in your toolkit are pure, and why is that helpful for testing?</li>
+      <li>What benefits did you see from keeping reusable code in a separate module?</li>
+      <li>How would you split a bigger project into modules or packages?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You authored clear, documented functions, practiced type hints and error handling, and organized your code into modules you can import. This is the backbone of real-world Python—testable, reusable, and maintainable.</p>
+  </div>
+</body>
+</html>
