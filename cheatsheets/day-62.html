@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 62 Cheat Sheet - File and Folder Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 62 Cheat Sheet</h1>
+    <h2>File and Folder Management</h2>
+
+    <p>Quick reference for creating, renaming, moving, copying, and deleting files and directories in Linux.</p>
+
+    <h3>Directory Commands</h3>
+    <table>
+      <tr>
+        <th>Command</th>
+        <th>What it does</th>
+        <th>Examples</th>
+      </tr>
+      <tr>
+        <td><code>mkdir</code></td>
+        <td>Create a new directory</td>
+        <td>
+          <code>mkdir project</code><br/>
+          <code>mkdir -p reports/2025/january</code> (nested)
+        </td>
+      </tr>
+      <tr>
+        <td><code>cd</code></td>
+        <td>Change directory</td>
+        <td>
+          <code>cd /etc</code><br/>
+          <code>cd ..</code> (up one level)
+        </td>
+      </tr>
+      <tr>
+        <td><code>ls</code></td>
+        <td>List directory contents</td>
+        <td>
+          <code>ls -l</code> (long format)<br/>
+          <code>ls -la</code> (include hidden files)
+        </td>
+      </tr>
+      <tr>
+        <td><code>rmdir</code></td>
+        <td>Remove empty directory</td>
+        <td><code>rmdir old_folder</code></td>
+      </tr>
+      <tr>
+        <td><code>rm -r</code></td>
+        <td>Remove directory and its contents</td>
+        <td><code>rm -r archive</code></td>
+      </tr>
+    </table>
+
+    <h3>File Commands</h3>
+    <table>
+      <tr>
+        <th>Command</th>
+        <th>What it does</th>
+        <th>Examples</th>
+      </tr>
+      <tr>
+        <td><code>touch</code></td>
+        <td>Create an empty file or update timestamp</td>
+        <td><code>touch notes.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>cp</code></td>
+        <td>Copy file or directory</td>
+        <td>
+          <code>cp file1.txt file2.txt</code><br/>
+          <code>cp -r dir1 dir2</code> (copy folder)
+        </td>
+      </tr>
+      <tr>
+        <td><code>mv</code></td>
+        <td>Move or rename file/directory</td>
+        <td>
+          <code>mv old.txt new.txt</code> (rename)<br/>
+          <code>mv file.txt folder/</code> (move)
+        </td>
+      </tr>
+      <tr>
+        <td><code>rm</code></td>
+        <td>Delete file</td>
+        <td>
+          <code>rm file.txt</code><br/>
+          <code>rm -i file.txt</code> (ask before deleting)
+        </td>
+      </tr>
+    </table>
+
+    <h3>Wildcard Patterns</h3>
+    <table>
+      <tr><th>Pattern</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><code>*</code></td><td>Matches any characters</td><td><code>ls *.txt</code></td></tr>
+      <tr><td><code>?</code></td><td>Matches a single character</td><td><code>ls file?.txt</code></td></tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># Create a project folder and files
+mkdir project
+cd project
+touch notes.txt tasks.txt
+
+# Rename and copy
+mv tasks.txt todo.txt
+cp notes.txt notes_backup.txt
+
+# Move backup to another folder
+mkdir archive
+mv notes_backup.txt archive/
+
+# Delete a file and folder
+rm todo.txt
+rm -r archive
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Use <code>ls -lh</code> for human-readable file sizes</li>
+      <li>Add <code>-i</code> to <code>rm</code> for interactive safety</li>
+      <li>Combine commands with <code>;</code> to run sequentially</li>
+      <li>Use <code>man &lt;command&gt;</code> for detailed options</li>
+    </ul>
+
+    <h3>Keyboard Shortcuts</h3>
+    <ul>
+      <li><kbd>Tab</kbd> — Auto-complete names</li>
+      <li><kbd>Up/Down</kbd> — Command history</li>
+      <li><kbd>Ctrl</kbd> + <kbd>C</kbd> — Cancel current command</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 62 Lab:</strong> Practice creating, renaming, moving, copying, and deleting files and folders directly from the Linux terminal.</p>
+  </div>
+</body>
+</html>
