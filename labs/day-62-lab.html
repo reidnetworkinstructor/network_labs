@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 62 Lab - File and Folder Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 62 Lab</h1>
+    <h2>File and Folder Management</h2>
+
+    <p><strong>Objective:</strong> Learn to create, rename, copy, move, and delete files and directories using Linux terminal commands.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal access</li>
+    </ul>
+
+    <h3>Step 1: Create a New Directory</h3>
+    <p>Make a folder named <code>project</code> in your home directory:</p>
+<pre><code>cd ~
+mkdir project
+</code></pre>
+
+    <h3>Step 2: Create Files</h3>
+    <p>Inside the <code>project</code> folder, create two text files:</p>
+<pre><code>cd project
+touch notes.txt todo.txt
+</code></pre>
+
+    <h3>Step 3: Rename a File</h3>
+    <p>Rename <code>todo.txt</code> to <code>tasks.txt</code>:</p>
+<pre><code>mv todo.txt tasks.txt
+</code></pre>
+
+    <h3>Step 4: Copy a File</h3>
+    <p>Make a copy of <code>notes.txt</code> called <code>notes_backup.txt</code>:</p>
+<pre><code>cp notes.txt notes_backup.txt
+</code></pre>
+
+    <h3>Step 5: Move a File to Another Directory</h3>
+    <p>Create a folder named <code>archive</code> and move the backup file into it:</p>
+<pre><code>mkdir archive
+mv notes_backup.txt archive/
+</code></pre>
+
+    <h3>Step 6: View Directory Contents</h3>
+    <p>List contents in <code>project</code> and <code>archive</code>:</p>
+<pre><code>ls -l
+ls -l archive
+</code></pre>
+
+    <h3>Step 7: Remove Files and Folders</h3>
+    <p>Delete <code>tasks.txt</code>:</p>
+<pre><code>rm tasks.txt
+</code></pre>
+    <p>Remove the <code>archive</code> folder and its contents:</p>
+<pre><code>rm -r archive
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ls -l</code> showing <code>notes.txt</code> and <code>tasks.txt</code> in <code>project</code></li>
+      <li>Screenshot of <code>ls -l archive</code> showing <code>notes_backup.txt</code></li>
+      <li>Screenshot of the final <code>project</code> folder after deletions</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create nested folders in one command: <code>mkdir -p reports/2025/january</code></li>
+      <li>Copy multiple files at once: <code>cp *.txt backup/</code></li>
+      <li>Use <code>rm -i</code> for interactive deletion</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why might you prefer <code>rm -i</code> when working on important systems?</li>
+      <li>What’s the difference between <code>mv</code> and <code>cp</code> in terms of storage space?</li>
+      <li>How could these commands be used in a script to automate file management?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced creating, renaming, copying, moving, and deleting files and directories using the Linux terminal — fundamental skills for managing any Linux system.</p>
+  </div>
+</body>
+</html>
