@@ -4,60 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Day 10 Lab - Map Your Home Network Devices</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Roboto Mono', monospace;
-      background-color: #0d1117;
-      color: #c9d1d9;
-      padding: 2rem;
-      max-width: 800px;
-      margin: auto;
-    }
-    h1, h2 {
-      color: #58a6ff;
-    }
-    code {
-      background: #161b22;
-      padding: 0.2rem 0.4rem;
-      border-radius: 5px;
-      color: #ff7b72;
-    }
-    .step {
-      background: #161b22;
-      border-left: 4px solid #58a6ff;
-      padding: 1rem;
-      margin: 1rem 0;
-    }
-    .log, .reflect, .note {
-      background: #21262d;
-      padding: 0.75rem;
-      margin: 1rem 0;
-      border-left: 4px solid #3fb950;
-    }
-    ul {
-      margin-top: 0.5rem;
-    }
-  </style>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 10 Lab</h1>
+    <h2>Map Your Home Network Devices</h2>
 
-  <h1>Day 10 Lab: Map Your Home Network Devices</h1>
-  <p><strong>Objective:</strong> Identify and diagram your home network devices to understand their roles, aligning with Network+ Infrastructure skills.</p>
-  <p><strong>Tools Needed:</strong> Pen and paper or a free diagramming tool (e.g., <a href="https://draw.io" target="_blank">draw.io</a>).</p>
+    <p><strong>Objective:</strong> Identify and diagram your home network devices to understand their roles, aligning with Network+ Infrastructure skills.</p>
+    <p><strong>Tools Needed:</strong> Pen and paper or a free diagramming tool (e.g., <a href="https://draw.io" target="_blank" rel="noopener">draw.io</a>).</p>
 
-  <div class="step">
-    <h2>Step 1: Identify Your Devices</h2>
+    <h3>Step 1: Identify Your Devices</h3>
     <ul>
       <li>Walk around or think through your home network setup.</li>
       <li>Spot your router (likely a Wi-Fi combo unit), any switches (home office?), or WAPs (Wi-Fi extenders).</li>
       <li>Check your router’s label—does it mention firewall features?</li>
       <li>Write down each device and its role (e.g., <code>Router: connects to ISP</code>, <code>WAP: Wi-Fi for phone</code>).</li>
     </ul>
-  </div>
 
-  <div class="step">
-    <h2>Step 2: Diagram Your Network</h2>
+    <h3>Step 2: Diagram Your Network</h3>
     <ul>
       <li>Draw a simple diagram of your setup:</li>
       <li>Place the <strong>router</strong> in the center. Label it with its IP address (e.g., <code>192.168.1.1</code>).</li>
@@ -65,34 +30,24 @@
       <li>Mark the firewall inside the router with a shield icon if applicable.</li>
     </ul>
     <p><strong>Example:</strong> Router → Switch → PC, Printer; Router → WAP → Phone</p>
-  </div>
 
-  <div class="step">
-    <h2>Step 3: Test Connectivity</h2>
+    <h3>Step 3: Test Connectivity</h3>
     <ul>
-      <li>On your PC, open a browser and visit a site (e.g., <a href="https://www.google.com" target="_blank">google.com</a>).</li>
+      <li>On your PC, open a browser and visit a site (e.g., <a href="https://www.google.com" target="_blank" rel="noopener">google.com</a>).</li>
       <li>Reflect: What devices helped make that request succeed?</li>
     </ul>
-    <div class="log">
-      <strong>Log:</strong> “Router sent data, WAP connected my laptop, firewall kept it secure.”
-    </div>
-  </div>
+    <p><strong>Log (example):</strong> “Router sent data, WAP connected my laptop, firewall kept it secure.”</p>
 
-  <div class="step">
-    <h2>Step 4: Reflect</h2>
+    <h3>Step 4: Reflect</h3>
     <p>Write a short paragraph answering:</p>
     <ul>
       <li>How do your devices work together?</li>
       <li>What’s the difference between a router, a switch, and a firewall?</li>
     </ul>
-    <div class="reflect">
-      <strong>Hint:</strong> The router bridges networks (e.g., home to ISP), the switch connects local devices, and the firewall filters incoming/outgoing traffic.
-    </div>
+    <p><strong>Hint:</strong> The router bridges networks (e.g., home to ISP), the switch connects local devices, and the firewall filters incoming/outgoing traffic.</p>
+
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 10</p>
   </div>
-
-  <footer style="margin-top: 2rem; font-size: 0.85rem; color: #8b949e;">
-    © Hoodie Launchpad · Lab Day 10
-  </footer>
-
 </body>
 </html>
