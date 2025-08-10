@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 51 Lab - First Splunk Search & Mini Dashboard</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 51 Lab</h1>
+    <h2>First Splunk Search & Mini Dashboard</h2>
+
+    <p><strong>Objective:</strong> Get hands-on with Splunk by running your first searches on built-in data, exploring fields, and creating a simple live dashboard.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li><a href="https://www.splunk.com/en_us/download/splunk-cloud.html" target="_blank" rel="noopener">Splunk Cloud Trial</a> (or a local Splunk Free install)</li>
+      <li>Web browser</li>
+      <li>Hoodie account notes for screenshots/links (optional)</li>
+    </ul>
+
+    <h3>Step 1: Launch Splunk & Open Search</h3>
+    <ol>
+      <li>Sign in to your Splunk Cloud trial.</li>
+      <li>From the top nav, open <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Set the time range (top right) to <strong>Last 24 hours</strong>.</li>
+    </ol>
+
+    <h3>Step 2: Your First Searches (Built-in Data)</h3>
+    <p>Even with no external data, Splunk has internal logs you can explore.</p>
+    <ul>
+      <li>Run: <code>index=_internal</code></li>
+      <li>Skim the event list. Click a few events and observe default fields like <code>_time</code>, <code>host</code>, <code>source</code>, <code>sourcetype</code>.</li>
+      <li>Refine:
+        <ul>
+          <li>Only show warnings/errors:<br>
+            <code>index=_internal (error OR warn)</code></li>
+          <li>Filter by sourcetype:<br>
+            <code>index=_internal sourcetype=splunkd</code></li>
+        </ul>
+      </li>
+    </ul>
+
+    <h3>Step 3: Explore Fields</h3>
+    <ul>
+      <li>Open the <strong>Fields</strong> sidebar (left). Note <em>Interesting Fields</em> and their top values.</li>
+      <li>Click a field (e.g., <code>log_level</code>) to filter results by a value.</li>
+    </ul>
+
+    <h3>Step 4: Summaries with SPL</h3>
+    <p>Use transforming commands to turn raw events into insights.</p>
+    <ul>
+      <li>Count by sourcetype:<br>
+        <code>index=_internal | stats count by sourcetype</code></li>
+      <li>Top sources (top 5):<br>
+        <code>index=_internal | top source limit=5</code></li>
+      <li>Events over time (hourly):<br>
+        <code>index=_internal | timechart span=1h count</code></li>
+    </ul>
+
+    <h3>Step 5: Build a Mini Dashboard</h3>
+    <ol>
+      <li>From the <strong>timechart</strong> search, click <strong>Save As ▸ Dashboard Panel</strong>.</li>
+      <li>Create a new dashboard named <strong>Hoodie Day51 Overview</strong> and save the panel as <em>Internal Events (Hourly)</em>.</li>
+      <li>Create a Single Value KPI:
+        <ul>
+          <li>Run: <code>index=_internal | stats count as events</code></li>
+          <li>Switch to the <strong>Visualization</strong> tab → choose <strong>Single Value</strong>.</li>
+          <li><strong>Save As ▸ Dashboard Panel</strong> → add to <em>Hoodie Day51 Overview</em> as <em>Total Internal Events (24h)</em>.</li>
+        </ul>
+      </li>
+      <li>Add a Top table:
+        <ul>
+          <li>Run: <code>index=_internal | top sourcetype limit=5</code></li>
+          <li>Save to the same dashboard as <em>Top Sourcetypes</em>.</li>
+        </ul>
+      </li>
+      <li>Open the dashboard (Apps ▸ Search & Reporting ▸ <em>Dashboards</em>) and verify you have 2–3 panels.</li>
+    </ol>
+
+    <h3>Step 6: Make It Live</h3>
+    <ul>
+      <li>Open the dashboard’s <strong>Edit</strong> mode. Set each panel to refresh every <strong>60s</strong> (or use the dashboard-level refresh).</li>
+      <li>Optional: Change permissions to <strong>App</strong> scope and grant <em>read</em> to your role so teammates can see it.</li>
+    </ul>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <strong>stats count by sourcetype</strong> results.</li>
+      <li>Screenshot of the dashboard showing:
+        <ul>
+          <li>Single Value KPI (Total Internal Events)</li>
+          <li>Hourly timechart</li>
+          <li>Top Sourcetypes table</li>
+        </ul>
+      </li>
+      <li>1–2 sentence note on what changed when you moved from raw events to summaries.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add this split-by status timechart:<br>
+        <code>index=_internal | timechart span=1h count by sourcetype</code></li>
+      <li>Make a drilldown: clicking a sourcetype in the table opens a new search filtered by that value (use tokens).</li>
+      <li>Create a second Single Value panel with a sparkline:<br>
+        <code>index=_internal | timechart span=1h count</code> (then convert to Single Value with sparkline)</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <p>In 3–5 sentences, answer:</p>
+    <ol>
+      <li>What did the <code>stats</code>/<code>top</code>/<code>timechart</code> commands reveal that raw events didn’t?</li>
+      <li>How would this dashboard help your SOC or DevOps team during an incident?</li>
+      <li>What panel would you add next and why?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You learned to navigate Splunk Web, run basic SPL searches on built‑in data, and assemble a lightweight dashboard that auto‑refreshes. This is the foundation for all future Splunk work in the Hoodie Challenge.</p>
+  </div>
+</body>
+</html>
