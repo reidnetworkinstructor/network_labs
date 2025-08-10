@@ -1,1 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 80 Answer Key - Mini‑Project: Tiny Log Analyzer (CLI+)</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 80 – Answer Key</h1>
+    <h2>Mini‑Project — Tiny Log Analyzer (CLI+)</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the project first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+
+        <h3>Reference Project – <code>log_analyzer.py</code></h3>
+<pre><code>#!/usr/bin/env python3
+from __future__ import annotations
+import sys, re, argparse
+from pathlib import Path
+from collections import Counter
+from typing import Iterable, Iterator, Sequence
+
+LEVEL_RE = re.compile(r"\b(ERROR|WARN|WARNING|INFO|DEBUG|CRITICAL)\b", re.IGNORECASE)
+IP_RE    = re.compile(r"\b(?:\d{1,3}\.){3}\d{1,3}\b")
+
+def iter_lines(paths: Sequence[Path]) -> Iterator[str]:
+    for p in paths:
+        try:
+            with p.open("r", encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    yield line.rstrip("\n")
+        except FileNotFoundError:
+            print(f"[WARN] Missing file: {p}", file=sys.stderr)
+        except OSError as e:
+            print(f"[WARN] Could not read {p}: {e}", file=sys.stderr)
+
+def filter_keyword(lines: Iterable[str], keyword: str, ignore_case: bool) -> Iterator[str]:
+    if not keyword:
+        yield from lines; return
+    if ignore_case:
+        kw = keyword.lower()
+        for ln in lines:
+            if kw in ln.lower():
+                yield ln
+    else:
+        for ln in lines:
+            if keyword in ln:
+                yield ln
+
+def filter_level(lines: Iterable[str], level: str | None) -> Iterator[str]:
+    if not level:
+        yield from lines; return
+    lvl = level.upper()
+    for ln in lines:
+        m = LEVEL_RE.search(ln)
+        if m and m.group(1).upper().startswith(lvl):
+            yield ln
+
+def count_lines(lines: Iterable[str]) -> Counter[str]:
+    c = Counter()
+    for ln in lines:
+        if ln.strip():
+            c[ln] += 1
+    return c
+
+def count_ips(lines: Iterable[str]) -> Counter[str]:
+    c = Counter()
+    for ln in lines:
+        for ip in IP_RE.findall(ln):
+            c[ip] += 1
+    return c
+
+def format_table(title: str, pairs: Sequence[tuple[str,int]], width: int = 60) -> str:
+    out = [f"=== {title} ==="]
+    for k, v in pairs:
+        left = (k[:width-10] + "…") if len(k) > width-3 else k
+        out.append(f"{left.ljust(width)} {v}")
+    return "\n".join(out)
+
+def main(argv: Sequence[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(description="Tiny Log Analyzer (CLI+)")
+    ap.add_argument("paths", nargs="*", help="Log file paths")
+    ap.add_argument("--stdin", action="store_true", help="Read from STDIN")
+    ap.add_argument("--keyword", help="Only count lines containing this keyword")
+    ap.add_argument("--ignore-case", action="store_true", help="Case-insensitive keyword")
+    ap.add_argument("--level", choices=["ERROR","WARN","WARNING","INFO","DEBUG","CRITICAL"])
+    ap.add_argument("--top", type=int, default=10, help="Show top N results")
+    ap.add_argument("--ips", action="store_true", help="Extract and count IPv4 addresses")
+    ap.add_argument("--out", type=Path, help="Write report to this file")
+    args = ap.parse_args(argv)
+
+    if args.stdin:
+        src_lines = (ln.rstrip("\n") for ln in sys.stdin)
+    else:
+        if not args.paths:
+            ap.error("Provide at least one path or use --stdin")
+        paths = [Path(p) for p in args.paths]
+        src_lines = iter_lines(paths)
+
+    ln1 = filter_keyword(src_lines, args.keyword or "", args.ignore_case)
+    ln2 = filter_level(ln1, args.level)
+
+    line_counts = count_lines(ln2)
+    top_lines = line_counts.most_common(args.top)
+
+    if args.stdin:
+        ip_counts = Counter()
+        if args.ips:
+            print("[WARN] --ips ignored with --stdin; stream already consumed.", file=sys.stderr)
+    else:
+        paths = [Path(p) for p in args.paths]
+        ln_ip = filter_level(filter_keyword(iter_lines(paths), args.keyword or "", args.ignore_case), args.level)
+        ip_counts = count_ips(ln_ip) if args.ips else Counter()
+
+    report_parts = [format_table("Top Lines", top_lines)]
+    if args.ips:
+        report_parts.append(format_table("Top IPs", ip_counts.most_common(args.top)))
+    report = "\n\n".join(report_parts) + "\n"
+
+    if args.out:
+        try:
+            args.out.parent.mkdir(parents=True, exist_ok=True)
+            args.out.write_text(report, encoding="utf-8")
+            print(f"[OK] Wrote report -> {args.out}")
+        except OSError as e:
+            print(f"[ERROR] Could not write report: {e}", file=sys.stderr)
+            print(report)
+    else:
+        print(report)
+    return 0
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+</code></pre>
+
+        <h3>Sample Data – <code>sample.log</code></h3>
+<pre><code>2025-08-10 10:01:22Z INFO User jkim logged in from 10.0.0.1
+2025-08-10 10:05:03Z ERROR Permission denied for tsmith (10.0.0.2)
+2025-08-10 10:05:05Z WARN High CPU on host web01 (10.0.0.3)
+2025-08-10 10:05:07Z INFO User jkim logged out
+2025-08-10 10:05:09Z WARNING Disk almost full on db01 (10.0.0.4)
+2025-08-10 10:05:12Z INFO User mgarcia logged in from 10.0.0.3
+2025-08-10 10:05:18Z ERROR Backup failed on db01 (10.0.0.4)
+</code></pre>
+
+        <h3>Reference Runs (expected output trimmed)</h3>
+
+        <p><strong>Basic:</strong></p>
+<pre><code>$ python log_analyzer.py sample.log
+=== Top Lines ===
+2025-08-10 10:01:22Z INFO User jkim logged in from 10.0.0.1         1
+2025-08-10 10:05:03Z ERROR Permission denied for tsmith (10.0.0.2)  1
+...
+</code></pre>
+
+        <p><strong>Keyword filter (case-insensitive):</strong></p>
+<pre><code>$ python log_analyzer.py sample.log --keyword user --ignore-case --top 5
+=== Top Lines ===
+2025-08-10 10:01:22Z INFO User jkim logged in from 10.0.0.1         1
+2025-08-10 10:05:07Z INFO User jkim logged out                       1
+2025-08-10 10:05:12Z INFO User mgarcia logged in from 10.0.0.3      1
+</code></pre>
+
+        <p><strong>Level filter (WARN also matches WARNING):</strong></p>
+<pre><code>$ python log_analyzer.py sample.log --level WARN
+=== Top Lines ===
+2025-08-10 10:05:05Z WARN High CPU on host web01 (10.0.0.3)         1
+2025-08-10 10:05:09Z WARNING Disk almost full on db01 (10.0.0.4)    1
+</code></pre>
+
+        <p><strong>Count IPs + write report:</strong></p>
+<pre><code>$ python log_analyzer.py sample.log --ips --top 5 --out reports/summary.txt
+[OK] Wrote report -> reports/summary.txt
+</code></pre>
+
+        <p><strong>Multiple files:</strong></p>
+<pre><code>$ python log_analyzer.py logs/app1.log logs/app2.log --ips --top 20
+=== Top Lines ===
+...
+=== Top IPs ===
+10.0.0.4                                                        12
+10.0.0.3                                                         9
+...
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><strong>argparse</strong> defines clear CLI options; choices constrain <code>--level</code> safely.</li>
+          <li><strong>Generators</strong> stream lines (memory‑friendly) and let you compose filters.</li>
+          <li><strong>Counter</strong> simplifies tallies (<code>most_common()</code> for top N).</li>
+          <li><strong>Regex</strong> handles both level detection and IPv4 extraction reliably.</li>
+          <li><strong>Robust I/O</strong>: missing/unreadable files warn to <code>stderr</code> instead of crashing; report fallback prints to stdout if write fails.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>Consuming stdin twice:</strong> You can’t re‑iterate a stream; warn and skip <code>--ips</code> with <code>--stdin</code>, or pipe twice.</li>
+          <li><strong>Case vs keyword:</strong> Forgot <code>--ignore-case</code> → lines don’t match; normalize with <code>.lower()</code>.</li>
+          <li><strong>Regex too strict:</strong> Level match fails for <code>WARNING</code> unless you allow prefix (compare with <code>.startswith()</code>).</li>
+          <li><strong>Write errors:</strong> No parent dir for <code>--out</code> → create with <code>mkdir(parents=True, exist_ok=True)</code>.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li>Accepts file paths (and optional <code>--stdin</code>), handles missing files gracefully.</li>
+          <li>Implements <code>--keyword</code> (with <code>--ignore-case</code>) and <code>--level</code> filters.</li>
+          <li>Counts lines; shows <code>--top</code> N; optionally extracts IPs with <code>--ips</code>.</li>
+          <li>Formats a readable report and writes to <code>--out</code> when provided.</li>
+          <li>Code is organized into small functions and is readable.</li>
+        </ul>
+
+        <h3>Stretch Goal References</h3>
+        <p><em>CSV export:</em></p>
+<pre><code>import csv
+def write_csv(path: Path, pairs: list[tuple[str,int]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["entry","count"])
+        w.writerows(pairs)
+</code></pre>
+
+        <p><em>Exit codes (non‑zero on no matches):</em></p>
+<pre><code>if not top_lines:
+    print("[INFO] No lines matched filters.", file=sys.stderr)
+    return 2
+</code></pre>
+
+        <p><em>Glob expansion (Windows without shell globs):</em></p>
+<pre><code>import glob
+paths = [Path(p) for pat in args.paths for p in glob.glob(pat)]
+</code></pre>
+
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
 
