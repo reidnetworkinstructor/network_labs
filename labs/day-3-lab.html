@@ -3,69 +3,56 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Explore IP Configuration with Command Prompt</title>
+  <title>Day 3 Lab - Explore IP Configuration with Command Prompt</title>
   <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
-  <header>
-    <h1>Explore IP Configuration with Command Prompt</h1>
-    <p class="subtitle">Investigate IP details, ping public and local devices, and explore ARP cache with Windows CMD.</p>
-  </header>
-  <main class="lab-content">
-    <section>
-      <h2>Objective</h2>
-      <p>Use Command Prompt to explore your computer’s IP configuration, test connectivity, and examine the ARP cache, connecting IP addressing to protocols like DHCP and ARP.</p>
-    </section>
+  <div class="lab-container">
+    <h1>Day 3 Lab</h1>
+    <h2>Explore IP Configuration with Command Prompt</h2>
 
-    <section>
-      <h2>Tool Needed</h2>
-      <p>Command Prompt (built-in on Windows—search for “cmd” in the Start menu).</p>
-    </section>
+    <p><strong>Objective:</strong> Use Windows Command Prompt to inspect your computer’s IP configuration, test connectivity with <code>ping</code>, and examine the ARP cache—connecting IP addressing to protocols like DHCP and ARP.</p>
+    <p><strong>Tools Needed:</strong> Command Prompt (built-in on Windows — press <strong>Win + R</strong>, type <code>cmd</code>, press Enter).</p>
 
-    <section>
-      <h2>Step 1: Check Your IP Configuration</h2>
-      <ul>
-        <li>Open CMD: Press <strong>Win + R</strong>, type <code>cmd</code>, press Enter.</li>
-        <li>Type <code>ipconfig /all</code> and press Enter.</li>
-        <li>Note these values:
-          <ul>
-            <li>IPv4 Address (e.g., <code>192.168.1.100</code>)</li>
-            <li>Subnet Mask (e.g., <code>255.255.255.0</code>)</li>
-            <li>Default Gateway (e.g., <code>192.168.1.1</code>)</li>
-            <li>DHCP Server (usually your router)</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
+    <h3>Step 1: Check Your IP Configuration</h3>
+    <ul>
+      <li>Open CMD: <strong>Win + R</strong> → <code>cmd</code> → Enter.</li>
+      <li>Run: <code>ipconfig /all</code></li>
+      <li>Record the following:
+        <ul>
+          <li><strong>IPv4 Address</strong> (e.g., <code>192.168.1.100</code>)</li>
+          <li><strong>Subnet Mask</strong> (e.g., <code>255.255.255.0</code>)</li>
+          <li><strong>Default Gateway</strong> (e.g., <code>192.168.1.1</code>)</li>
+          <li><strong>DHCP Server</strong> (often your router)</li>
+        </ul>
+      </li>
+    </ul>
 
-    <section>
-      <h2>Step 2: Test Connectivity with Ping</h2>
-      <ul>
-        <li>Ping Google DNS: <code>ping 8.8.8.8</code></li>
-        <li>Did it reply? What was the average round-trip time?</li>
-        <li>Now ping your Default Gateway: <code>ping 192.168.1.1</code></li>
-        <li>Why is the local ping likely faster? (Hint: LAN vs. WAN)</li>
-      </ul>
-    </section>
+    <h3>Step 2: Test Connectivity with Ping</h3>
+    <ul>
+      <li>Ping Google DNS: <code>ping 8.8.8.8</code></li>
+      <li>Did it reply? Note the <strong>Average</strong> round‑trip time.</li>
+      <li>Ping your default gateway: <code>ping 192.168.1.1</code> (adjust if yours is different)</li>
+      <li>Which is faster and why? <em>Hint: LAN latency vs WAN/Internet latency.</em></li>
+    </ul>
 
-    <section>
-      <h2>Step 3: Examine the ARP Cache</h2>
-      <ul>
-        <li>Type <code>arp -a</code> and press Enter.</li>
-        <li>Note at least two entries:
-          <ul>
-            <li>e.g., <code>192.168.1.1 → 00-14-22-01-23-45</code></li>
-            <li>What other devices show up?</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
+    <h3>Step 3: Examine the ARP Cache</h3>
+    <ul>
+      <li>Run: <code>arp -a</code></li>
+      <li>Note at least two entries, e.g.:
+        <ul>
+          <li><code>192.168.1.1  →  00-14-22-01-23-45</code> (your gateway)</li>
+          <li>Another local device’s IP → MAC</li>
+        </ul>
+      </li>
+    </ul>
 
-    <section>
-      <h2>Reflect</h2>
-      <p>Write a paragraph: How does ARP help with LAN communication? Why is the gateway’s MAC in the cache?</p>
-      <p><em>Hint:</em> ARP translates IPs to MACs. Your computer needs the MAC of your gateway to send outbound traffic.</p>
-    </section>
-  </main>
+    <h3>Reflect</h3>
+    <p>Write a short paragraph: How does ARP enable LAN communication? Why is the gateway’s MAC in your ARP cache?</p>
+    <p><em>Hint:</em> ARP resolves IP → MAC so frames can be delivered on the local network. Your PC needs the gateway’s MAC to send traffic off‑subnet.</p>
+
+    <hr />
+    <p style="font-size:.9rem;opacity:.8;">© Hoodie Launchpad · Lab Day 3</p>
+  </div>
 </body>
 </html>
