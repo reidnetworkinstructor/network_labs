@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 53 Lab - Understanding Fields in Splunk</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 53 Lab</h1>
+    <h2>Understanding Fields in Splunk</h2>
+
+    <p><strong>Objective:</strong> Learn how Splunk discovers, displays, filters, and transforms fields. You’ll explore default vs. extracted fields, use the Fields sidebar, shape results with <code>fields</code>/<code>table</code>/<code>rename</code>/<code>dedup</code>, and create both ad-hoc and saved extractions.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li><a href="https://www.splunk.com/en_us/download/splunk-cloud.html" target="_blank" rel="noopener">Splunk Cloud Trial</a> (or Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Open Search & Pick a Friendly Dataset</h3>
+    <ol>
+      <li>Go to <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Set time range to <strong>Last 24 hours</strong>.</li>
+      <li>Run (built-in access logs with rich fields):<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code>
+      </li>
+      <li>Click a few events and notice <em>default metadata fields</em> (<code>_time</code>, <code>host</code>, <code>source</code>, <code>sourcetype</code>, <code>index</code>) and auto-extracted fields like <code>method</code>, <code>status</code>, <code>uri_path</code>, <code>user</code>, etc.</li>
+    </ol>
+
+    <h3>Step 2: Meet the Fields Sidebar</h3>
+    <ul>
+      <li>Open the <strong>Fields</strong> sidebar (left). Expand <em>Selected Fields</em> and <em>Interesting Fields</em>.</li>
+      <li>Hover a field to see top values; click a value to filter the search by that value.</li>
+      <li>Pin a useful field so it always remains in <em>Selected Fields</em>.</li>
+    </ul>
+
+    <h3>Step 3: Include/Exclude & Clean Up Fields</h3>
+    <p>Use SPL to control which fields appear in results.</p>
+    <ul>
+      <li><strong>Only the columns you care about:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | fields _time user method uri_path status</code>
+      </li>
+      <li><strong>Turn the results into a neat table:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | table _time user method uri_path status</code>
+      </li>
+      <li><strong>Hide noisy fields:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | fields - punct, linecount</code>
+      </li>
+      <li><strong>Rename for clarity:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | table _time status uri_path | rename uri_path AS url_path, status AS http_status</code>
+      </li>
+      <li><strong>List each user once:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | dedup user | table user</code>
+      </li>
+    </ul>
+
+    <h3>Step 4: Summaries by Field</h3>
+    <ul>
+      <li><strong>Top values:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | top user limit=5</code>
+      </li>
+      <li><strong>Counts by status code:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats count by status</code>
+      </li>
+      <li><strong>Method + status matrix:</strong><br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats count by method status</code>
+      </li>
+    </ul>
+
+    <h3>Step 5: Ad-Hoc Field Extraction with <code>rex</code></h3>
+    <p>Create a new field on the fly from an existing one (no saving yet).</p>
+    <ul>
+      <li>Extract the first segment of the path (e.g., <code>en-US</code> from <code>/en-US/app/...</code>):<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| rex field=uri_path "^\/(?&lt;path_root&gt;[^\/]+)"</code><br>
+        <code>| stats count by path_root</code>
+      </li>
+      <li>If <code>uri_path</code> isn’t present in your build, target <code>uri</code> or <code>_raw</code> similarly:</li>
+      <li><code>| rex field=_raw "uri_path=\&quot;\/(?&lt;path_root_alt&gt;[^\/]+)"</code></li>
+    </ul>
+
+    <h3>Step 6: Save a Field Extraction (Field Extractor)</h3>
+    <ol>
+      <li>Run a focused search and pick an event you like:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access uri_path="*app*"</code>
+      </li>
+      <li>On that event, click <strong>Event Actions ▸ Extract Fields</strong> (FX).</li>
+      <li>Choose a method (e.g., <em>Regular expression</em>), highlight an example value, and let FX propose a pattern.</li>
+      <li>Name the field (e.g., <code>app_name</code>), save to your current <em>App</em> context, and share permissions as needed.</li>
+      <li>Validate with:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access | stats count by app_name</code>
+      </li>
+    </ol>
+
+    <h3>Step 7: Calculated Fields with <code>eval</code></h3>
+    <p>Create a field derived from another field.</p>
+    <ul>
+      <li>Group HTTP status into classes:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval status_class = tostring(floor(status/100)*100) . "x"</code><br>
+        <code>| stats count by status_class</code>
+      </li>
+      <li>Optionally save a <em>Calculated Field</em> (Settings ▸ Fields ▸ Calculated fields ▸ New) so it appears for this sourcetype automatically.</li>
+    </ul>
+
+    <h3>Step 8: (Optional) Field Aliases for Friendly Names</h3>
+    <p>If your data uses different names for the same concept across sources, create a <em>Field alias</em> so searches feel consistent.</p>
+    <ol>
+      <li>Go to <strong>Settings ▸ Fields ▸ Field aliases ▸ Add new</strong>.</li>
+      <li>Choose the sourcetype (e.g., <code>splunkd_ui_access</code>), alias <code>status</code> to <code>http_status</code>.</li>
+      <li>Search again and verify <code>http_status</code> is now available.</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your <strong>Fields</strong> sidebar showing <em>Selected</em> and <em>Interesting</em> fields for <code>splunkd_ui_access</code>.</li>
+      <li>Screenshot of a clean table output from:<br>
+        <code>| table _time user method uri_path status</code></li>
+      <li>Screenshot of your ad-hoc <code>rex</code> extraction results (counts by <code>path_root</code>).</li>
+      <li>Screenshot proving a <strong>saved field extraction</strong> works (e.g., <code>app_name</code> with <code>stats count by app_name</code>).</li>
+      <li>Screenshot of <code>status_class</code> counts created via <code>eval</code>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create a <strong>Field alias</strong> mapping <code>status</code> → <code>http_status</code> and use it in a search.</li>
+      <li>Build a quick dashboard panel showing <code>status_class</code> counts (Save As ▸ Dashboard Panel).</li>
+      <li>Compare performance: same search with and without <code>fields</code> trimming; check <em>Job ▸ Inspect</em>.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>What’s the practical difference between default metadata fields and extracted fields in day-to-day analysis?</li>
+      <li>When would you choose <code>rex</code> ad-hoc extraction vs. saving a permanent extraction?</li>
+      <li>How do <em>calculated fields</em> and <em>field aliases</em> improve team consistency across apps/sourcetypes?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You explored Splunk’s field model end-to-end: discovery in the Fields sidebar, selective display with <code>fields/table</code>, ad-hoc extraction with <code>rex</code>, saved extractions via FX, and data normalization through calculated fields and aliases.</p>
+  </div>
+</body>
+</html>
