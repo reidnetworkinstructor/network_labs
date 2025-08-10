@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 66 Cheat Sheet - Text Viewing, Redirection & Search</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 66 Cheat Sheet</h1>
+    <h2>Text Viewing, Redirection & Search</h2>
+
+    <p>Quick reference for working with text files, logs, and CSVs using Linux command-line tools.</p>
+
+    <h3>Viewing Files</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr>
+        <td><code>cat</code></td>
+        <td>View entire file (small files)</td>
+        <td><code>cat file.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>less</code></td>
+        <td>Page through file with navigation</td>
+        <td><code>less file.txt</code> (<kbd>Space</kbd>=next, <kbd>/</kbd>=search, <kbd>q</kbd>=quit)</td>
+      </tr>
+      <tr>
+        <td><code>head</code></td>
+        <td>Show first N lines</td>
+        <td><code>head -n 10 file.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>tail</code></td>
+        <td>Show last N lines; <code>-f</code> follows updates</td>
+        <td><code>tail -n 20 file.txt</code> • <code>tail -f logfile</code></td>
+      </tr>
+    </table>
+
+    <h3>Searching</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr>
+        <td><code>grep</code></td>
+        <td>Search text by pattern</td>
+        <td><code>grep "ERROR" logfile</code></td>
+      </tr>
+      <tr>
+        <td><code>grep -i</code></td>
+        <td>Case-insensitive search</td>
+        <td><code>grep -i "login" logfile</code></td>
+      </tr>
+      <tr>
+        <td><code>grep -E</code></td>
+        <td>Extended regex patterns</td>
+        <td><code>grep -E "200|404" access.log</code></td>
+      </tr>
+    </table>
+
+    <h3>Redirection & Append</h3>
+    <table>
+      <tr><th>Symbol</th><th>Purpose</th><th>Example</th></tr>
+      <tr>
+        <td><code>&gt;</code></td>
+        <td>Write output to file (overwrite)</td>
+        <td><code>echo "note" &gt; notes.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>&gt;&gt;</code></td>
+        <td>Append output to file</td>
+        <td><code>echo "line2" &gt;&gt; notes.txt</code></td>
+      </tr>
+    </table>
+
+    <h3>Pipes & Filters</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr>
+        <td><code>|</code> (pipe)</td>
+        <td>Send output of one command to another</td>
+        <td><code>cat file | grep ERROR</code></td>
+      </tr>
+      <tr>
+        <td><code>tee</code></td>
+        <td>Write output to screen and file</td>
+        <td><code>grep "200" access.log | tee ok.log</code></td>
+      </tr>
+    </table>
+
+    <h3>Data Extraction</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr>
+        <td><code>cut</code></td>
+        <td>Extract specific fields</td>
+        <td><code>cut -d',' -f2 users.csv</code></td>
+      </tr>
+      <tr>
+        <td><code>sort</code></td>
+        <td>Sort lines</td>
+        <td><code>sort file.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>uniq</code></td>
+        <td>Filter duplicate lines</td>
+        <td><code>uniq names.txt</code></td>
+      </tr>
+      <tr>
+        <td><code>uniq -c</code></td>
+        <td>Count occurrences</td>
+        <td><code>sort names.txt | uniq -c</code></td>
+      </tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># First 5 lines of log containing 404
+grep " 404" access.log | head -n 5
+
+# Count unique status codes
+cut -d' ' -f5 access.log | sort | uniq -c | sort -n
+
+# Extract names from CSV where dept=IT
+grep ',IT$' users.csv | cut -d',' -f2
+
+# Save non-200 requests to file
+grep -v " 200$" access.log &gt; non200.log
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Use <code>less</code> for large files to avoid flooding the terminal.</li>
+      <li>Chain commands with <code>|</code> to avoid creating intermediate files.</li>
+      <li>Use <code>grep -E</code> for complex patterns, <code>-i</code> for case-insensitive.</li>
+      <li>For CSVs, <code>cut -d',' -fN</code> is quick; <code>awk</code> is more flexible.</li>
+      <li>Combine <code>sort | uniq -c</code> to produce simple frequency reports.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 66 Lab:</strong> Keep this open to quickly reference viewing, searching, redirecting, and filtering commands during practice.</p>
+  </div>
+</body>
+</html>
