@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 73 Lab - Strings, Input, and f-Strings</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 73 Lab</h1>
+    <h2>Strings, Input, and f-Strings</h2>
+
+    <p><strong>Objective:</strong> Practice gathering user input, manipulating strings, converting types, and formatting clean output with <code>f-strings</code>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Python 3</li>
+      <li>VS Code with Python extension (from Day 71)</li>
+    </ul>
+
+    <h3>Step 1 – String Basics</h3>
+    <p>Strings are text values. You can use single or double quotes, escape characters, and triple quotes for multi-line.</p>
+<pre><code>greet = "Hello"
+who   = 'Hoodie'
+line  = "He said \"hi\"."
+block = """Multi-line
+string example."""
+print(greet, who)
+print(line)
+print(block)
+</code></pre>
+
+    <h3>Step 2 – Concatenation vs f-Strings</h3>
+    <p>Concatenation works, but <strong>f-strings</strong> are cleaner and safer.</p>
+<pre><code>first = "Jordan"
+last = "Kim"
+
+# Concatenation
+full1 = first + " " + last
+
+# f-string
+full2 = f"{first} {last}"
+print(full1)
+print(full2)
+</code></pre>
+
+    <h3>Step 3 – Getting Input</h3>
+    <p><code>input()</code> always returns a <code>str</code>. Convert types when you need numbers.</p>
+<pre><code>name = input("Your name: ")
+year = int(input("Current year (e.g., 2025): "))
+print(f"Hi {name}! Year recorded: {year}")
+</code></pre>
+
+    <h3>Step 4 – Useful String Methods</h3>
+    <p>Common tools you’ll use constantly:</p>
+<pre><code>raw = "   Cloud SECURITY  "
+clean = raw.strip().title()      # "Cloud Security"
+lowered = clean.lower()          # "cloud security"
+uppered = clean.upper()          # "CLOUD SECURITY"
+parts = clean.split(" ")         # ["Cloud","Security"]
+joined = "-".join(parts)         # "Cloud-Security"
+replaced = clean.replace("Cloud", "Azure")
+print(clean, lowered, uppered, parts, joined, replaced, sep=" | ")
+</code></pre>
+
+    <h3>Step 5 – Mini Lab: Onboarding Badge Generator</h3>
+    <p>Create <code>badge.py</code> that asks a new student for details and prints a polished “onboarding badge.”</p>
+    <ol>
+      <li>Prompt for:
+        <ul>
+          <li><code>first_name</code>, <code>last_name</code></li>
+          <li><code>city</code> and <code>role</code> (e.g., “student”, “help desk”)</li>
+          <li><code>fav_skill</code> (text), <code>years_exp</code> (number; can be 0)</li>
+        </ul>
+      </li>
+      <li>Normalize casing:
+        <ul>
+          <li>Names: title case (<code>.title()</code>)</li>
+          <li>City: title case</li>
+          <li>Role/Skill: title case</li>
+        </ul>
+      </li>
+      <li>Compute:
+        <ul>
+          <li><code>initials</code> = first letter of first + last (upper)</li>
+          <li><code>tagline</code> using an f-string like: <br/>
+            <code>"{first} builds {fav_skill} skills in {city}"</code></li>
+        </ul>
+      </li>
+      <li>Format a neat, multi-line output with f-strings. Example:</li>
+    </ol>
+<pre><code>==============================
+ Hoodie Launchpad – Onboarding
+==============================
+Name: Jordan Kim
+City: Austin
+Role: Student
+Favorite Skill: Cloud Security
+Years of IT Experience: 0
+Initials: JK
+Tagline: Jordan builds Cloud Security skills in Austin.
+</code></pre>
+
+    <h3>Step 6 – Bonus: Derived Fields</h3>
+    <p>Add an ID and a short username:</p>
+<pre><code># ID idea: INITIALS + last 2 digits of current year + length of city
+# Username idea: first initial + last name (lower), e.g., jkim
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of terminal session showing inputs and the final formatted badge</li>
+      <li>Screenshot of <code>badge.py</code> open in VS Code</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Validate numeric input: reprompt until <code>years_exp</code> is a number (hint: <code>str.isdigit()</code>).</li>
+      <li>Pad your ID to a fixed width with <code>.zfill()</code> or format specification.</li>
+      <li>Center the header using string methods, e.g., <code>title.center(30, "=")</code>.</li>
+      <li>Add a one-line summary using a single f-string.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When should you convert input to <code>int</code> vs keep it as <code>str</code>?</li>
+      <li>Why are f-strings preferable to concatenation in most cases?</li>
+      <li>Which string methods did you use the most today and why?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You gathered input with <code>input()</code>, cleaned and transformed strings with built-in methods, used f-strings for readable formatting, and produced a beginner-friendly “onboarding badge” output—exactly the kind of polish you’ll use in real scripts.</p>
+  </div>
+</body>
+</html>
