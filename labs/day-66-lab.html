@@ -3,145 +3,141 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 66 Lab - Text Viewing, Redirection & Search</title>
+  <title>Day 66 Lab - User & Group Management</title>
   <link rel="stylesheet" href="../assets/lab.css" />
 </head>
 <body>
   <div class="lab-container">
     <h1>Day 66 Lab</h1>
-    <h2>Text Viewing, Redirection & Search</h2>
+    <h2>User & Group Management</h2>
 
-    <p><strong>Objective:</strong> Work efficiently with text on Linux using <code>cat</code>, <code>less</code>, <code>head</code>, <code>tail</code>, <code>grep</code>, redirection (<code>&gt;</code>, <code>&gt;&gt;</code>), pipes (<code>|</code>), and helpers like <code>tee</code>, <code>sort</code>, <code>uniq</code>, <code>cut</code>.</p>
+    <p><strong>Objective:</strong> Create and manage users and groups, grant limited admin rights, inspect account metadata, and safely remove accounts.</p>
 
     <h3>🛠 Tools Needed</h3>
     <ul>
       <li>Linux system (VM, WSL, or cloud instance)</li>
-      <li>Terminal access</li>
+      <li><strong>sudo privileges</strong> for administrative commands</li>
     </ul>
 
-    <h3>Step 1: Create a Practice Workspace</h3>
-<pre><code>cd ~
-mkdir -p text_lab
-cd text_lab
-
-# Create two sample files
-cat &gt; access.log &lt;&lt;'EOF'
-2025-08-10 12:01:03 GET /index.html 200
-2025-08-10 12:01:05 GET /login 302
-2025-08-10 12:01:09 POST /api/upload 500
-2025-08-10 12:01:12 GET /dashboard 200
-2025-08-10 12:01:14 GET /favicon.ico 404
-2025-08-10 12:01:20 GET /reports 200
-EOF
-
-cat &gt; users.csv &lt;&lt;'EOF'
-id,name,role,dept
-101,Alice,analyst,IT
-102,Bob,admin,IT
-103,Carol,analyst,Finance
-104,Dan,intern,IT
-105,Eve,analyst,Security
-EOF
+    <h3>Step 1: Inspect Your Current Identity</h3>
+<pre><code>whoami
+id
+groups
 </code></pre>
 
-    <h3>Step 2: Quick Views (cat, head, tail)</h3>
-<pre><code># whole file (small files)
-cat access.log
-
-# first/last N lines
-head -n 3 access.log
-tail -n 2 access.log
+    <h3>Step 2: Create a Practice Group</h3>
+<pre><code>sudo groupadd interns
+getent group interns
 </code></pre>
 
-    <h3>Step 3: Page Through Files (less)</h3>
-    <p>Open then navigate with keys (<kbd>Space</kbd> next page, <kbd>b</kbd> back, <kbd>/</kbd> search, <kbd>n</kbd> next, <kbd>q</kbd> quit):</p>
-<pre><code>less access.log
+    <h3>Step 3: Create a New User (with Home & Default Shell)</h3>
+    <p>Use your distro’s helper if available (<code>adduser</code> on Debian/Ubuntu) or the portable low-level tool <code>useradd</code>.</p>
+<pre><code># Debian/Ubuntu (interactive, prompts for password & details)
+sudo adduser trainee
+
+# Portable approach (create home, set shell, then set password)
+sudo useradd -m -s /bin/bash trainee
+sudo passwd trainee
+</code></pre>
+    <p>Verify account entry and home directory:</p>
+<pre><code>getent passwd trainee
+ls -la /home/trainee
 </code></pre>
 
-    <h3>Step 4: Redirection and Append (&gt; and &gt;&gt;)</h3>
-<pre><code># write output to a new file (overwrite)
-echo "note: generated $(date)" &gt; notes.txt
-
-# append more lines
-echo "another line" &gt;&gt; notes.txt
-cat notes.txt
+    <h3>Step 4: Add User to Groups</h3>
+    <p>Add <code>trainee</code> to the <code>interns</code> group (and verify):</p>
+<pre><code>sudo usermod -aG interns trainee
+id trainee
+groups trainee
+getent group interns
 </code></pre>
 
-    <h3>Step 5: Pipes and Filters (| with grep)</h3>
-<pre><code># filter only 4xx/5xx responses
-cat access.log | grep -E ' (4|5)[0-9]{2}$'
+    <h3>Step 5: Grant Limited Admin (sudo/wheel)</h3>
+    <p>On Debian/Ubuntu, admin group is <code>sudo</code>. On RHEL/Fedora, it’s <code>wheel</code>.</p>
+<pre><code># Debian/Ubuntu
+sudo usermod -aG sudo trainee
 
-# count how many 200s vs others
-cat access.log | grep -E ' [0-9]{3}$' | cut -d' ' -f4 | sort | uniq -c
+# RHEL/Fedora
+# sudo usermod -aG wheel trainee
+</code></pre>
+    <p>Sanity-check sudo with a non-destructive command:</p>
+<pre><code>su - trainee
+sudo -v              # cache credentials (will prompt for password)
+sudo id              # should show effective root
+exit                 # return to your original user
 </code></pre>
 
-    <h3>Step 6: Extract Columns (cut)</h3>
-    <p>Our log format is: <code>DATE TIME METHOD PATH STATUS</code>. Extract METHOD and PATH:</p>
-<pre><code>cat access.log | awk '{print $3, $4}'
-# or using cut if delimited consistently by spaces:
-cat access.log | cut -d' ' -f3,4
+    <h3>Step 6: List & Understand Account Databases</h3>
+<pre><code># Accounts and shells
+getent passwd | head
+getent group  | head
+cat /etc/shells
 </code></pre>
 
-    <h3>Step 7: Save While Viewing (tee)</h3>
-    <p><code>tee</code> writes output to screen and file simultaneously.</p>
-<pre><code>cat access.log | grep ' 200$' | tee ok_200.log
-ls -l ok_200.log
+    <h3>Step 7: Manage Password / Expiration Policy</h3>
+<pre><code># Show aging info (requires shadow access → use sudo)
+sudo chage -l trainee
+
+# Example: force password change on next login
+sudo chage -d 0 trainee
 </code></pre>
 
-    <h3>Step 8: CSV Basics (head/tail/grep/cut)</h3>
-<pre><code># show headers
-head -n 1 users.csv
+    <h3>Step 8: Lock / Unlock Account (No Deletion)</h3>
+<pre><code># Lock login (prefixes '!' in shadow)
+sudo usermod -L trainee
+sudo passwd -S trainee
 
-# list all analysts
-grep ',analyst,' users.csv
-
-# extract names of IT department
-grep ',IT$' users.csv | cut -d',' -f2
+# Unlock
+sudo usermod -U trainee
+sudo passwd -S trainee
 </code></pre>
 
-    <h3>Step 9: Simple Report (sort + uniq)</h3>
-<pre><code># count hits per status code, most frequent last
-cut -d' ' -f5 access.log | sort | uniq -c | sort -n
+    <h3>Step 9: Change Primary Group / Default Shell (Optional)</h3>
+<pre><code># Change primary group to interns
+sudo usermod -g interns trainee
+id trainee
 
-# count roles from CSV
-cut -d',' -f3 users.csv | tail -n +2 | sort | uniq -c
+# Change default shell
+sudo usermod -s /bin/zsh trainee
+getent passwd trainee
 </code></pre>
 
-    <h3>Step 10: Combine Tools</h3>
-<pre><code># Find non-200 requests and write a timestamped report
-cat access.log \
- | awk '$5!=200 {print}' \
- | tee non200_$(date +%Y%m%d_%H%M%S).log
-
-# Verify file created
-ls -l non200_*.log
+    <h3>Step 10: Remove User Safely</h3>
+    <p><strong>Note:</strong> Only do this in your lab VM. <code>-r</code> removes the user’s home directory.</p>
+<pre><code>sudo userdel -r trainee
+getent passwd trainee || echo "trainee removed"
 </code></pre>
 
     <h3>✅ Deliverables</h3>
     <ul>
-      <li>Screenshot of <code>head -n 3 access.log</code> and <code>tail -n 2 access.log</code> outputs</li>
-      <li>Screenshot of <code>grep -E ' (4|5)[0-9]{2}$'</code> results</li>
-      <li>Screenshot of status-count report: <code>cut -d' ' -f5 access.log | sort | uniq -c | sort -n</code></li>
-      <li>Screenshot of <code>ok_200.log</code> creation via <code>tee</code> (show <code>ls -l</code> and a <code>head</code>)</li>
+      <li>Screenshot of <code>getent group interns</code> after creation</li>
+      <li>Screenshot of <code>id trainee</code> showing membership in <code>interns</code> (and <code>sudo</code>/<code>wheel</code> if applicable)</li>
+      <li>Screenshot of <code>sudo chage -l trainee</code> output</li>
+      <li>Screenshot proving lock/unlock with <code>passwd -S trainee</code> (before deletion)</li>
     </ul>
 
     <h3>🎯 Stretch Goals (Optional)</h3>
     <ul>
-      <li>Show only unique PATHs requested: <code>awk '{print $4}' access.log | sort -u</code></li>
-      <li>Top N PATHs by frequency: <code>awk '{print $4}' access.log | sort | uniq -c | sort -nr | head</code></li>
-      <li>Case-insensitive search: <code>grep -i 'dashboard' access.log</code></li>
-      <li>Colorized grep (if supported): <code>grep --color=auto 200 access.log</code></li>
+      <li>Create a shared project dir owned by group <code>interns</code>, setgid for collaborative files:
+        <pre><code>sudo mkdir -p /srv/project
+sudo chgrp interns /srv/project
+sudo chmod 2775 /srv/project
+getfacl /srv/project 2>/dev/null || ls -ld /srv/project
+</code></pre>
+      </li>
+      <li>Add an extra user (<code>assistant</code>) and verify both users can collaborate in <code>/srv/project</code>.</li>
+      <li>Restrict a user’s shell to <code>/usr/sbin/nologin</code> for service-only accounts and verify login behavior.</li>
     </ul>
 
     <h3>🧠 Reflect</h3>
     <ol>
-      <li>When is <code>less</code> better than <code>cat</code> for viewing files?</li>
-      <li>Why chain tools with pipes instead of writing intermediate files?</li>
-      <li>How would you adapt these patterns to much larger log files?</li>
+      <li>When would you choose to <em>lock</em> an account instead of deleting it?</li>
+      <li>Why use <code>usermod -aG</code> (append) rather than overwriting the group list?</li>
+      <li>What risks come with adding users to <code>sudo</code>/<code>wheel</code>, and how do you mitigate them?</li>
     </ol>
 
     <hr />
-    <p><strong>Lab Summary:</strong> You practiced fast file viewing, searching, and reporting with core CLI tools, plus redirection and piping to create simple, repeatable text-processing workflows.</p>
+    <p><strong>Lab Summary:</strong> You created users and groups, adjusted membership, granted limited admin rights, inspected account metadata, enforced password policy, locked/unlocked accounts, and removed users cleanly.</p>
   </div>
 </body>
 </html>
