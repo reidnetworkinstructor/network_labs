@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 68 Cheat Sheet - Process Management & System Performance</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 68 Cheat Sheet</h1>
+    <h2>Process Management & System Performance</h2>
+
+    <p>Quick reference for listing, filtering, monitoring, and controlling processes, plus checking system performance metrics.</p>
+
+    <h3>Listing Processes</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td><code>ps aux</code></td><td>Show all processes</td><td><code>ps aux</code></td></tr>
+      <tr><td><code>ps -u username</code></td><td>Show processes for specific user</td><td><code>ps -u bob</code></td></tr>
+      <tr><td><code>ps aux | grep name</code></td><td>Search processes by name</td><td><code>ps aux | grep apache</code></td></tr>
+    </table>
+
+    <h3>Real-Time Monitoring</h3>
+    <table>
+      <tr><td><code>top</code></td><td>Live process & resource usage</td></tr>
+      <tr><td><code>htop</code></td><td>Improved, interactive process viewer</td></tr>
+    </table>
+
+    <h3>Controlling Processes</h3>
+    <table>
+      <tr><td><code>kill PID</code></td><td>Terminate process gracefully</td></tr>
+      <tr><td><code>kill -9 PID</code></td><td>Forcefully terminate process</td></tr>
+      <tr><td><code>pkill name</code></td><td>Kill all processes matching name</td></tr>
+    </table>
+
+    <h3>CPU Usage & Info</h3>
+    <table>
+      <tr><td><code>lscpu</code></td><td>Show CPU details</td></tr>
+      <tr><td><code>uptime</code></td><td>Show uptime & load averages</td></tr>
+      <tr><td><code>top</code></td><td>Live CPU utilization</td></tr>
+    </table>
+
+    <h3>Memory Usage</h3>
+    <table>
+      <tr><td><code>free -h</code></td><td>Human-readable memory usage</td></tr>
+      <tr><td><code>top</code></td><td>Memory usage per process</td></tr>
+    </table>
+
+    <h3>Disk Usage</h3>
+    <table>
+      <tr><td><code>df -h</code></td><td>Disk space usage per filesystem</td></tr>
+      <tr><td><code>du -sh .</code></td><td>Size of current directory</td></tr>
+    </table>
+
+    <h3>I/O & Performance</h3>
+    <table>
+      <tr><td><code>iostat</code></td><td>CPU & disk I/O stats</td></tr>
+      <tr><td><code>iotop</code></td><td>Top I/O-using processes</td></tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># View top 10 CPU-hungry processes
+ps aux --sort=-%cpu | head -n 11
+
+# Kill a background process
+kill $(pgrep sleep)
+
+# Check load averages & memory
+uptime
+free -h
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Use <code>kill -9</code> only if normal <code>kill</code> fails.</li>
+      <li>Load average is relative to CPU cores (e.g., 4.00 on 4 cores = fully loaded).</li>
+      <li><code>htop</code> allows sorting by CPU, memory, or process time with function keys.</li>
+      <li>Combine <code>watch</code> with commands to refresh output every few seconds (<code>watch -n 2 df -h</code>).</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 68 Lab:</strong> This cheat sheet is a quick syntax reminder while completing the process & performance lab tasks.</p>
+  </div>
+</body>
+</html>
