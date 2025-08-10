@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 56 Lab - Search Commands Deep Dive: Part 2</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 56 Lab</h1>
+    <h2>Search Commands Deep Dive: Part 2</h2>
+
+    <p><strong>Objective:</strong> Level up your SPL with <code>eval</code> helpers and string utilities: <code>if()</code>, <code>case()</code>, <code>coalesce()</code>, <code>lower()</code>/<code>upper()</code>, and <code>len()</code>. You’ll normalize messy fields, label events, and build tidy summaries you can reuse.</p>
+
+    <h3>Quick Reference</h3>
+    <table class="table">
+      <thead>
+        <tr><th>Function</th><th>Purpose</th><th>Example</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>if(condition, then, else)</code></td><td>Conditional logic</td><td><code>if(status=200,"Success","Fail")</code></td></tr>
+        <tr><td><code>case()</code></td><td>Multiple if/else</td><td><code>case(status=404,"Not Found", status&gt;=500,"Server Error")</code></td></tr>
+        <tr><td><code>coalesce()</code></td><td>First non-null value</td><td><code>coalesce(user, user_name)</code></td></tr>
+        <tr><td><code>lower()</code> / <code>upper()</code></td><td>Change case</td><td><code>lower(host)</code></td></tr>
+        <tr><td><code>len()</code></td><td>Length of field</td><td><code>len(uri_path)</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Splunk Cloud Trial (or Splunk Free)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Dataset & Time</h3>
+    <ol>
+      <li>Open <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Set time range to <strong>Last 24 hours</strong>.</li>
+      <li>Use web-like internal data:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code>
+      </li>
+    </ol>
+
+    <h3>Step 2: Label Events with <code>if()</code></h3>
+    <ul>
+      <li>Create a simple “success/fail” label:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval outcome=if(status=200,"Success","Non-200")</code><br>
+        <code>| stats count by outcome</code>
+      </li>
+      <li>Only keep failures:<br>
+        <code>... | where outcome="Non-200"</code></li>
+    </ul>
+
+    <h3>Step 3: Multi-branch Logic with <code>case()</code></h3>
+    <ul>
+      <li>HTTP class labeling:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval http_class=case(</code><br>
+        <code>&nbsp;&nbsp;status&lt;200,"Informational",</code><br>
+        <code>&nbsp;&nbsp;status&gt;=200 AND status&lt;300,"Success",</code><br>
+        <code>&nbsp;&nbsp;status=404,"Not Found",</code><br>
+        <code>&nbsp;&nbsp;status&gt;=400 AND status&lt;500,"Client Error",</code><br>
+        <code>&nbsp;&nbsp;status&gt;=500,"Server Error",</code><br>
+        <code>&nbsp;&nbsp;true(),"Other")</code><br>
+        <code>| stats count by http_class | sort - count</code>
+      </li>
+    </ul>
+
+    <h3>Step 4: Normalize Identities with <code>coalesce()</code></h3>
+    <p>Different sources may use <code>user</code> vs <code>user_name</code>. Unify them.</p>
+    <ul>
+      <li><code>index=_internal sourcetype=splunkd_ui_access</code><br>
+          <code>| eval user_norm=coalesce(user, user_name, "-unknown-")</code><br>
+          <code>| stats count by user_norm | sort - count</code>
+      </li>
+      <li>Now join with the class label:<br>
+        <code>... | eval http_class=case(status&gt;=200 AND status&lt;300,"Success", status&gt;=500,"Server Error", true(),"Other")</code><br>
+        <code>| stats count by user_norm http_class | sort - count</code>
+      </li>
+    </ul>
+
+    <h3>Step 5: Clean Keys with <code>lower()</code>/<code>upper()</code></h3>
+    <ul>
+      <li>Normalize case to avoid duplicate buckets (e.g., <code>Admin</code> vs <code>admin</code>):<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval user_norm=lower(coalesce(user,user_name))</code><br>
+        <code>| stats dc(uri_path) as unique_paths by user_norm | sort - unique_paths</code>
+      </li>
+      <li>Uppercase example:<br>
+        <code>... | eval method_u=upper(method) | stats count by method_u</code></li>
+    </ul>
+
+    <h3>Step 6: Spot Long URLs with <code>len()</code></h3>
+    <ul>
+      <li>Measure path length and find the outliers:<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval url_len=len(uri_path)</code><br>
+        <code>| stats max(url_len) as max_len, avg(url_len) as avg_len by user</code><br>
+        <code>| sort - max_len</code>
+      </li>
+      <li>Only show “too long” (&gt; 60 chars):<br>
+        <code>index=_internal sourcetype=splunkd_ui_access</code><br>
+        <code>| eval url_len=len(uri_path)</code><br>
+        <code>| where url_len &gt; 60</code><br>
+        <code>| table _time user method uri_path url_len status</code>
+      </li>
+    </ul>
+
+    <h3>Step 7: Put It Together</h3>
+    <p>One tidy search that labels, normalizes, and summarizes:</p>
+    <pre><code>index=_internal sourcetype=splunkd_ui_access
+| eval user_norm=lower(coalesce(user,user_name,"-unknown-"))
+| eval class=case(status&gt;=200 AND status&lt;300,"Success",
+                  status=404,"Not Found",
+                  status&gt;=500,"Server Error",
+                  true(),"Other")
+| eval url_len=len(uri_path)
+| stats count,
+        dc(uri_path) as unique_paths,
+        avg(url_len) as avg_url_len
+        by user_norm class
+| sort - count
+</code></pre>
+
+    <h3>Step 8: Save as a Report (for future dashboards/alerts)</h3>
+    <ol>
+      <li>Save the combined search as <strong>Day56: UI Access – User/Class Summary</strong>.</li>
+      <li>Add a short description and keep it in your current app.</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot: <code>if()</code> outcome counts table.</li>
+      <li>Screenshot: <code>case()</code> <em>http_class</em> summary.</li>
+      <li>Screenshot: <code>coalesce()</code> user normalization results.</li>
+      <li>Screenshot: <code>lower()</code>/<code>upper()</code> in action (any stats table).</li>
+      <li>Screenshot: Long URL table using <code>len()</code> with <code>where url_len &gt; 60</code>.</li>
+      <li>Screenshot: the saved report visible under <strong>Reports</strong>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add <code>range()</code> on <code>url_len</code> by user, and highlight outliers with <code>if()</code>.</li>
+      <li>Save <em>user_norm</em> as a Calculated Field (Settings ▸ Fields) for this sourcetype.</li>
+      <li>Create a dashboard with two panels: (1) class counts; (2) top users by unique paths.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Where did <code>coalesce()</code> remove ambiguity in your dataset?</li>
+      <li>What’s your rule of thumb for choosing <code>if()</code> vs <code>case()</code>?</li>
+      <li>How does normalizing case (<code>lower()</code>/<code>upper()</code>) change your aggregation results?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You used <code>eval</code> functions to classify events, normalize fields, and shape reliable summaries. These small helpers unlock cleaner dashboards and less noisy investigations.</p>
+  </div>
+</body>
+</html>
