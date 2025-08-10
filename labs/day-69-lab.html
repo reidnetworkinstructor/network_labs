@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 69 Lab - Disk & File System Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 69 Lab</h1>
+    <h2>Disk & File System Management</h2>
+
+    <p><strong>Objective:</strong> Learn how to view, manage, and troubleshoot disks and file systems in Linux.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or physical machine)</li>
+      <li>Terminal access</li>
+      <li><code>lsblk</code>, <code>df</code>, <code>du</code>, <code>mount</code>, <code>umount</code> installed</li>
+    </ul>
+
+    <h3>Step 1: View Attached Storage Devices</h3>
+<pre><code># Show block devices
+lsblk
+
+# Show with file system info
+lsblk -f
+
+# Detailed disk usage info
+sudo fdisk -l
+</code></pre>
+
+    <h3>Step 2: Check File System Type</h3>
+<pre><code># List mounted file systems
+mount | column -t
+
+# Show file system types
+df -T
+</code></pre>
+
+    <h3>Step 3: Check Disk Space</h3>
+<pre><code># Human-readable disk space
+df -h
+
+# Space usage by directory
+du -sh /var/log
+
+# Top 10 largest directories/files
+du -ah / | sort -rh | head -n 10
+</code></pre>
+
+    <h3>Step 4: Mount a New File System</h3>
+<pre><code># Create a mount point
+sudo mkdir /mnt/mydisk
+
+# Mount a device (replace sdb1 with your device name)
+sudo mount /dev/sdb1 /mnt/mydisk
+
+# Verify mount
+mount | grep mydisk
+</code></pre>
+
+    <h3>Step 5: Unmount a File System</h3>
+<pre><code># Unmount by mount point
+sudo umount /mnt/mydisk
+
+# Or by device name
+sudo umount /dev/sdb1
+</code></pre>
+
+    <h3>Step 6: Check & Repair File System</h3>
+<pre><code># Check for errors (unmounted device only)
+sudo fsck /dev/sdb1
+</code></pre>
+
+    <h3>Step 7: Create a New File System</h3>
+<pre><code># WARNING: This will erase the disk partition
+sudo mkfs.ext4 /dev/sdb1
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>lsblk -f</code> output</li>
+      <li>Screenshot of <code>df -h</code> output</li>
+      <li>Screenshot showing a successful mount and unmount</li>
+      <li>Screenshot of <code>du -sh /var/log</code></li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Mount an ISO file using <code>mount -o loop</code>.</li>
+      <li>Use <code>findmnt</code> to view mounted devices.</li>
+      <li>Schedule a periodic file system check using <code>cron</code>.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why must a file system be unmounted before running <code>fsck</code>?</li>
+      <li>What’s the difference between <code>ext4</code> and <code>NTFS</code>?</li>
+      <li>Why might you use <code>du</code> over <code>df</code>?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced viewing storage devices, checking disk usage, mounting/unmounting file systems, and running maintenance commands.</p>
+  </div>
+</body>
+</html>
