@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 68 Lab - Process Management & System Performance</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 68 Lab</h1>
+    <h2>Process Management & System Performance</h2>
+
+    <p><strong>Objective:</strong> Learn how to monitor running processes, analyze system performance, and control processes using Linux commands and tools.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or physical machine)</li>
+      <li>Terminal access</li>
+    </ul>
+
+    <h3>Step 1: View Running Processes</h3>
+<pre><code># Show all processes
+ps aux
+
+# Show processes for current user
+ps -u $(whoami)
+</code></pre>
+
+    <h3>Step 2: Filter Processes</h3>
+<pre><code># Find a process by name
+ps aux | grep firefox
+
+# Exclude the grep process itself
+ps aux | grep firefox | grep -v grep
+</code></pre>
+
+    <h3>Step 3: Real-Time Process Monitoring</h3>
+<pre><code># Launch top (press q to quit)
+top
+
+# Launch htop if installed (color, easier navigation)
+htop
+</code></pre>
+
+    <h3>Step 4: Kill a Process</h3>
+<pre><code># Kill by PID
+kill 1234
+
+# Force kill
+kill -9 1234
+</code></pre>
+
+    <h3>Step 5: Check CPU Usage</h3>
+<pre><code># View CPU info
+lscpu
+
+# Check load averages and CPU utilization
+uptime
+top
+</code></pre>
+
+    <h3>Step 6: Check Memory Usage</h3>
+<pre><code># Human-readable memory summary
+free -h
+
+# Memory usage in top
+top
+</code></pre>
+
+    <h3>Step 7: Check Disk Usage</h3>
+<pre><code># Human-readable disk space
+df -h
+
+# Disk usage of current directory
+du -sh .
+</code></pre>
+
+    <h3>Step 8: Check I/O and Performance</h3>
+<pre><code># Install iostat (Debian/Ubuntu example)
+# sudo apt install sysstat
+
+# Show I/O stats
+iostat
+
+# Show process I/O usage
+iotop
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of <code>ps aux</code> output</li>
+      <li>Screenshot of <code>top</code> or <code>htop</code> showing CPU/memory usage</li>
+      <li>Screenshot of <code>free -h</code> and <code>df -h</code></li>
+      <li>Screenshot of <code>iostat</code> output</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Sort <code>top</code> by memory usage (press <strong>M</strong> in top).</li>
+      <li>Kill a background process you start with <code>sleep 300 &</code>.</li>
+      <li>Run <code>uptime</code> and interpret the 3 load average values.</li>
+      <li>Use <code>iotop</code> to see which processes are using the most disk I/O.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>What’s the difference between CPU load average and CPU utilization?</li>
+      <li>When might you use <code>kill -9</code> instead of a normal kill?</li>
+      <li>Why is <code>htop</code> preferred over <code>top</code> in some cases?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced monitoring and managing processes, reading CPU/memory/disk usage, and using performance tools to troubleshoot system slowdowns.</p>
+  </div>
+</body>
+</html>
