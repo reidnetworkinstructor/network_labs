@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 65 Cheat Sheet - Package Management & Installing Tools</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 65 Cheat Sheet</h1>
+    <h2>Package Management & Installing Tools</h2>
+
+    <p>Quick reference for detecting your package manager, updating indexes, searching, installing, verifying, and removing packages across major Linux distributions.</p>
+
+    <h3>Common Package Managers by Distro</h3>
+    <table>
+      <tr><th>Distro</th><th>Manager</th><th>Notes</th></tr>
+      <tr><td>Ubuntu/Debian</td><td><code>apt</code></td><td>Modern replacement for apt-get</td></tr>
+      <tr><td>Fedora/RHEL/CentOS</td><td><code>dnf</code> / <code>yum</code></td><td>dnf is default on new versions</td></tr>
+      <tr><td>Arch/Manjaro</td><td><code>pacman</code></td><td>Very fast, binary package manager</td></tr>
+      <tr><td>openSUSE</td><td><code>zypper</code></td><td>Handles repos & dependencies well</td></tr>
+      <tr><td>Alpine</td><td><code>apk</code></td><td>Lightweight, common in containers</td></tr>
+    </table>
+
+    <h3>Update/Refresh Index</h3>
+    <table>
+      <tr><th>Manager</th><th>Command</th></tr>
+      <tr><td>apt</td><td><code>sudo apt update</code></td></tr>
+      <tr><td>dnf</td><td><code>sudo dnf check-update</code></td></tr>
+      <tr><td>pacman</td><td><code>sudo pacman -Sy</code></td></tr>
+      <tr><td>zypper</td><td><code>sudo zypper refresh</code></td></tr>
+      <tr><td>apk</td><td><code>sudo apk update</code></td></tr>
+    </table>
+
+    <h3>Search for Packages</h3>
+    <table>
+      <tr><th>Manager</th><th>Command</th></tr>
+      <tr><td>apt</td><td><code>apt search name</code></td></tr>
+      <tr><td>dnf</td><td><code>dnf search name</code></td></tr>
+      <tr><td>pacman</td><td><code>pacman -Ss name</code></td></tr>
+      <tr><td>zypper</td><td><code>zypper search name</code></td></tr>
+      <tr><td>apk</td><td><code>apk search name</code></td></tr>
+    </table>
+
+    <h3>Install Packages</h3>
+    <table>
+      <tr><th>Manager</th><th>Command</th></tr>
+      <tr><td>apt</td><td><code>sudo apt install -y name</code></td></tr>
+      <tr><td>dnf</td><td><code>sudo dnf install -y name</code></td></tr>
+      <tr><td>pacman</td><td><code>sudo pacman -S --noconfirm name</code></td></tr>
+      <tr><td>zypper</td><td><code>sudo zypper install -y name</code></td></tr>
+      <tr><td>apk</td><td><code>sudo apk add name</code></td></tr>
+    </table>
+
+    <h3>Remove Packages</h3>
+    <table>
+      <tr><th>Manager</th><th>Command</th></tr>
+      <tr><td>apt</td><td><code>sudo apt remove -y name</code> • purge configs: <code>sudo apt purge -y name</code></td></tr>
+      <tr><td>dnf</td><td><code>sudo dnf remove -y name</code></td></tr>
+      <tr><td>pacman</td><td><code>sudo pacman -R name</code> • remove with deps: <code>sudo pacman -Rns name</code></td></tr>
+      <tr><td>zypper</td><td><code>sudo zypper remove -y name</code></td></tr>
+      <tr><td>apk</td><td><code>sudo apk del name</code></td></tr>
+    </table>
+
+    <h3>Verify Installation</h3>
+<pre><code># Check if installed and path
+which pkgname
+
+# Version check
+pkgname --version
+</code></pre>
+
+    <h3>Service Management (systemd-based)</h3>
+<pre><code># Start service
+sudo systemctl start servicename
+
+# Enable on boot
+sudo systemctl enable servicename
+
+# Status
+sudo systemctl status servicename --no-pager
+</code></pre>
+
+    <h3>Mini Workflows</h3>
+<pre><code># 1) Update catalog and install a tool
+sudo apt update &amp;&amp; sudo apt install -y htop
+
+# 2) Search, install, verify, then remove
+apt search htop
+sudo apt install -y htop
+which htop
+sudo apt remove -y htop
+
+# 3) Install and start nginx
+sudo apt install -y nginx
+sudo systemctl start nginx
+sudo systemctl enable nginx
+curl -I http://127.0.0.1
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Always refresh indexes before searching or installing.</li>
+      <li>Use non-interactive flags (<code>-y</code>, <code>--noconfirm</code>) for scripting.</li>
+      <li>Purge (<code>apt</code>) or <code>-Rns</code> (pacman) to remove leftover configs.</li>
+      <li>Consider Snap or Flatpak for newer versions not in distro repos.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 65 Lab:</strong> Keep this sheet open while detecting your package manager, searching for packages, installing tools, and managing services.</p>
+  </div>
+</body>
+</html>
