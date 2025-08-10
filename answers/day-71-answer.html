@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 71 Answer Key - Hello, Python! Your First Script</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 71 – Answer Key</h1>
+    <h2>Hello, Python! Your First Script</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+        <h3>Expected Output</h3>
+<pre><code>Name: &lt;Your Name&gt;
+Favorite Hoodie Skill: &lt;Your Skill&gt;
+Date: 2025-08-10
+</code></pre>
+
+        <h3>Reference Code (hello.py)</h3>
+<pre><code>print("Name: Jordan Kim")
+print("Favorite Hoodie Skill: Cloud Security")
+print("Date: 2025-08-10")
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><code>print()</code> sends text to standard output; each call prints a new line.</li>
+          <li>Running <code>python hello.py</code> executes the file top‑to‑bottom as a script.</li>
+          <li>REPL is great for quick experiments; scripts are for repeatable results and versioning.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li><strong>Command not found:</strong> Python not on PATH → reinstall with “Add Python to PATH”, or run <code>py</code> on Windows / <code>python3</code> on macOS/Linux.</li>
+          <li><strong>Wrong folder:</strong> Terminal not in the project directory → run <code>cd</code> into the folder containing <code>hello.py</code>.</li>
+          <li><strong>Quotes errors:</strong> Smart quotes from copy/paste → replace with straight quotes <code>"</code>.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li>Verified Python version in terminal (screenshot).</li>
+          <li><code>hello.py</code> exists and runs without errors.</li>
+          <li>Output shows name, Hoodie skill, and today’s date.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference (Optional)</h3>
+        <p><em>greeting.py</em> that composes one line:</p>
+<pre><code>name = "Jordan"
+skill = "Cloud Security"
+date = "2025-08-10"
+
+print(f"Welcome, {name}! Skill: {skill} | Date: {date}")
+</code></pre>
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
