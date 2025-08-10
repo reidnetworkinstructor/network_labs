@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 70 Lab - Logs & Log Management</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 70 Lab</h1>
+    <h2>Logs & Log Management</h2>
+
+    <p><strong>Objective:</strong> Explore Linux logs with <code>journalctl</code> and classic files in <code>/var/log</code>, generate test events, filter by service/time/priority, follow live logs, and inspect <code>logrotate</code> behavior.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li>Linux system (VM, WSL, or cloud instance)</li>
+      <li>Terminal (some steps require <code>sudo</code>)</li>
+      <li>Systemd-based distro preferred (has <code>journalctl</code>)</li>
+    </ul>
+
+    <h3>Step 1: Identify Your Logging Stack</h3>
+<pre><code># Is systemd present?
+ps -p 1 -o comm=
+# If output includes "systemd", use journalctl; also explore /var/log.
+which journalctl || echo "journalctl not found"
+
+# Show key log files directory
+ls -l /var/log | head
+</code></pre>
+
+    <h3>Step 2: Classic Files in /var/log</h3>
+<pre><code># View recent lines from common logs (Ubuntu/Debian)
+sudo tail -n 50 /var/log/syslog
+sudo tail -n 50 /var/log/auth.log
+
+# Follow a log live (Ctrl+C to stop)
+sudo tail -f /var/log/syslog
+
+# Search rotated & compressed logs too
+zgrep -h "ssh" /var/log/auth.log* | tail
+</code></pre>
+    <p><em>Note:</em> On RHEL/Fedora, use <code>/var/log/messages</code> instead of <code>syslog</code>.</p>
+
+    <h3>Step 3: Generate Test Events</h3>
+    <p>Use the <code>logger</code> command to write to the system log:</p>
+<pre><code># Create tagged test entries with different priorities
+logger -p user.info -t hoodie "Day70 test: info event"
+logger -p user.warning -t hoodie "Day70 test: warning event"
+logger -p auth.notice -t hoodie "Auth-like event for testing"
+</code></pre>
+
+    <h3>Step 4: journalctl Basics</h3>
+<pre><code># Show most recent journal entries
+sudo journalctl -n 50
+
+# Follow live (like tail -f)
+sudo journalctl -f
+
+# Show only our test tag
+sudo journalctl -t hoodie -n 20
+
+# Jump to most recent boot and show errors since boot
+sudo journalctl -b -p err
+</code></pre>
+
+    <h3>Step 5: Filter by Service, Time, and Priority</h3>
+<pre><code># By unit/service (e.g., ssh)
+sudo systemctl status sshd --no-pager
+sudo journalctl -u ssh -n 50
+sudo journalctl -u ssh --since "today 08:00" --until "today 18:00"
+
+# By priority range (warning and higher)
+sudo journalctl -p warning..alert -n 100
+
+# By time windows (relative)
+sudo journalctl --since "1 hour ago" -t hoodie
+</code></pre>
+
+    <h3>Step 6: Output Formats & Export</h3>
+<pre><code># Human brief vs raw message
+sudo journalctl -t hoodie -o short-iso
+sudo journalctl -t hoodie -o cat
+
+# JSON for tooling
+sudo journalctl -t hoodie -o json | head
+
+# Export to a file (e.g., last 200 ssh lines)
+sudo journalctl -u ssh -n 200 -o short-iso &gt; ssh_last200.log
+ls -lh ssh_last200.log
+</code></pre>
+
+    <h3>Step 7: Investigate Log Rotation</h3>
+<pre><code># View global and per-app rotation configs
+sudo head -n 40 /etc/logrotate.conf
+ls -l /etc/logrotate.d | head
+
+# Dry-run to see what would rotate (no changes)
+sudo logrotate -d /etc/logrotate.conf
+
+# Inspect rotated files
+ls -lh /var/log/syslog* /var/log/auth.log* 2>/dev/null || true
+</code></pre>
+
+    <h3>Step 8: Journald Storage & Maintenance (Optional but Useful)</h3>
+<pre><code># How much space does the journal use?
+sudo journalctl --disk-usage
+
+# Vacuum by size/time (example: keep 200M or 7 days)
+sudo journalctl --vacuum-size=200M
+sudo journalctl --vacuum-time=7d
+
+# Ensure persistent storage (across reboots):
+# 1) Make directory if missing
+sudo mkdir -p /var/log/journal
+# 2) Check or set Storage=persistent
+grep -E '^[#]*Storage=' /etc/systemd/journald.conf || echo "(Storage setting not found; default may apply)"
+# (Edit file if needed:) sudo nano /etc/systemd/journald.conf
+# 3) Restart journald
+sudo systemctl restart systemd-journald
+</code></pre>
+
+    <h3>Step 9: Quick Investigation Tasks</h3>
+<pre><code># Count failed ssh logins (works on many distros)
+sudo journalctl -u ssh | grep -c "Failed password"
+
+# Show last 5 reboots and their times
+last -x | head
+
+# Kernel-only messages (since boot)
+sudo journalctl -k -b -n 50
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your generated test entries found with <code>journalctl -t hoodie -n 20</code></li>
+      <li>Screenshot showing a time/priority filter (e.g., <code>journalctl -u ssh --since "today 08:00" -p warning..alert</code>)</li>
+      <li>Screenshot of a logrotate dry-run snippet: <code>sudo logrotate -d /etc/logrotate.conf</code></li>
+      <li>Screenshot showing journal disk usage: <code>journalctl --disk-usage</code> (and output of a vacuum command if you ran one)</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Create a simple grep report of SSH failures by source IP:
+        <pre><code>sudo journalctl -u ssh | grep "Failed password" | awk '{print $NF}' | sort | uniq -c | sort -nr | head</code></pre>
+      </li>
+      <li>Rotate logs now (careful, changes state): <code>sudo logrotate -f /etc/logrotate.conf</code> then re-check <code>/var/log/*</code>.</li>
+      <li>Send a custom JSON payload to the journal and view with <code>-o json-pretty</code>:
+        <pre><code>logger -p user.info -t hoodie '{"event":"lab70","status":"ok"}'
+sudo journalctl -t hoodie -o json-pretty | head</code></pre>
+      </li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When would you prefer <code>journalctl -f</code> over <code>tail -f</code>, and vice versa?</li>
+      <li>How do time and priority filters speed up investigations?</li>
+      <li>What risks come with forcing a log rotate on a production system?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You examined logs in <code>/var/log</code> and via <code>journalctl</code>, generated and filtered events by tag, unit, time, and priority, exported logs, and reviewed <code>logrotate</code> configuration and journal storage maintenance.</p>
+  </div>
+</body>
+</html>
