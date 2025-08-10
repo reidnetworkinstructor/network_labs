@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 67 Cheat Sheet - Network & Connectivity Commands</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 67 Cheat Sheet</h1>
+    <h2>Network & Connectivity Commands</h2>
+
+    <p>Quick reference for viewing network interfaces, testing connectivity, resolving DNS, tracing routes, and inspecting open ports.</p>
+
+    <h3>Interface & IP Information</h3>
+    <table>
+      <tr><th>Command</th><th>Purpose</th><th>Example</th></tr>
+      <tr><td><code>ip addr show</code></td><td>Show all interfaces & IPs</td><td><code>ip addr show</code></td></tr>
+      <tr><td><code>ip -brief addr</code></td><td>Compact interface/IP summary</td><td><code>ip -brief addr</code></td></tr>
+      <tr><td><code>ifconfig</code></td><td>Legacy interface info</td><td><code>ifconfig</code></td></tr>
+    </table>
+
+    <h3>Routing Table</h3>
+    <table>
+      <tr><td><code>ip route show</code></td><td>Full routing table</td></tr>
+      <tr><td><code>ip route | grep default</code></td><td>Show default gateway</td></tr>
+    </table>
+
+    <h3>Connectivity Tests</h3>
+    <table>
+      <tr><td><code>ping -c 4 8.8.8.8</code></td><td>Ping IP (test raw connectivity)</td></tr>
+      <tr><td><code>ping -c 4 example.com</code></td><td>Ping hostname (tests DNS + connectivity)</td></tr>
+      <tr><td><code>traceroute example.com</code></td><td>Show network path to host</td></tr>
+    </table>
+
+    <h3>DNS Lookups</h3>
+    <table>
+      <tr><td><code>nslookup domain.com</code></td><td>Basic name lookup</td></tr>
+      <tr><td><code>dig domain.com</code></td><td>Detailed DNS query</td></tr>
+      <tr><td><code>dig MX gmail.com</code></td><td>Query specific record type</td></tr>
+    </table>
+
+    <h3>Open Ports & Listening Services</h3>
+    <table>
+      <tr><td><code>ss -tuln</code></td><td>List TCP/UDP listening ports</td></tr>
+      <tr><td><code>sudo ss -tulpn</code></td><td>Include process info</td></tr>
+      <tr><td><code>nc -vz host port</code></td><td>Test if a TCP port is open</td></tr>
+    </table>
+
+    <h3>Download Files via CLI</h3>
+    <table>
+      <tr><td><code>wget URL</code></td><td>Download a file</td></tr>
+      <tr><td><code>curl -O URL</code></td><td>Download file, keep filename</td></tr>
+    </table>
+
+    <h3>Interface Statistics</h3>
+    <table>
+      <tr><td><code>ip -s link</code></td><td>View packet/byte counters</td></tr>
+      <tr><td><code>netstat -i</code></td><td>Legacy interface stats</td></tr>
+    </table>
+
+    <h3>Mini Workflows</h3>
+<pre><code># Check local IP and default route
+ip addr show
+ip route | grep default
+
+# Test local DNS resolution
+ping -c 4 example.com
+
+# Test port connectivity
+nc -vz google.com 443
+</code></pre>
+
+    <h3>Tips</h3>
+    <ul>
+      <li>Test by IP if DNS might be the issue.</li>
+      <li><code>ss</code> is faster and preferred over <code>netstat</code> on modern systems.</li>
+      <li>Use <code>traceroute</code> to spot network hops and delays.</li>
+      <li><code>dig +trace domain.com</code> shows full DNS resolution path.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Use with Day 67 Lab:</strong> This sheet pairs with the lab to give quick syntax reference for network diagnostics.</p>
+  </div>
+</body>
+</html>
