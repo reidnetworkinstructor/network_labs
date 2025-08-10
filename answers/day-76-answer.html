@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 76 Answer Key - Collections: Lists & Tuples</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .spoiler { background: #111; padding: 12px; border-radius: 10px; }
+    .spoiler [data-answers] { display: none; }
+    .spoiler button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 76 – Answer Key</h1>
+    <h2>Collections: Lists & Tuples</h2>
+
+    <div class="spoiler">
+      <p><strong>Heads up:</strong> Try the lab first. When you’re ready, click to reveal answers.</p>
+      <button id="reveal">Show Answers</button>
+      <div data-answers>
+
+        <h3>Reference Code – <code>inventory.py</code></h3>
+<pre><code>devices = ["router","switch","switch","ap","router","server"]
+
+# Count duplicates
+counts = {}
+for d in devices:
+    counts[d] = counts.get(d, 0) + 1
+
+print("Original:", devices)
+print("Counts:")
+for k, v in counts.items():
+    print(f"  {k} = {v}")
+
+# Deduplicate while keeping order
+unique = []
+for d in devices:
+    if d not in unique:
+        unique.append(d)
+
+# Ask user for a device name to add/remove
+action_device = input("Enter a device to add/remove: ").strip().lower()
+
+if action_device in unique:
+    unique.remove(action_device)
+    print(f"Removed one '{action_device}'")
+else:
+    unique.append(action_device)
+    print(f"Added '{action_device}'")
+
+# Sort and print with line numbers
+unique.sort()
+print("Final inventory:")
+for i, dev in enumerate(unique, start=1):
+    print(f"{i}. {dev}")
+</code></pre>
+
+        <h3>Sample Terminal Run – <code>inventory.py</code></h3>
+<pre><code>Original: ['router', 'switch', 'switch', 'ap', 'router', 'server']
+Counts:
+  router = 2
+  switch = 2
+  ap = 1
+  server = 1
+Enter a device to add/remove: firewall
+Added 'firewall'
+Final inventory:
+1. ap
+2. firewall
+3. router
+4. server
+5. switch
+</code></pre>
+
+        <h3>Reference Code – <code>defaults.py</code></h3>
+<pre><code># Constant settings in tuples
+dns = ("8.8.8.8", "1.1.1.1")
+ntp = ("time.google.com", "time.cloudflare.com")
+
+primary_dns, secondary_dns = dns
+primary_ntp, secondary_ntp = ntp
+
+print(f"Primary DNS: {primary_dns}, Secondary DNS: {secondary_dns}")
+print(f"Primary NTP: {primary_ntp}, Secondary NTP: {secondary_ntp}")
+
+# Attempt to change tuple element (commented to avoid error)
+# dns[0] = "9.9.9.9"  # ❌ TypeError: 'tuple' object does not support item assignment
+print("Note: Tuples are immutable – you cannot change their elements.")
+
+# Record tuple for a user
+user = ("jkim", "Jordan Kim", "student")
+username, full_name, role = user
+print(f"User '{username}' ({full_name}) has role '{role}'.")
+</code></pre>
+
+        <h3>Sample Terminal Run – <code>defaults.py</code></h3>
+<pre><code>Primary DNS: 8.8.8.8, Secondary DNS: 1.1.1.1
+Primary NTP: time.google.com, Secondary NTP: time.cloudflare.com
+Note: Tuples are immutable – you cannot change their elements.
+User 'jkim' (Jordan Kim) has role 'student'.
+</code></pre>
+
+        <h3>Why This Works</h3>
+        <ul>
+          <li><strong>inventory.py:</strong> Uses a dictionary to count occurrences, a list to store deduplicated values, and <code>enumerate</code> to number output.</li>
+          <li><strong>defaults.py:</strong> Demonstrates tuple unpacking and immutability, making it clear why tuples are good for constants.</li>
+        </ul>
+
+        <h3>Common Mistakes & Fixes</h3>
+        <ul>
+          <li>Forgetting to strip/normalize user input → could fail to match existing items in <code>unique</code> list.</li>
+          <li>Sorting before deduplicating → changes intended order before count check.</li>
+          <li>Attempting to modify a tuple element → raises <code>TypeError</code>.</li>
+        </ul>
+
+        <h3>Rubric (Pass/Complete)</h3>
+        <ul>
+          <li><code>inventory.py</code> correctly prints original list, counts, handles add/remove, sorts final list, and numbers items.</li>
+          <li><code>defaults.py</code> prints unpacked tuple values and explains immutability.</li>
+          <li>Both scripts run without errors and match the required structure.</li>
+        </ul>
+
+        <h3>Stretch Goal Reference</h3>
+<pre><code># Frequency table sorted by count (desc)
+sorted_counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+for dev, cnt in sorted_counts:
+    print(f"{dev}: {cnt}")
+</code></pre>
+
+      </div>
+    </div>
+
+    <hr />
+    <p><strong>Note:</strong> The “Show Answers” button hides spoilers by default. This is for learner experience, not security.</p>
+  </div>
+
+  <script>
+    document.getElementById('reveal').addEventListener('click', function() {
+      document.querySelector('[data-answers]').style.display = 'block';
+      this.remove();
+    });
+  </script>
+</body>
+</html>
