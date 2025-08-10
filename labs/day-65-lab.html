@@ -45,4 +45,153 @@ sudo apt update
 # Fedora/RHEL/CentOS
 sudo dnf check-update
 
-# Arc
+# Arch
+sudo pacman -Sy
+
+# openSUSE
+sudo zypper refresh
+
+# Alpine
+sudo apk update
+</code></pre>
+
+    <h3>Step 3: Search for a Tool (example: htop)</h3>
+<pre><code># Ubuntu/Debian
+apt search htop | head -n 20
+
+# Fedora/RHEL/CentOS
+dnf search htop | head -n 20
+
+# Arch
+pacman -Ss htop | head -n 20
+
+# openSUSE
+zypper search htop
+
+# Alpine
+apk search htop
+</code></pre>
+
+    <h3>Step 4: Install the Tool</h3>
+<pre><code># Ubuntu/Debian
+sudo apt install -y htop
+
+# Fedora/RHEL/CentOS
+sudo dnf install -y htop
+
+# Arch
+sudo pacman -S --noconfirm htop
+
+# openSUSE
+sudo zypper install -y htop
+
+# Alpine
+sudo apk add htop
+</code></pre>
+
+    <h3>Step 5: Verify Installation</h3>
+<pre><code>which htop
+htop --version || htop -v
+</code></pre>
+    <p>(Optional) Launch <code>htop</code>, then quit with <kbd>q</kbd>:</p>
+<pre><code>htop
+</code></pre>
+
+    <h3>Step 6: Remove / Uninstall</h3>
+<pre><code># Ubuntu/Debian
+sudo apt remove -y htop
+# (optional, purge config)
+sudo apt purge -y htop
+sudo apt autoremove -y
+
+# Fedora/RHEL/CentOS
+sudo dnf remove -y htop
+
+# Arch
+sudo pacman -R htop
+# (or remove with deps no longer needed)
+sudo pacman -Rns htop
+
+# openSUSE
+sudo zypper remove -y htop
+
+# Alpine
+sudo apk del htop
+</code></pre>
+
+    <h3>Step 7 (Optional): Install & Manage a Service (nginx)</h3>
+<pre><code># Install nginx
+# Ubuntu/Debian
+sudo apt install -y nginx
+# Fedora/RHEL/CentOS
+sudo dnf install -y nginx
+# Arch
+sudo pacman -S --noconfirm nginx
+# openSUSE
+sudo zypper install -y nginx
+# Alpine
+sudo apk add nginx
+</code></pre>
+<pre><code># Start & enable (systemd-based distros)
+sudo systemctl start nginx
+sudo systemctl enable nginx
+sudo systemctl status nginx --no-pager
+</code></pre>
+    <p>If your distro doesn’t use systemd, try:</p>
+<pre><code>sudo service nginx start
+</code></pre>
+    <p>Test locally (should return HTML):</p>
+<pre><code>curl -I http://127.0.0.1
+</code></pre>
+
+    <h3>Step 8 (Optional): List Installed Packages & Info</h3>
+<pre><code># Ubuntu/Debian
+apt list --installed | head
+apt show curl
+
+# Fedora/RHEL/CentOS
+dnf list installed | head
+dnf info curl
+
+# Arch
+pacman -Q | head
+pacman -Qi curl
+
+# openSUSE
+zypper se -i | head
+zypper info curl
+
+# Alpine
+apk info | head
+apk info -a curl
+</code></pre>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of your package manager detection (Step 1) and successful index refresh (Step 2)</li>
+      <li>Screenshot of search results for <code>htop</code> (Step 3) and installation confirmation (Step 4)</li>
+      <li>Screenshot of <code>which htop</code> and <code>htop --version</code> (Step 5)</li>
+      <li>(Optional) Screenshot showing <code>nginx</code> running: <code>systemctl status nginx</code> and <code>curl -I 127.0.0.1</code></li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li><strong>Pin or hold</strong> a package version (e.g., Debian’s <code>apt-mark hold</code>, Fedora’s versionlock plugin).</li>
+      <li>Install an alternate packaging format: <code>snap</code> or <code>flatpak</code> (e.g., <code>sudo snap install btop</code>).</li>
+      <li>On Debian/Ubuntu, download a <code>.deb</code> and install with <code>sudo dpkg -i pkg.deb</code>, then fix deps with <code>sudo apt -f install</code>.</li>
+      <li>Enable & add a repository (e.g., Debian PPA or Fedora COPR), install a package, and verify.</li>
+      <li>Compare footprint: <code>which</code> + <code>--version</code> for distro package vs snap/flatpak of the same tool.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>Why is it important to refresh indexes before searching or installing?</li>
+      <li>When would you remove vs purge (or use <code>-Rns</code> on Arch)?</li>
+      <li>What are trade-offs between native packages and snap/flatpak?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You identified your package manager, refreshed indexes, searched, installed, verified, and removed a tool, then optionally managed a service (nginx). These are the core workflows for maintaining Linux systems.</p>
+  </div>
+</body>
+</html>
