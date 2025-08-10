@@ -3,95 +3,109 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Day 22 Lab – IPv6 Virtual Network in Azure</title>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #e6f1ff;
-      font-family: 'Fira Code', monospace;
-      padding: 2rem;
-    }
-    h1, h2 {
-      color: #00ffff;
-    }
-    code {
-      background-color: #1e1e1e;
-      color: #80cbc4;
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-    }
-    .log {
-      background-color: #1c1f26;
-      border-left: 4px solid #00e5ff;
-      padding: 1rem;
-      margin: 1.5rem 0;
-      font-style: italic;
-    }
-    .step {
-      margin-bottom: 2rem;
-    }
-    .reflect {
-      background-color: #263238;
-      border-left: 4px solid #26c6da;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    .screenshot {
-      color: #b2ebf2;
-    }
-  </style>
+  <title>Day 22 Lab - IPv6 Virtual Network in Azure (Beginner)</title>
+  <link rel="stylesheet" href="../assets/lab.css?v=1" />
 </head>
 <body>
+  <div class="lab-container">
+    <h1>Day 22 Lab</h1>
+    <h2>Set Up an IPv6 Virtual Network in Azure (Beginner)</h2>
 
-  <h1>Day 22 Premium Lab:</h1>
-  <h2>Set Up an IPv6 Virtual Network in Azure</h2>
+    <p><strong>Objective:</strong> Create a Virtual Network (VNet) that includes IPv6, add an IPv6 subnet, and understand where IPv6 ranges live in the Azure Portal. No CLI, no VMs—just the portal and screenshots.</p>
+    <p><strong>Estimated time:</strong> 15–20 minutes</p>
 
-  <div class="step">
-    <h2>Step 1: Access Azure</h2>
-    <p>Log into the <a href="https://portal.azure.com" target="_blank">Azure Portal</a> using the free account you created on Day 21. If you haven’t yet, visit <a href="https://azure.microsoft.com/free" target="_blank">azure.microsoft.com/free</a> to set one up.</p>
-    <div class="log">Log: “Azure ready for IPv6 VNet.”</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 2: Create IPv6-Enabled VNet</h2>
-    <ol>
-      <li>Click <strong>Create a Resource</strong> > Search “Virtual Network” > Create.</li>
-      <li>Configuration:
-        <ul>
-          <li><strong>Subscription:</strong> Free Trial</li>
-          <li><strong>Resource Group:</strong> Use <code>HoodieCloud</code> (or create a new one)</li>
-          <li><strong>Name:</strong> <code>HoodieIPv6VNet</code></li>
-          <li><strong>Region:</strong> Choose closest (e.g., East US)</li>
-          <li><strong>IPv6 Address Space:</strong> Enable IPv6, use <code>2001:db8:5678::/48</code></li>
-        </ul>
-      </li>
-      <li>Create one subnet:
-        <ul>
-          <li><strong>Name:</strong> <code>IPv6Subnet</code></li>
-          <li><strong>Range:</strong> <code>2001:db8:5678:0001::/64</code></li>
-        </ul>
-      </li>
-      <li>Click <strong>Review + Create</strong> > <strong>Create</strong>.</li>
-    </ol>
-    <div class="log">Log: “IPv6 VNet 2001:db8:5678::/48 with /64 subnet created!”</div>
-  </div>
-
-  <div class="step">
-    <h2>Step 3: Simulate and Reflect</h2>
+    <h3>🛠 What You Need</h3>
     <ul>
-      <li>Imagine a server at <code>2001:db8:5678:0001::10</code>.</li>
-      <li>Write in Notepad: <code>AAAA record: server.example.com to ::10</code>.</li>
-      <li class="screenshot">📷 Screenshot the VNet details showing IPv6 address space and subnet.</li>
+      <li>An Azure account (<a href="https://azure.microsoft.com/free" target="_blank" rel="noopener">free tier</a> is fine)</li>
+      <li>Access to the <a href="https://portal.azure.com" target="_blank" rel="noopener">Azure Portal</a></li>
+      <li>Finished Day 21 (you can reuse the same resource group)</li>
     </ul>
-  </div>
 
-  <div class="step reflect">
-    <h2>Step 4: Reflect</h2>
-    <p><strong>Question:</strong> How does this VNet reflect IPv6 networking?</p>
-    <p><em>Hint:</em> You built a /48 IPv6 address space and created a /64 subnet. This mirrors real cloud networks using IPv6 IaaS infrastructure.</p>
-    <p class="screenshot">📷 Portfolio Bonus: Screenshot your Azure VNet page + your AAAA record note to show IPv6 networking mastery!</p>
-  </div>
+    <h3>Step 1 — Open Your Resource Group</h3>
+    <ol>
+      <li>In the Portal, search <strong>Resource groups</strong> → open <code>HL-Networking-RG</code> (or create it if you skipped Day 21).</li>
+    </ol>
 
+    <h3>Step 2 — Create a Dual-Stack VNet (IPv4 + IPv6)</h3>
+    <ol>
+      <li><strong>Create a resource</strong> → search <strong>Virtual Network</strong> → <strong>Create</strong>.</li>
+      <li><strong>Resource group:</strong> <code>HL-Networking-RG</code></li>
+      <li><strong>Name:</strong> <code>HL-IPv6-VNet</code></li>
+      <li><strong>Region:</strong> same as your RG.</li>
+      <li>Go to the <strong>IP addresses</strong> tab:</li>
+      <ul>
+        <li><strong>IPv4 address space:</strong> <code>10.22.0.0/16</code></li>
+        <li><strong>IPv6:</strong> set to <em>Enabled</em></li>
+        <li><strong>IPv6 address space:</strong> use a documentation range like <code>2001:db8:22::/48</code> (good for screenshots/learning)</li>
+      </ul>
+      <li>Continue to <strong>Review + create</strong> → <strong>Create</strong>.</li>
+    </ol>
+
+    <h3>Step 3 — Add an IPv6 Subnet</h3>
+    <ol>
+      <li>Open <strong>HL-IPv6-VNet</strong> → left menu <strong>Subnets</strong> → <strong>+ Subnet</strong>.</li>
+      <li><strong>Subnet name:</strong> <code>IPv6Subnet</code></li>
+      <li><strong>IPv4 subnet address range (optional):</strong> you can leave blank if you want a pure IPv6 subnet for this exercise.</li>
+      <li><strong>IPv6 subnet</strong> → set to <em>Enabled</em> → <strong>Address range (IPv6):</strong> <code>2001:db8:22:1::/64</code></li>
+      <li><strong>Add</strong> to save.</li>
+    </ol>
+
+    <h3>Step 4 — Explore What You Built</h3>
+    <ul>
+      <li>On the VNet <strong>Overview</strong>, confirm you see both:
+        <ul>
+          <li><strong>IPv4:</strong> <code>10.22.0.0/16</code></li>
+          <li><strong>IPv6:</strong> <code>2001:db8:22::/48</code></li>
+        </ul>
+      </li>
+      <li>Open <strong>Subnets</strong> → select <code>IPv6Subnet</code> → confirm the IPv6 range <code>2001:db8:22:1::/64</code>.</li>
+      <li><em>Concept check:</em> IPv6 hosts typically use a <strong>/64</strong> subnet so they can do SLAAC (auto-addressing).</li>
+    </ul>
+
+    <h3>Step 5 — (Optional, Easy) Add One IPv6 Security Rule</h3>
+    <p>If you’re comfortable, attach a simple NSG with a single allow rule—purely for learning/visuals. (No VMs are required.)</p>
+    <ol>
+      <li><strong>Create a resource</strong> → <strong>Network security group</strong> → Name: <code>HL-IPv6-NSG</code> → same RG/Region → <strong>Create</strong>.</li>
+      <li>Open the NSG → <strong>Inbound security rules</strong> → <strong>Add</strong>:
+        <ul>
+          <li><strong>Name:</strong> <code>Allow-HTTPS</code> | <strong>Priority:</strong> <code>100</code> | <strong>Protocol:</strong> TCP | <strong>Port:</strong> 443 | <strong>Action:</strong> Allow.</li>
+        </ul>
+      </li>
+      <li>Associate it to your subnet: NSG → <strong>Subnets</strong> → <strong>Associate</strong> → VNet <code>HL-IPv6-VNet</code> → Subnet <code>IPv6Subnet</code>.</li>
+      <li><em>Concept:</em> NSGs are dual-stack—they apply to both IPv4 and IPv6 traffic.</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot: <strong>HL-IPv6-VNet</strong> <em>Overview</em> with both IPv4 and IPv6 address spaces visible.</li>
+      <li>Screenshot: <strong>Subnets</strong> blade showing <code>IPv6Subnet</code> and its <code>/64</code> range.</li>
+      <li>(Optional) Screenshot: <strong>HL-IPv6-NSG</strong> inbound rules table showing <code>Allow-HTTPS</code> (priority 100).</li>
+      <li>1–2 sentences: “Why do many IPv6 subnets use /64?”</li>
+    </ul>
+
+    <h3>🎯 Stretch (Only if you feel good)</h3>
+    <ul>
+      <li>Add a second IPv6 subnet <code>2001:db8:22:2::/64</code> named <code>IPv6Private</code>. Explain one reason you’d keep it separate from <code>IPv6Subnet</code>.</li>
+      <li>Create (but don’t deploy) a <strong>Public IP (IPv6)</strong> resource in the portal to see where you’d attach it to a VM/NIC later.</li>
+      <li>Write a pretend DNS note: “AAAA record points <code>www.example.test</code> → <code>2001:db8:22:1::10</code>.” (AAAA = IPv6, A = IPv4.)</li>
+    </ul>
+
+    <h3>🧠 Quick Ref</h3>
+    <ul>
+      <li><strong>IPv6 address space</strong> on the VNet = the big range (e.g., <code>/48</code>).</li>
+      <li><strong>IPv6 subnet</strong> = a slice inside the VNet (commonly <code>/64</code> for hosts/SLAAC).</li>
+      <li><strong>AAAA</strong> DNS record = “IPv6 address for a hostname.”</li>
+      <li><strong>Tip:</strong> <code>2001:db8::/32</code> is a documentation-only range—great for screenshots and learning.</li>
+    </ul>
+
+    <h3>🧹 Clean Up (recommended)</h3>
+    <p>If you’re done, delete to avoid clutter:</p>
+    <ul>
+      <li>Open <strong>Resource groups</strong> → <code>HL-Networking-RG</code> → <strong>Delete resource group</strong> → confirm name.</li>
+    </ul>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You created a dual-stack VNet, added an IPv6 /64 subnet, and (optionally) attached an NSG rule—all in the Azure Portal. You now know where IPv6 lives in Azure and what a /48 vs /64 means at a beginner level.</p>
+  </div>
 </body>
 </html>
