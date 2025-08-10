@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 52 Lab - Using Basic Search in Splunk</title>
+  <link rel="stylesheet" href="../lab.css" />
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 52 Lab</h1>
+    <h2>Using Basic Search in Splunk</h2>
+
+    <p><strong>Objective:</strong> Practice core Search Processing Language (SPL) skills: keyword queries, Boolean logic, field/value filters, wildcards, time range control, and simple result shaping with <code>fields</code>, <code>table</code>, <code>dedup</code>, and <code>sort</code>.</p>
+
+    <h3>🛠 Tools Needed</h3>
+    <ul>
+      <li><a href="https://www.splunk.com/en_us/download/splunk-cloud.html" target="_blank" rel="noopener">Splunk Cloud Trial</a> (or a local Splunk Free install)</li>
+      <li>Web browser</li>
+    </ul>
+
+    <h3>Step 1: Open Search & Set Time</h3>
+    <ol>
+      <li>Sign in → <strong>Apps ▸ Search & Reporting</strong>.</li>
+      <li>Top-right time range: choose <strong>Last 60 minutes</strong>.</li>
+      <li>Ensure <strong>Search mode</strong> is <strong>Smart</strong> (next to the time picker).</li>
+    </ol>
+
+    <h3>Step 2: Keyword & Phrase Search</h3>
+    <p>We’ll use built-in data so you always have results.</p>
+    <ul>
+      <li>Run: <code>index=_internal error</code></li>
+      <li>Try a phrase search (quotes look for exact phrases):<br>
+        <code>index=_internal "rest handler"</code>
+      </li>
+      <li>Note: Searches are case-insensitive by default for keywords.</li>
+    </ul>
+
+    <h3>Step 3: Boolean Logic</h3>
+    <p>Use <code>AND</code>, <code>OR</code>, <code>NOT</code> and parentheses to control logic.</p>
+    <ul>
+      <li><strong>Errors or warnings:</strong><br>
+        <code>index=_internal (error OR warn)</code>
+      </li>
+      <li><strong>Errors but not UI-related:</strong><br>
+        <code>index=_internal error NOT ui</code>
+      </li>
+      <li><strong>Group logic:</strong><br>
+        <code>index=_internal (error OR fail) (http OR tcp)</code>
+      </li>
+    </ul>
+
+    <h3>Step 4: Field/Value Filters</h3>
+    <p>Filtering by fields is faster and cleaner than keyword-only.</p>
+    <ul>
+      <li><strong>By sourcetype:</strong><br>
+        <code>index=_internal sourcetype=splunkd</code>
+      </li>
+      <li><strong>By source path (wildcard):</strong><br>
+        <code>index=_internal source="*metrics.log"</code>
+      </li>
+      <li><strong>Combine:</strong><br>
+        <code>index=_internal sourcetype=splunkd (error OR warn)</code>
+      </li>
+      <li><strong>Host-specific (example):</strong><br>
+        <code>index=_internal host=*splunk*</code>
+      </li>
+    </ul>
+
+    <h3>Step 5: Wildcards & Quoting</h3>
+    <ul>
+      <li>Wildcard <code>*</code> matches any characters at that position.<br>
+        Example: <code>source="*scheduler.log"</code></li>
+      <li>Use quotes when values include spaces or special chars.<br>
+        Example: <code>sourcetype="splunkd_ui_access"</code></li>
+    </ul>
+
+    <h3>Step 6: Time Control in the Search Bar</h3>
+    <p>You can override the picker using <code>earliest</code>/<code>latest</code> in the search.</p>
+    <ul>
+      <li>Last 2 hours, rounded to the hour:<br>
+        <code>index=_internal earliest=-2h@h latest=@h</code></li>
+      <li>Yesterday only:<br>
+        <code>index=_internal earliest=@d-1d latest=@d</code></li>
+    </ul>
+
+    <h3>Step 7: Shape the Results (Fields, Table, Dedup, Sort)</h3>
+    <p>Now turn noisy events into readable lists.</p>
+    <ul>
+      <li><strong>Show only specific fields:</strong><br>
+        <code>index=_internal sourcetype=splunkd error | fields _time host source sourcetype</code>
+      </li>
+      <li><strong>Tabular view for quick skimming:</strong><br>
+        <code>index=_internal sourcetype=splunkd warn | table _time host source log_level</code>
+      </li>
+      <li><strong>Unique values by field (no repeats):</strong><br>
+        <code>index=_internal sourcetype=splunkd | dedup host | table _time host source</code>
+      </li>
+      <li><strong>Sort by most recent first:</strong><br>
+        <code>index=_internal error | sort - _time</code>
+      </li>
+    </ul>
+
+    <h3>Step 8: Quick Checks That Speed You Up</h3>
+    <ul>
+      <li><strong>Fields sidebar:</strong> Expand <em>Interesting Fields</em>; click a value to filter.</li>
+      <li><strong>Event sampling:</strong> Set to <em>1:10</em> while exploring to speed up, then turn off to finalize.</li>
+      <li><strong>Search Inspector:</strong> (dropdown next to the job menu) to see performance details.</li>
+    </ul>
+
+    <h3>Step 9: Save a Reusable Search (Report)</h3>
+    <ol>
+      <li>Run a clean filter you like, e.g.:<br>
+        <code>index=_internal sourcetype=splunkd (error OR warn) | table _time host source log_level</code>
+      </li>
+      <li>Click <strong>Save As ▸ Report</strong> → name it <em>Day52: Recent Splunkd Errors/Warnings</em>.</li>
+      <li>Add a short description and save. (We’ll use reports again when you build alerts.)</li>
+    </ol>
+
+    <h3>✅ Deliverables</h3>
+    <ul>
+      <li>Screenshot of a Boolean search result:<br>
+        <code>index=_internal (error OR warn)</code></li>
+      <li>Screenshot of a field-filtered/wildcard search:<br>
+        <code>index=_internal sourcetype=splunkd source="*metrics.log"</code></li>
+      <li>Screenshot of a shaped table output:<br>
+        <code>| table _time host source log_level</code> (from any of your searches)</li>
+      <li>Screenshot showing your saved report in <strong>Reports</strong>.</li>
+    </ul>
+
+    <h3>🎯 Stretch Goals (Optional)</h3>
+    <ul>
+      <li>Add a unique host list to your report:<br>
+        <code>index=_internal sourcetype=splunkd | dedup host | table host source</code></li>
+      <li>Create a second report for <em>Last 2 Hours</em> only using <code>earliest</code>/<code>latest</code> in the SPL.</li>
+      <li>Use <strong>Event Sampling</strong> at 1:10 while building, then turn it off and compare result counts.</li>
+    </ul>
+
+    <h3>🧠 Reflect</h3>
+    <ol>
+      <li>When did keyword search feel “too broad,” and how did field filters fix it?</li>
+      <li>What’s your personal rule of thumb for when to use <code>table</code> vs. staying in raw events?</li>
+      <li>Which search will you likely reuse as a report in a real job—and why?</li>
+    </ol>
+
+    <hr />
+    <p><strong>Lab Summary:</strong> You practiced the core SPL search skills that power everyday Splunk work—mixing keywords, Boolean logic, field filters, wildcards, and time controls—then shaped results for readability and saved a reusable report.</p>
+  </div>
+</body>
+</html>
