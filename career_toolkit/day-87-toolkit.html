@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 87 Toolkit — Job Hunt Strategy</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+    .table-wrap { overflow-x:auto; border: 1px solid #1f2a3b; border-radius: 10px; }
+    table { width:100%; border-collapse: collapse; font-size: 0.95rem; }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #1f2a3b; text-align: left; }
+    th { background: #0e1522; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 87 Toolkit</h1>
+    <h2>Job Hunt Strategy</h2>
+    <p class="subtitle muted">Skill‑first search strings, outreach scripts, and a lightweight tracker template. Apply even if you don’t meet 100% of “requirements.”</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-87-checklist.html">Day 87 Checklist</a></p>
+      <p>Use the <em>Copy</em> buttons to paste strings into job boards, notes, or your tracker.</p>
+    </div>
+
+    <h3>1) Skill‑Based Search Strings (LinkedIn / Indeed / Google)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="search1">Copy</button>
+        <pre id="search1">("CompTIA Network+" OR Network+) AND ("Active Directory" OR "ticketing system" OR troubleshooting)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="search2">Copy</button>
+        <pre id="search2">("Security+" OR "CompTIA Security+") AND (SIEM OR Splunk OR "log analysis" OR "incident response")</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="search3">Copy</button>
+        <pre id="search3">("AZ-900" OR "Azure Fundamentals") AND ("Microsoft 365" OR "Azure AD" OR identity OR helpdesk)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="search4">Copy</button>
+        <pre id="search4">("TCP/IP" OR DNS OR DHCP) AND ("help desk" OR "it support" OR "service desk")</pre>
+      </div>
+    </div>
+
+    <h3>2) Filters to Toggle (per board)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="filters">Copy</button>
+      <pre id="filters">Date posted: Past 24 hours / Past week
+Experience: Entry level / Associate
+Job type: Full-time, Contract-to-hire
+Work setting: On-site, Hybrid, Remote (check all that apply)
+Company: Include smaller orgs, MSPs, universities, hospitals
+Exclude terms: "Senior", "Lead", "Architect" (use job board exclude filters)</pre>
+    </div>
+
+    <h3>3) “Apply Anyway” Mindset Prompts</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="mind1">Copy</button>
+        <pre id="mind1">If I match ~70% of bullets (especially the first few), I apply.
+If a “requirement” is learnable in weeks, I apply.
+If I have proof-of-work (labs/projects) that map to the role, I apply.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="mind2">Copy</button>
+        <pre id="mind2">Red flags worth skipping: clearly senior title, heavy vendor years-of-experience requirements you cannot bridge, or niche stacks unrelated to your target path.</pre>
+      </div>
+    </div>
+
+    <h3>4) Tailoring Quick‑Swap Blocks (Paste into ATS version)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="tailor1">Copy</button>
+        <pre id="tailor1">SUMMARY: Entry-level IT professional (Network+, AZ-900) with hands-on labs in [SKILL]. Targeting roles that involve [KEY RESPONSIBILITY] and [PLATFORM/TOOL].</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="tailor2">Copy</button>
+        <pre id="tailor2">SKILLS (top line): TCP/IP, DNS, Windows Admin, Microsoft 365, Azure (AZ‑900), ServiceNow, Splunk (log analysis)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="tailor3">Copy</button>
+        <pre id="tailor3">BULLET SWAP: Resolved 30+ tickets/week across Windows/M365; cut resolution time by 25% via triage & documentation aligned to [TOOL/PROCESS IN JD].</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="tailor4">Copy</button>
+        <pre id="tailor4">PROJECT SWAP: Tiny Log Analyzer — speeds failed‑login triage (&lt;2m). Relevance: SIEM/log analysis focus in this role.</pre>
+      </div>
+    </div>
+
+    <h3>5) Recruiter Outreach & Follow‑Up</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="out1">Copy</button>
+        <pre id="out1">Subject: Quick intro — Entry-level [Role]
+Hi [Name], I applied to [Job Title, Job ID] at [Company]. I’m Network+/AZ-900 with labs in [skill]. Portfolio: [link]. Happy to share more context if helpful—thanks for your time.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="out2">Copy</button>
+        <pre id="out2">Follow-up (7–10 days):
+Hi [Name] — checking in on my application for [Job Title]. I can speak to [requirement from JD] and have relevant projects here: [link]. Appreciate any next steps you’d recommend.</pre>
+      </div>
+    </div>
+
+    <h3>6) Daily & Weekly Rhythm</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="rhythm">Copy</button>
+      <pre id="rhythm">Daily (30–45m): Run 3 skill searches → save best roles → tailor & apply to 2–3 → log in tracker → send 1–2 outreach notes.
+Weekly: Refresh resume keywords, add any new project links, rotate search strings, follow up on pending apps.</pre>
+    </div>
+
+    <h3>7) Lightweight Job Tracker (HTML Template)</h3>
+    <p class="muted">Copy this into a blank HTML file or paste the headings into Google Sheets/Notion. Track every application.</p>
+    <div class="snippet">
+      <button class="copybtn" data-copy="tracker">Copy</button>
+      <pre id="tracker">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Date Applied&lt;/th&gt;
+      &lt;th&gt;Company&lt;/th&gt;
+      &lt;th&gt;Role / Link&lt;/th&gt;
+      &lt;th&gt;Keywords Matched&lt;/th&gt;
+      &lt;th&gt;Status (Applied / Interview / Offer)&lt;/th&gt;
+      &lt;th&gt;Next Action / Date&lt;/th&gt;
+      &lt;th&gt;Contact (Recruiter / Referral)&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;2025-08-11&lt;/td&gt;&lt;td&gt;ExampleCo&lt;/td&gt;&lt;td&gt;&lt;a href="#"&gt;IT Support Specialist&lt;/a&gt;&lt;/td&gt;&lt;td&gt;AD, M365, Tickets&lt;/td&gt;&lt;td&gt;Applied&lt;/td&gt;&lt;td&gt;Follow up 8/18&lt;/td&gt;&lt;td&gt;J. Recruiter&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+    </div>
+
+    <h3>8) Company Watchlist (Prospecting)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="watch">Copy</button>
+      <pre id="watch">Target companies: local MSPs, hospitals, universities, SaaS startups, city/county roles, K‑12 districts, retail HQs.
+Action: Follow each on LinkedIn, set job alerts for “IT Support”, “Security Analyst”, “Technology Specialist”.</pre>
+    </div>
+
+    <h3>9) Interview Prep Trigger</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="prep">Copy</button>
+      <pre id="prep">When an interview is scheduled:
+• Re-read the JD; highlight top 5 responsibilities
+• Map 1 project or bullet to each responsibility
+• Prepare a 30–45s story (STAR) for 2 successes + 1 challenge
+• Print your one‑page resume and bring it</pre>
+    </div>
+
+    <h3>10) Links You’ll Reuse Often</h3>
+    <ul class="link-list">
+      <li><span class="badge">Profile</span> LinkedIn / GitHub / Portfolio — ensure all links are current and consistent</li>
+      <li><span class="badge">Resume</span> One‑Page PDF (for recruiter email) + ATS DOCX (for portals)</li>
+      <li><span class="badge">Projects</span> 2–3 best GitHub repos or case‑study pages</li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Next:</strong> Day 88 — Interview Mastery. You’ll convert outreach and applications into confident interviews using clear stories (STAR), technical walkthroughs, and calm delivery.</p>
+      <p><a href="../career_checklist/day-88-checklist.html">Go to Day 88 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Copy-to-clipboard
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = el.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
