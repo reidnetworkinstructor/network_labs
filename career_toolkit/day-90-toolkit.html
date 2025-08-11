@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 90 Toolkit — Final Launch Day</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+    .tip { font-size: 0.95rem; color:#a9b9d9; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 90 Toolkit</h1>
+    <h2>Final Launch Day</h2>
+    <p class="subtitle muted">Copy‑paste scripts, schedules, and templates to power your application sprint with speed and consistency.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-90-checklist.html">Day 90 Checklist</a></p>
+      <p>Use the <em>Copy</em> buttons to grab text quickly. Keep this page open while applying.</p>
+    </div>
+
+    <h3>1) Launch Day Schedule (Blocks)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="schedule">Copy</button>
+      <pre id="schedule">Block 1 (45m) — Skill searches & shortlisting
+• Run 3–4 keyword searches (e.g., "Network+", "Security+", "AZ‑900", "Active Directory", "TCP/IP", "Splunk")
+• Save roles posted in last 7 days that match ~70%+
+
+Block 2 (60m) — Tailor & apply (5–7 roles)
+• Paste ATS DOCX into portals; attach one‑page PDF if allowed
+• Move matching keywords to top of Summary/Skills
+• Link portfolio + top GitHub repo
+
+Break (10m)
+
+Block 3 (45m) — Outreach & referrals
+• Send 5 short notes to recruiters/contacts
+• Post concise LinkedIn launch update
+
+Block 4 (20m) — Tracker & follow‑up tasks
+• Log all applications
+• Set follow‑up reminders for 7–10 days</pre>
+    </div>
+
+    <h3>2) LinkedIn Launch Post (Short)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="post">Copy</button>
+      <pre id="post">Launch day: I’m applying to entry-level [Help Desk / SOC / Cloud Support] roles today. Portfolio + projects here: [link]. Certifications: [Network+ / Security+ / AZ‑900]. If your team supports [users / SOC ops / cloud reliability], I’d love to connect.</pre>
+    </div>
+
+    <h3>3) Recruiter DM (After Apply)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="dm1">Copy</button>
+        <pre id="dm1">Hi [Name] — I just applied to [Job Title, Job ID] at [Company]. I’m [Network+ / AZ‑900] with labs in [skill]. One‑page resume + portfolio: [links]. Happy to share more context if helpful. Thanks for your time.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="dm2">Copy</button>
+        <pre id="dm2">Hi [Name], I’m targeting entry‑level [role]. My background: [certs], projects in [skills]. If there are upcoming roles on your team, I’d appreciate a quick chat. Portfolio: [link].</pre>
+      </div>
+    </div>
+
+    <h3>4) Email Subject Lines</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="subjects">Copy</button>
+      <pre id="subjects">Subject: Entry‑level [Role] — [First Last], [Cert]
+Subject: Application for [Job Title, Job ID] — [First Last]
+Subject: Referral Request — Entry‑level [Role] (Portfolio inside)</pre>
+    </div>
+
+    <h3>5) Follow‑Up Note (7–10 Days)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="follow">Copy</button>
+      <pre id="follow">Hi [Name] — checking in on my application for [Job Title, Job ID]. I can speak to [requirement] and have relevant projects here: [link]. Appreciate any next steps you’d recommend.</pre>
+    </div>
+
+    <h3>6) Skill‑Based Search Strings (Copy to job boards)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="q1">Copy</button>
+        <pre id="q1">("CompTIA Network+" OR Network+) AND ("Active Directory" OR "ticketing system" OR troubleshooting)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="q2">Copy</button>
+        <pre id="q2">("Security+" OR "CompTIA Security+") AND (SIEM OR Splunk OR "log analysis" OR "incident response")</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="q3">Copy</button>
+        <pre id="q3">("AZ-900" OR "Azure Fundamentals") AND ("Microsoft 365" OR "Azure AD" OR identity OR helpdesk)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="q4">Copy</button>
+        <pre id="q4">("TCP/IP" OR DNS OR DHCP) AND ("help desk" OR "it support" OR "service desk")</pre>
+      </div>
+    </div>
+
+    <h3>7) One‑Page Resume Quick Builder (Copy Blocks)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="sum">Copy</button>
+        <pre id="sum">Summary — Entry‑level [Role] with [Certs] and hands‑on labs in [skills]. Projects: [1–2]. Strengths: troubleshooting, documentation, clear communication.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="proj">Copy</button>
+        <pre id="proj">Projects (1–2 lines each)
+• Tiny Log Analyzer — speeds failed‑login triage from ~15m → &lt;2m. Tools: Python, regex | GitHub: [link]
+• Network Mapping — discovery + traceroute write‑up; improved lab documentation. Tools: Windows CLI | GitHub: [link]</pre>
+      </div>
+    </div>
+
+    <h3>8) Phone Screen Prep (2‑Minute Warm‑Up)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="warm">Copy</button>
+      <pre id="warm">• 60s “Tell me about yourself” (role, certs, projects, target)
+• 30s “Why this company/role?”
+• 60s project highlight with result
+• One technical headline (help desk / SOC / cloud)
+• One question for them about success metrics</pre>
+    </div>
+
+    <h3>9) Voicemail Script (Recruiter/Manager)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="vm">Copy</button>
+      <pre id="vm">Hi [Name], this is [First Last]. I applied to [Job Title] and would love to connect. I’m [certs] with projects in [skills]. My number is [phone]. I’ll follow up by email with my one‑page resume and portfolio link. Thank you.</pre>
+    </div>
+
+    <h3>10) Rejection Reframe (Reply)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="reject">Copy</button>
+      <pre id="reject">Thanks for the update, [Name]. I appreciate your time and would value any feedback on strengthening my fit for future roles. If a junior [role] opens, please keep me in mind — I’m continuing to build projects in [skill].</pre>
+    </div>
+
+    <h3>11) Lightweight Tracker (HTML Table)</h3>
+    <p class="tip">Paste into a notes page or Sheets. Track every application and next action.</p>
+    <div class="snippet">
+      <button class="copybtn" data-copy="tracker">Copy</button>
+      <pre id="tracker">&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;&lt;th&gt;Date&lt;/th&gt;&lt;th&gt;Company&lt;/th&gt;&lt;th&gt;Role / Link&lt;/th&gt;&lt;th&gt;Keywords&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;th&gt;Next Action / Date&lt;/th&gt;&lt;th&gt;Contact&lt;/th&gt;&lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;&lt;td&gt;2025‑08‑11&lt;/td&gt;&lt;td&gt;ExampleCo&lt;/td&gt;&lt;td&gt;&lt;a href="#"&gt;IT Support Specialist&lt;/a&gt;&lt;/td&gt;&lt;td&gt;AD, M365, Tickets&lt;/td&gt;&lt;td&gt;Applied&lt;/td&gt;&lt;td&gt;Follow‑up 8/18&lt;/td&gt;&lt;td&gt;J. Recruiter&lt;/td&gt;&lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</pre>
+    </div>
+
+    <h3>12) Daily/Weekly Cadence (After Launch Day)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="cadence">Copy</button>
+      <pre id="cadence">Daily (45–60m):
+• Run 3 skill searches → shortlist 3 roles
+• Tailor ATS resume and apply to 2–3
+• Log apps, send 1–2 outreach notes
+
+Weekly:
+• Update resume keywords, add new projects
+• Rotate search strings
+• Follow up on pending apps (7–10 days)
+• Book one peer mock or study block</pre>
+    </div>
+
+    <div class="callout">
+      <p><strong>Reminder:</strong> Apply when you match ~70% of the description, especially the top requirements. Titles vary; skills travel.</p>
+      <p><a href="../career_checklist/day-90-checklist.html">Back to Day 90 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
