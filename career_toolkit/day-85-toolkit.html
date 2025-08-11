@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 85 Toolkit — ATS-Friendly Resumes</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 85 Toolkit</h1>
+    <h2>ATS-Friendly Resumes (Plain Text Master)</h2>
+    <p class="subtitle muted">Copy these section templates into a blank Word doc, no formatting, for 100% ATS compatibility.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-85-checklist.html">Day 85 Checklist</a></p>
+      <p>Use <em>Copy</em> buttons to grab each section, paste into Word, then edit for your details.</p>
+    </div>
+
+    <h3>1) Contact Block (Top of Resume)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="contact">Copy</button>
+      <pre id="contact">FirstName LastName
+City, State  |  Phone: (xxx) xxx-xxxx  |  Email: you@example.com
+LinkedIn: linkedin.com/in/yourname  |  GitHub: github.com/yourname  |  Portfolio: yourportfolio.com</pre>
+    </div>
+
+    <h3>2) Summary / Objective</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="summary">Copy</button>
+      <pre id="summary">Entry-level IT professional with certifications in [Certifications] and hands-on experience in [Skill Areas]. Skilled in [Key Tools/Tech], with a track record of [Result or Project Impact]. Seeking to join a [target role/team type] to contribute to [specific outcomes relevant to the role].</pre>
+    </div>
+
+    <h3>3) Certifications</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="certs">Copy</button>
+      <pre id="certs">Certifications
+CompTIA Network+ (N10-009) — 2025
+CompTIA Security+ (SY0-701) — In Progress
+Microsoft Certified: Azure Fundamentals (AZ-900) — 2025
+Splunk Core Certified User — 2025</pre>
+    </div>
+
+    <h3>4) Technical Skills (Grouped)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="skills">Copy</button>
+      <pre id="skills">Technical Skills
+Networking: TCP/IP, DNS, DHCP, VLANs, Wi-Fi
+Security: Security+, SIEM (Splunk), Log Analysis, Threat Detection
+Cloud: Microsoft Azure, Azure AD, M365 Administration
+Tools: ServiceNow, Wireshark, PowerShell, Python, Git/GitHub
+Soft Skills: Documentation, Customer Support, Problem Solving</pre>
+    </div>
+
+    <h3>5) Professional Experience (Bulleted)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="experience">Copy</button>
+      <pre id="experience">Professional Experience
+Help Desk Technician — Company Name, City, State   MM/YYYY–Present
+• Resolved 30+ tickets/week in ServiceNow, reducing resolution time by 25%.
+• Managed M365 account provisioning, improving onboarding efficiency.
+• Documented troubleshooting steps in internal KB for recurring issues.
+
+Customer Service Associate — Company Name, City, State   MM/YYYY–MM/YYYY
+• Assisted customers with account and device troubleshooting.
+• Maintained 95%+ satisfaction rating over 12 months.
+• Collaborated with IT to resolve network and hardware-related escalations.</pre>
+    </div>
+
+    <h3>6) Projects (For New IT Entrants)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="projects">Copy</button>
+      <pre id="projects">Projects
+Tiny Log Analyzer (GitHub: link)
+• Developed Python script to parse and summarize auth logs by IP and username.
+• Reduced analysis time from 15 minutes to under 2 minutes in lab tests.
+
+Network Mapping CLI Tool (GitHub: link)
+• Used ipconfig, tracert, and nmap to document home network topology.
+• Produced visual diagram and troubleshooting guide.</pre>
+    </div>
+
+    <h3>7) Education</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="education">Copy</button>
+      <pre id="education">Education
+Associate of Applied Science in Information Technology — School Name, City, State — MM/YYYY
+Relevant Coursework: Networking Fundamentals, Cybersecurity Basics, Cloud Services</pre>
+    </div>
+
+    <h3>8) Action Verb Starter List</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="verbs">Copy</button>
+      <pre id="verbs">Implemented, Configured, Analyzed, Documented, Automated, Monitored, Resolved, Optimized, Tested, Supported, Managed, Delivered, Deployed, Improved, Secured, Investigated, Designed, Coordinated, Built, Reduced</pre>
+    </div>
+
+    <h3>9) Common ATS Keywords by Role</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="keywords1">Copy</button>
+        <pre id="keywords1">Help Desk / IT Support:
+Active Directory, M365, Ticketing System, Troubleshooting, User Support, Password Reset, VPN, Windows 10/11, Endpoint Security</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="keywords2">Copy</button>
+        <pre id="keywords2">SOC Analyst / Security:
+SIEM, Splunk, Threat Detection, Incident Response, Log Analysis, Security Monitoring, Vulnerability Scan, Intrusion Detection</pre>
+      </div>
+    </div>
+
+    <h3>10) Testing Your Resume</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="testing">Copy</button>
+      <pre id="testing">1. Save as ATS_Master.docx (plain text formatting only).
+2. Upload to a free ATS checker (Jobscan, Resumeworded).
+3. Verify each section parses correctly.
+4. Adjust keywords and section titles as needed.
+5. Save a lightly formatted copy for human readers.</pre>
+    </div>
+
+    <div class="callout">
+      <p><strong>Up Next:</strong> Day 86 — The One-Page Resume. Learn how to distill your ATS-friendly resume into a high-impact single page without losing essential details.</p>
+      <p><a href="../career_checklist/day-86-checklist.html">Go to Day 86 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
