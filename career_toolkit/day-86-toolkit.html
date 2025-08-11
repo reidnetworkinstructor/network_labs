@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 86 Toolkit — One-Page Resume</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 86 Toolkit</h1>
+    <h2>One-Page Printable Resume</h2>
+    <p class="subtitle muted">Copy‑paste blocks and formatting tips to turn your ATS master into a sharp, printable one‑pager.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-86-checklist.html">Day 86 Checklist</a></p>
+      <p>Workflow: Start from your Day 85 plain‑text resume → trim → light formatting → export to PDF.</p>
+    </div>
+
+    <h3>1) Recommended One‑Page Layout (Outline)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="layout">Copy</button>
+      <pre id="layout">HEADER
+Name | City, ST | Phone | Email | LinkedIn | GitHub/Portfolio
+
+SUMMARY (2–3 sentences)
+Certifications + focus + value you bring + target role.
+
+SKILLS & CERTIFICATIONS
+Networking | Security | Cloud | Tools  (grouped, concise)
+Certifications listed with full names/acronyms.
+
+EXPERIENCE (1–2 roles max)
+Title — Company, City, ST (MM/YYYY–MM/YYYY)
+• Achievement/result with metric
+• Tool/tech + outcome
+• Customer or uptime impact
+
+PROJECTS (1–2)
+Title — short problem/approach/result | link
+• Tools used | measurable learning/outcome
+
+EDUCATION
+Degree/Program — School, City, ST (Year)</pre>
+    </div>
+
+    <h3>2) Summary Line Starters</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="sum1">Copy</button>
+        <pre id="sum1">Entry-level IT professional (Network+, AZ‑900) focused on troubleshooting, documentation, and end‑user support. Recent projects include network mapping and log analysis. Seeking Help Desk / IT Support roles to improve resolution time and user experience.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="sum2">Copy</button>
+        <pre id="sum2">Junior SOC analyst with Security+ (in progress) and hands‑on labs in Splunk and incident documentation. Built a tiny log analyzer to surface failed‑login patterns. Targeting SOC/blue‑team roles where thorough triage and clear runbooks matter.</pre>
+      </div>
+    </div>
+
+    <h3>3) Skills & Certifications (Compact Blocks)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="skills">Copy</button>
+      <pre id="skills">Skills: TCP/IP, DNS, DHCP, VLANs, Wi‑Fi, Windows Admin, Microsoft 365, Azure (AZ‑900), Identity & Access, Ticketing (ServiceNow), PowerShell, Python, Git/GitHub, Splunk (Log Analysis)
+Certifications: CompTIA Network+ (N10‑009), Microsoft AZ‑900, CompTIA Security+ (in progress), Splunk Core Certified User</pre>
+    </div>
+
+    <h3>4) Bullet Conversions (From Task → Result)</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="bullets1">Copy</button>
+        <pre id="bullets1">Weak: Reset passwords and closed tickets.
+Strong: Resolved 30+ tickets/week across Windows/M365; cut average resolution time by 25% via clearer triage and KB reuse.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="bullets2">Copy</button>
+        <pre id="bullets2">Weak: Worked with Wi‑Fi issues.
+Strong: Diagnosed recurring Wi‑Fi drops; documented remediation that reduced repeat incidents by 40% over two months.</pre>
+      </div>
+    </div>
+
+    <h3>5) Project Mini‑Card Templates (1–2 lines each)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="projects">Copy</button>
+      <pre id="projects">Tiny Log Analyzer — Python CLI that summarizes failed logins by IP/user; speeds triage from 15m → &lt;2m. Tools: Python, regex | GitHub: &lt;link&gt;
+Network Mapping CLI — Automated local discovery + traceroute write‑up; improved home lab documentation. Tools: Windows CLI, draw.io | GitHub: &lt;link&gt;</pre>
+    </div>
+
+    <h3>6) Visual Polishing Guide (Keep It Light)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="formatting">Copy</button>
+      <pre id="formatting">• Font: Calibri/Arial/Helvetica. Body 10.5–11.5 pt, Name 14–16 pt.
+• Section headers in SMALL CAPS or bold; no color needed.
+• 0.5–1" margins; consistent spacing before/after headers.
+• Use solid round bullets only; no icons or fancy symbols.
+• One column. No text boxes, tables, or images.</pre>
+    </div>
+
+    <h3>7) Space‑Saver Tricks (Without Looking Cramped)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="spacesaver">Copy</button>
+      <pre id="spacesaver">• Collapse older/unrelated roles to one line each.
+• Combine Skills & Certifications into one section.
+• Limit to 3 bullets/job; keep each bullet to 1–2 lines.
+• Use short, scannable phrases; front‑load keywords.</pre>
+    </div>
+
+    <h3>8) File‑Naming & Export</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="export">Copy</button>
+      <pre id="export">File name: Lastname_Firstname_Resume.pdf
+Keep your Day 85 ATS version as ATS_Master.docx
+When uploading to portals: use Word (ATS) if requested; send PDF directly to recruiters via email/LinkedIn.</pre>
+    </div>
+
+    <h3>9) Recruiter Reply & Send Script</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="reply1">Copy</button>
+        <pre id="reply1">Subject: Resume — Firstname Lastname
+Hi [Name], thanks for reaching out. Attached is my one‑page resume (PDF). Happy to share my ATS version or project links if helpful. Looking forward to next steps.
+— Firstname</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="reply2">Copy</button>
+        <pre id="reply2">Hi [Name] — great to connect. Here’s my one‑page resume and portfolio: [link]. My background aligns with [requirement]; happy to elaborate on [project/skill].</pre>
+      </div>
+    </div>
+
+    <h3>10) Quick Review Rubric (Print‑Ready)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="rubric">Copy</button>
+      <pre id="rubric">SCAN (6–8 sec): Name + role clear? Top skills visible? Any clutter?
+CONTENT: Results > tasks? Metrics present? Relevant keywords included?
+FORMAT: One page? Clean margins/fonts? Consistent bullets?
+LINKS: LinkedIn/GitHub/Portfolio working?
+EXPORT: PDF looks identical on phone and desktop?</pre>
+    </div>
+
+    <div class="callout">
+      <p><strong>Next:</strong> Day 87 — Job Hunt Strategy. We’ll build your target company list, daily pipeline rhythm, and tracking system so you’re sending the right resume to the right roles.</p>
+      <p><a href="../career_checklist/day-87-checklist.html">Go to Day 87 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
