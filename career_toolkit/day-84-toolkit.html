@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 84 Toolkit — Portfolio Power</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 84 Toolkit</h1>
+    <h2>Portfolio Power</h2>
+    <p class="subtitle muted">Templates, copy blocks, and tips to help you build and launch a clean, job-ready portfolio.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-84-checklist.html">Day 84 Checklist</a></p>
+      <p>Use the <em>Copy</em> buttons to paste text directly into your portfolio builder.</p>
+    </div>
+
+    <h3>1) Header Tagline Examples</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="taglines">Copy</button>
+      <pre id="taglines">Help Desk Technician | Network+ Certified | Troubleshooting & Documentation
+SOC Analyst (Security+) | Log Analysis | Threat Detection
+Cloud Support Associate | AZ-900 | Identity & Microsoft 365
+IT Support Specialist | Ticket Triage | End-User Experience</pre>
+    </div>
+
+    <h3>2) About Me Templates</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="about1">Copy</button>
+        <pre id="about1">I’m an entry-level IT professional with hands-on labs in networking, cloud, and security fundamentals. I’ve built projects including [project examples]. Certified in [certifications], I’m targeting roles where I can improve [relevant outcomes] and support [team/industry focus].</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="about2">Copy</button>
+        <pre id="about2">My focus is on practical, measurable improvements in IT environments—whether that’s reducing downtime, improving security posture, or streamlining processes. With [certifications] and [project experience], I’m ready to contribute to a team that values reliability, security, and user experience.</pre>
+      </div>
+    </div>
+
+    <h3>3) Project Card Template</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="projectCard">Copy</button>
+      <pre id="projectCard">**Title:** Tiny Log Analyzer (CLI)
+**Problem:** SOC teams need a quick way to spot failed login patterns.
+**Approach:** Python script parsing auth logs; summary table by IP and username.
+**Result:** Reduced analysis time in lab from 15 minutes to under 2 minutes.
+**Skills:** Python, Log Analysis, Security Fundamentals
+[GitHub Repo] | [Write-up/Screenshot]</pre>
+    </div>
+
+    <h3>4) Certification Badge HTML</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="badges">Copy</button>
+      <pre id="badges">&lt;img src="https://img.shields.io/badge/CompTIA-Network%2B-blue" alt="Network+ Badge"&gt;
+&lt;img src="https://img.shields.io/badge/Microsoft-AZ--900-blue" alt="AZ-900 Badge"&gt;
+&lt;img src="https://img.shields.io/badge/CompTIA-Security%2B-red" alt="Security+ Badge"&gt;
+&lt;img src="https://img.shields.io/badge/Splunk-Core%20User-green" alt="Splunk Core User Badge"&gt;</pre>
+    </div>
+
+    <h3>5) Screenshot & Image Tips</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="imageTips1">Copy</button>
+        <pre id="imageTips1">• Use a clean terminal or UI theme for screenshots.
+• Crop tightly to the relevant output or diagram.
+• Include a short caption describing what’s shown.
+• Save images in a dedicated /img or /docs folder.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="imageTips2">Copy</button>
+        <pre id="imageTips2">Markdown example:
+![Network Map](docs/network_map.png)
+_A diagram generated from my network mapping lab showing VLAN segmentation._</pre>
+      </div>
+    </div>
+
+    <h3>6) Contact Section HTML</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="contact">Copy</button>
+      <pre id="contact">&lt;p&gt;Email: &lt;a href="mailto:you@example.com"&gt;you@example.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;LinkedIn: &lt;a href="https://linkedin.com/in/yourname"&gt;linkedin.com/in/yourname&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;GitHub: &lt;a href="https://github.com/yourname"&gt;github.com/yourname&lt;/a&gt;&lt;/p&gt;</pre>
+    </div>
+
+    <h3>7) Launch Announcement Templates</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="launch1">Copy</button>
+        <pre id="launch1">Excited to share my new IT portfolio! Includes labs and projects in [skills/areas], plus verified certifications. Feedback welcome! [link]</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="launch2">Copy</button>
+        <pre id="launch2">Just launched my tech portfolio—GitHub projects, certs, and case studies all in one place. Targeting roles in [role/industry]. Check it out: [link]</pre>
+      </div>
+    </div>
+
+    <h3>8) Platform Links</h3>
+    <ul class="link-list">
+      <li><span class="badge">GitHub Pages</span> <a href="https://pages.github.com/" target="_blank" rel="noopener">pages.github.com</a></li>
+      <li><span class="badge">Notion</span> <a href="https://www.notion.so/" target="_blank" rel="noopener">notion.so</a></li>
+      <li><span class="badge">Carrd</span> <a href="https://carrd.co/" target="_blank" rel="noopener">carrd.co</a></li>
+      <li><span class="badge">WordPress.com</span> <a href="https://wordpress.com/" target="_blank" rel="noopener">wordpress.com</a></li>
+    </ul>
+
+    <div class="callout">
+      <p><strong>Up Next:</strong> ATS-Friendly Resumes (Day 85). Learn how to design a resume that passes screening systems and impresses human reviewers.</p>
+      <p><a href="../career_checklist/day-85-checklist.html">Go to Day 85 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        navigator.clipboard.writeText(el.innerText).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
