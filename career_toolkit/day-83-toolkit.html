@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Day 83 Toolkit — GitHub for Beginners</title>
+  <link rel="stylesheet" href="../assets/lab.css" />
+  <style>
+    .grid { display: grid; gap: 1rem; }
+    @media (min-width: 860px){ .grid-2{ grid-template-columns: 1fr 1fr; } .grid-3{ grid-template-columns: 1fr 1fr 1fr; } }
+    .snippet { position: relative; background: #0f1420; border: 1px solid #1f2a3b; border-radius: 10px; padding: 0.75rem 1rem; }
+    .snippet pre { margin: 0; overflow: auto; white-space: pre-wrap; word-break: break-word; }
+    .copybtn {
+      position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 6px 10px;
+      border: 1px solid #2b3a53; background: #121a28; color: #dce7ff; border-radius: 8px; cursor: pointer;
+    }
+    .muted { color: #9fb0cf; font-size: 0.95rem; }
+    .badge { display:inline-block; padding:2px 8px; border-radius:999px; font-size:12px; background:#142036; border:1px solid #253454; color:#b9c9ee; }
+    .link-list a{ display:inline-block; margin:0.25rem 0;}
+  </style>
+</head>
+<body>
+  <div class="lab-container">
+    <h1>Day 83 Toolkit</h1>
+    <h2>GitHub for Beginners</h2>
+    <p class="subtitle muted">Templates, examples, and snippets to polish your profile and repositories quickly.</p>
+
+    <div class="callout">
+      <p><strong>Pair with:</strong> <a href="../career_checklist/day-83-checklist.html">Day 83 Checklist</a></p>
+      <p>Use the <em>Copy</em> buttons to paste templates directly into your README, commits, and Issues.</p>
+    </div>
+
+    <h3>1) Profile README Starter</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="profile">Copy</button>
+      <pre id="profile"># Hi, I’m &lt;Your Name&gt;
+Entry-level IT/Sec professional with hands-on labs in networking, cloud, and log analysis.
+
+- Recent projects: network mapping CLI, tiny log analyzer, baseline hardening notes
+- Certs: Network+, AZ-900, (Security+ in progress)
+- Portfolio: &lt;link&gt; | LinkedIn: &lt;link&gt;
+
+**Pinned Projects**
+- [tiny-log-analyzer](https://github.com/yourname/tiny-log-analyzer)
+- [network-mapper-cli](https://github.com/yourname/network-mapper-cli)
+- [baseline-hardening-notes](https://github.com/yourname/baseline-hardening-notes)</pre>
+    </div>
+
+    <h3>2) Repository README Template</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="repoReadme">Copy</button>
+      <pre id="repoReadme"># Project Title
+Brief results-focused description (what it does and why it matters).
+
+## Why It Matters
+Describe the problem this solves and the scenario (help desk, SOC, cloud).
+
+## How to Run
+1. Prereqs: version, dependencies
+2. Install: commands
+3. Execute: commands
+4. Expected output: sample snippet
+
+## Screenshots
+See /docs for images and diagrams.
+
+## What I Learned
+- skill or tool
+- troubleshooting or concept
+
+## Next Steps
+- realistic improvement 1
+- realistic improvement 2
+
+## Links
+- Related project: &lt;repo link&gt;
+- Portfolio page: &lt;url&gt;</pre>
+    </div>
+
+    <h3>3) Recommended Repo Structure</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="structure">Copy</button>
+      <pre id="structure">repo-root/
+  README.md
+  src/              # scripts or code
+  docs/             # screenshots, diagrams
+  data/             # sample inputs (sanitized)
+  .gitignore
+  LICENSE           # MIT for personal projects
+</pre>
+    </div>
+
+    <h3>4) Commit Message Examples</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="commits1">Copy</button>
+        <pre id="commits1">feat: add summary table to log analyzer
+fix: handle empty lines gracefully in parser
+docs: include screenshot of sample output
+refactor: extract parser into separate module
+test: add unit test for empty file case</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="commits2">Copy</button>
+        <pre id="commits2">chore: update .gitignore for venv/.env
+build: add requirements.txt for quick setup
+perf: speed up parsing by using defaultdict
+ci: add basic workflow to run tests on push</pre>
+      </div>
+    </div>
+
+    <h3>5) Issue Templates (Next Steps)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="issues">Copy</button>
+      <pre id="issues">Title: Improve README "How to Run" clarity
+- Add copy/paste commands
+- Include expected output block
+- Link to docs/screenshot
+
+Title: Add CSV export for summary table
+- CLI flag --csv
+- Write to /output folder
+
+Title: Add unit tests
+- Parser handles empty lines
+- Parser handles malformed lines
+- Summary totals match sample data
+
+Title: Containerize project
+- Add Dockerfile
+- Update README with 'docker run' example</pre>
+    </div>
+
+    <h3>6) Project Board Columns (Kanban)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="kanban">Copy</button>
+      <pre id="kanban">To Do
+- CSV export
+- Unit tests
+- Dockerfile
+
+In Progress
+- README improvements
+
+Done
+- Screenshot added to /docs
+- .gitignore configured</pre>
+    </div>
+
+    <h3>7) .gitignore Starter (Python/General)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="gitignore">Copy</button>
+      <pre id="gitignore"># Python
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+.env
+
+# OS / Editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build / Dist
+build/
+dist/
+*.egg-info/</pre>
+    </div>
+
+    <h3>8) MIT License (Personal Projects)</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="license">Copy</button>
+      <pre id="license">MIT License
+
+Copyright (c) [YEAR] [YOUR NAME]
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to do so, subject to the following conditions:
+
+[...keep standard MIT text...]</pre>
+    </div>
+
+    <h3>9) Screenshot & Docs Tips</h3>
+    <div class="grid grid-2">
+      <div class="snippet">
+        <button class="copybtn" data-copy="shots1">Copy</button>
+        <pre id="shots1">• Use a clean terminal or UI theme.
+• Crop tightly around relevant output.
+• Add a short caption in README.
+• Store images in /docs and reference relatively.</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="shots2">Copy</button>
+        <pre id="shots2">Markdown example:
+![Summary output](docs/summary.png)
+Add a one-line explanation below the image describing what the viewer should notice.</pre>
+      </div>
+    </div>
+
+    <h3>10) Profile Links & Badges</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="badges">Copy</button>
+      <pre id="badges">**Links**
+- Portfolio: &lt;url&gt;
+- LinkedIn: &lt;url&gt;
+- Email: &lt;address&gt;
+
+**Badges (optional)**
+![Python](https://img.shields.io/badge/Python-3.11-informational)
+![Azure](https://img.shields.io/badge/Azure-AZ--900-blue)
+![Security](https://img.shields.io/badge/Security-Splunk%20Core-green)</pre>
+    </div>
+
+    <h3>11) Sample Project Ideas (Role-Aligned)</h3>
+    <div class="grid grid-3">
+      <div class="snippet">
+        <button class="copybtn" data-copy="ideas1">Copy</button>
+        <pre id="ideas1">Help Desk / IT Support
+• Drive space checker script
+• Wi-Fi diagnostics notes + script
+• Baseline hardening checklist (Windows)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="ideas2">Copy</button>
+        <pre id="ideas2">SOC / Security
+• Tiny log analyzer (failed login patterns)
+• Detection rule write-up (brute force)
+• Phishing triage playbook (lab)</pre>
+      </div>
+      <div class="snippet">
+        <button class="copybtn" data-copy="ideas3">Copy</button>
+        <pre id="ideas3">Cloud Support
+• Azure identity lab notes (AZ-900)
+• Script to parse Azure sign-in logs (sample)
+• Cost management dashboard mock</pre>
+      </div>
+    </div>
+
+    <h3>12) Link It All Together</h3>
+    <div class="snippet">
+      <button class="copybtn" data-copy="linking">Copy</button>
+      <pre id="linking">In README:
+- Add links to portfolio and related repos.
+On LinkedIn:
+- Add repos/portfolio to Featured.
+On Portfolio:
+- Each project card links to GitHub and a live demo or screenshot.</pre>
+    </div>
+
+    <div class="callout">
+      <p><strong>Up Next:</strong> Portfolio Power (Day 84). You’ll assemble a tight home for your brand and projects so hiring teams can understand you in one visit.</p>
+      <p><a href="../career_checklist/day-84-checklist.html">Go to Day 84 Checklist</a></p>
+    </div>
+  </div>
+
+  <script>
+    // Copy-to-clipboard for all .copybtn buttons
+    document.querySelectorAll('.copybtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-copy');
+        const el = document.getElementById(id);
+        if (!el) return;
+        const text = el.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const original = btn.textContent;
+          btn.textContent = 'Copied!';
+          setTimeout(() => btn.textContent = original, 1200);
+        });
+      });
+    });
+  </script>
+</body>
+</html>
